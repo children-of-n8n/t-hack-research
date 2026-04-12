@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Ассистент — Продуктовое видение</title>
+    <style>
+        :root {
+            --primary: #6C5CE7;
+            --primary-light: #A29BFE;
+            --primary-dark: #5A4BD1;
+            --accent: #00CEC9;
+            --accent-light: #81ECEC;
+            --danger: #FF6B6B;
+            --danger-light: #FF8E8E;
+            --warning: #FDCB6E;
+            --success: #00B894;
+            --success-light: #55EFC4;
+            --dark: #2D3436;
+            --gray: #636E72;
+            --gray-light: #B2BEC3;
+            --light: #F8F9FA;
+            --white: #FFFFFF;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+            --shadow-xl: 0 20px 60px rgba(0,0,0,0.15);
+            --radius: 16px;
+            --radius-sm: 8px;
+            --radius-lg: 24px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+
+        /* NAV */
+        .main-nav {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 15px 25px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+        }
+
+        .main-nav .logo {
+            font-size: 1.3em;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .main-nav .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .main-nav a {
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            color: var(--gray);
+            font-weight: 500;
+            font-size: 0.9em;
+            transition: all 0.2s;
+        }
+
+        .main-nav a:hover, .main-nav a.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* HERO */
+        .hero {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 60px 50px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-xl);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(108,92,231,0.05) 0%, transparent 70%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .hero h1 {
+            font-size: 3em;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            position: relative;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero .subtitle {
+            font-size: 1.4em;
+            color: var(--gray);
+            margin-bottom: 25px;
+            position: relative;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .hero .tagline {
+            font-size: 1.1em;
+            color: var(--primary);
+            background: linear-gradient(135deg, rgba(108,92,231,0.1), rgba(0,206,201,0.1));
+            padding: 15px 25px;
+            border-radius: var(--radius);
+            display: inline-block;
+            position: relative;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* SECTIONS */
+        .section {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 40px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .section h2 {
+            font-size: 2em;
+            margin-bottom: 25px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section h3 {
+            font-size: 1.3em;
+            margin: 25px 0 15px;
+            color: var(--dark);
+        }
+
+        /* PROBLEM */
+        .problem-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .problem-card {
+            background: linear-gradient(135deg, #fff5f5, #ffe0e0);
+            border-radius: var(--radius-sm);
+            padding: 25px;
+            border-left: 4px solid var(--danger);
+            transition: transform 0.3s;
+        }
+
+        .problem-card:hover { transform: translateY(-3px); }
+
+        .problem-card .icon { font-size: 2em; margin-bottom: 10px; }
+        .problem-card h4 { color: var(--danger); margin-bottom: 8px; }
+        .problem-card p { color: var(--gray); font-size: 0.9em; }
+        .problem-card .stat {
+            font-size: 1.5em;
+            font-weight: 800;
+            color: var(--danger);
+            margin-top: 10px;
+        }
+
+        /* SOLUTION */
+        .solution-box {
+            background: linear-gradient(135deg, #f0fff4, #e0f8e8);
+            border-radius: var(--radius);
+            padding: 30px;
+            border-left: 4px solid var(--success);
+            margin: 25px 0;
+        }
+
+        .solution-box h3 { color: var(--success); margin-bottom: 15px; }
+
+        /* PRODUCT DESCRIPTION */
+        .product-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .feature-card {
+            background: var(--light);
+            border-radius: var(--radius-sm);
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .feature-card:hover {
+            border-color: var(--primary-light);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .feature-card .icon { font-size: 2.5em; margin-bottom: 10px; }
+        .feature-card h4 { color: var(--primary); margin-bottom: 8px; }
+        .feature-card p { color: var(--gray); font-size: 0.9em; }
+
+        /* JTBD */
+        .jtbd-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .jtbd-card {
+            background: var(--light);
+            border-radius: var(--radius-sm);
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .jtbd-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+        }
+
+        .jtbd-card .job {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 10px;
+            padding-left: 15px;
+        }
+
+        .jtbd-card .context {
+            color: var(--gray);
+            font-size: 0.85em;
+            margin-bottom: 10px;
+            padding-left: 15px;
+        }
+
+        .jtbd-card .outcome {
+            background: var(--success);
+            color: white;
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 0.85em;
+            margin-left: 15px;
+        }
+
+        /* NEEDS ANIMATION */
+        .needs-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .needs-before, .needs-after {
+            padding: 25px;
+            border-radius: var(--radius-sm);
+            position: relative;
+        }
+
+        .needs-before {
+            background: linear-gradient(135deg, #fff5f5, #ffe0e0);
+            border: 2px solid var(--danger-light);
+        }
+
+        .needs-after {
+            background: linear-gradient(135deg, #f0fff4, #e0f8e8);
+            border: 2px solid var(--success-light);
+            animation: glowGreen 2s ease-in-out infinite;
+        }
+
+        @keyframes glowGreen {
+            0%, 100% { box-shadow: 0 0 5px rgba(0,184,148,0.3); }
+            50% { box-shadow: 0 0 20px rgba(0,184,148,0.5); }
+        }
+
+        .needs-before h4, .needs-after h4 {
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .needs-before h4 { color: var(--danger); }
+        .needs-after h4 { color: var(--success); }
+
+        .need-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            font-size: 0.9em;
+        }
+
+        .need-item .status {
+            font-size: 1.2em;
+            flex-shrink: 0;
+        }
+
+        .need-item.closed { text-decoration: line-through; opacity: 0.5; }
+        .need-item.open { color: var(--danger); }
+        .need-item.fulfilled { color: var(--success); font-weight: 600; }
+
+        /* SCENARIOS */
+        .scenario-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .scenario-type {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 20px;
+            border-radius: var(--radius-sm);
+            text-align: center;
+            transition: all 0.3s;
+            cursor: default;
+        }
+
+        .scenario-type:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .scenario-type .icon { font-size: 2em; margin-bottom: 8px; }
+        .scenario-type h4 { margin-bottom: 5px; }
+        .scenario-type p { font-size: 0.85em; opacity: 0.9; }
+
+        /* FLOW DIAGRAM */
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+            padding: 30px;
+            background: var(--light);
+            border-radius: var(--radius);
+        }
+
+        .flow-step {
+            background: var(--white);
+            padding: 15px 20px;
+            border-radius: var(--radius-sm);
+            text-align: center;
+            box-shadow: var(--shadow);
+            min-width: 120px;
+            transition: all 0.3s;
+        }
+
+        .flow-step:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .flow-step .icon { font-size: 1.5em; margin-bottom: 5px; }
+        .flow-step .label { font-size: 0.8em; font-weight: 600; }
+
+        .flow-arrow {
+            font-size: 1.5em;
+            color: var(--primary);
+            animation: bounceRight 1.5s ease-in-out infinite;
+        }
+
+        @keyframes bounceRight {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(5px); }
+        }
+
+        /* STATS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 25px;
+            border-radius: var(--radius-sm);
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 2.2em;
+            font-weight: 800;
+            display: block;
+        }
+
+        .stat-card .label {
+            font-size: 0.85em;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
+        /* TABLE */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9em;
+        }
+
+        .data-table th {
+            background: var(--primary);
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .data-table td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .data-table tr:hover { background: var(--light); }
+
+        /* SOURCES */
+        .sources-section {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 35px;
+            margin-top: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .sources-section h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .sources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 15px;
+        }
+
+        .source-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px;
+            background: var(--light);
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            color: var(--dark);
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .source-item:hover {
+            background: #e9ecef;
+            border-color: var(--primary-light);
+            transform: translateX(3px);
+        }
+
+        .source-item .icon { font-size: 1.5em; flex-shrink: 0; }
+        .source-item .info { flex: 1; }
+        .source-item .title { font-weight: 600; font-size: 0.9em; margin-bottom: 3px; color: var(--primary); }
+        .source-item .desc { font-size: 0.8em; color: var(--gray); }
+        .source-item .arrow { color: var(--accent); font-size: 1.2em; flex-shrink: 0; }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9em;
+        }
+
+        footer a { color: rgba(255,255,255,0.7); margin: 0 8px; text-decoration: none; }
+        footer a:hover { color: white; }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero { padding: 40px 25px; }
+            .hero h1 { font-size: 2em; }
+            .section { padding: 25px; }
+            .needs-comparison { grid-template-columns: 1fr; }
+            .main-nav { flex-direction: column; gap: 10px; }
+            .main-nav .nav-links { flex-wrap: wrap; justify-content: center; }
+            .flow-diagram { flex-direction: column; }
+            .flow-arrow { transform: rotate(90deg); }
+        }
+
+        /* ANIMATIONS ON SCROLL */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* HIGHLIGHT BOX */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(108,92,231,0.1), rgba(0,206,201,0.1));
+            border: 2px solid var(--primary-light);
+            border-radius: var(--radius);
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .highlight-box h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        /* BADGE */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+        }
+
+        .badge-danger { background: var(--danger); color: white; }
+        .badge-success { background: var(--success); color: white; }
+        .badge-warning { background: var(--warning); color: var(--dark); }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- NAV -->
+        <nav class="main-nav">
+            <div class="logo">🤖 AI-Ассистент</div>
+            <div class="nav-links">
+                <a href="index.html" class="active">Продукт</a>
+                <a href="scenarios.html">Сценарии</a>
+                <a href="economics.html">Экономика</a>
+            </div>
+        </nav>
+
+        <!-- HERO -->
+        <header class="hero">
+            <h1>AI-Ассистент для МСБ</h1>
+            <p class="subtitle">Автоматическая обработка пропущенных звонков с записью клиентов и отправкой summary владельцу</p>
+            <div class="tagline">
+                ⏱️ Ответ за 15 секунд → 📋 Консультация → 📅 Запись → 📲 Уведомление владельцу
+            </div>
+        </header>
+
+        <!-- PRODUCT FLOW -->
+        <div class="section animate-on-scroll">
+            <h2>🔄 Как это работает</h2>
+            <div class="flow-diagram">
+                <div class="flow-step">
+                    <div class="icon">📞</div>
+                    <div class="label">Клиент звонит</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="icon">⏰</div>
+                    <div class="label">15 сек нет ответа</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="icon">🤖</div>
+                    <div class="label">AI отвечает</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="icon">💬</div>
+                    <div class="label">Консультация</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="icon">📅</div>
+                    <div class="label">Запись</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">
+                    <div class="icon">📲</div>
+                    <div class="label">Summary владельцу</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PROBLEM -->
+        <div class="section animate-on-scroll">
+            <h2>😰 Проблема</h2>
+            <p style="color: var(--gray); font-size: 1.1em; margin-bottom: 20px;">
+                Малый бизнес теряет клиентов каждый день. Владелец не может быть у телефона 24/7 — он работает, встречается с клиентами, ведёт приём. А каждый пропущенный звонок — это потенциальная потеря денег.
+            </p>
+
+            <div class="problem-grid">
+                <div class="problem-card">
+                    <div class="icon">📱</div>
+                    <h4>34% звонков пропущено</h4>
+                    <p>По данным МегаФон, более трети входящих звонков в МСБ остаются без ответа</p>
+                    <div class="stat">34%</div>
+                </div>
+                <div class="problem-card">
+                    <div class="icon">🚪</div>
+                    <h4>85% не перезванивают</h4>
+                    <p>Большинство клиентов не станут звонить повторно — они найдут конкурента</p>
+                    <div class="stat">85%</div>
+                </div>
+                <div class="problem-card">
+                    <div class="icon">💸</div>
+                    <h4>Потеря выручки</h4>
+                    <p>Средний МСБ теряет значительную сумму ежегодно из-за пропущенных звонков</p>
+                    <div class="stat">₽₽₽</div>
+                </div>
+                <div class="problem-card">
+                    <div class="icon">😤</div>
+                    <h4>Voicemail не работает</h4>
+                    <p>80% callers вешают трубку, не оставив сообщение. Из оставшихся — менее 20% получают обратный звонок</p>
+                    <div class="stat">80%</div>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h4>💡 Ключевой инсайт</h4>
+                <p><strong>78% клиентов выбирают того, кто первым ответил.</strong> Скорость ответа — критический фактор. Ответ в течение 5 минут увеличивает квалификацию лида в 21 раз.</p>
+            </div>
+        </div>
+
+        <!-- SOLUTION -->
+        <div class="section animate-on-scroll">
+            <h2>✅ Решение</h2>
+            <div class="solution-box">
+                <h3>AI-Ассистент — ваш виртуальный ресепшионист 24/7</h3>
+                <p style="margin-bottom: 15px;">
+                    Когда владелец бизнеса не берёт трубку в течение 15-30 секунд, звонок автоматически переадресуется на AI-бота, который:
+                </p>
+                <ul style="padding-left: 20px; line-height: 2;">
+                    <li><strong>Консультирует</strong> клиента по вопросам из настроенного промпта</li>
+                    <li><strong>Проверяет</strong> свободные слоты в календаре</li>
+                    <li><strong>Записывает</strong> на приём/услугу</li>
+                    <li><strong>Отправляет</strong> summary владельцу в Telegram/SMS</li>
+                </ul>
+            </div>
+
+            <div class="product-features">
+                <div class="feature-card">
+                    <div class="icon">⚡</div>
+                    <h4>Мгновенный ответ</h4>
+                    <p>AI отвечает через 15 секунд — клиент не успевает расстроиться</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🧠</div>
+                    <h4>Умные ответы</h4>
+                    <p>Настраиваемый промпт с FAQ, ценами и спецификой бизнеса</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">📅</div>
+                    <h4>Запись в календарь</h4>
+                    <p>Автоматическая проверка свободных слотов и бронирование</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">📲</div>
+                    <h4>Уведомления</h4>
+                    <p>Мгновенное summary в Telegram/SMS с деталями звонка</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🕐</div>
+                    <h4>24/7</h4>
+                    <p>Работает ночью, в выходные, в праздники — всегда на связи</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🎯</div>
+                    <h4>Квалификация</h4>
+                    <p>AI определяет срочность и приоритизирует звонки</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- JTBD -->
+        <div class="section animate-on-scroll">
+            <h2>🎯 Jobs To Be Done</h2>
+            <p style="color: var(--gray); margin-bottom: 20px;">
+                Какие «работы» нанимают сделать наш продукт? Разбираем по фреймворку JTBD.
+            </p>
+
+            <div class="jtbd-grid">
+                <div class="jtbd-card">
+                    <div class="job">«Когда я не у телефона, хочу чтобы клиенты получали ответ, чтобы я не терял деньги»</div>
+                    <div class="context">Контекст: Владелец на встрече, в полях, на приёме</div>
+                    <div class="outcome">Результат: 0% пропущенных, каждый клиент обслужен</div>
+                </div>
+                <div class="jtbd-card">
+                    <div class="job">«Когда клиент звонит, хочу записать его сразу, чтобы он не ушёл к конкуренту»</div>
+                    <div class="context">Контекст: 78% выбирают первого ответившего</div>
+                    <div class="outcome">Результат: Мгновенная запись, клиент закреплён</div>
+                </div>
+                <div class="jtbd-card">
+                    <div class="job">«Когда я освобождаюсь, хочу видеть summary звонков, чтобы понимать что произошло»</div>
+                    <div class="context">Контекст: Владелец не знает, кто звонил</div>
+                    <div class="outcome">Результат: Полная картина в Telegram</div>
+                </div>
+                <div class="jtbd-card">
+                    <div class="job">«Когда клиент спрашивает цены, хочу чтобы ему ответили, чтобы я не тратил время на повторяющиеся вопросы»</div>
+                    <div class="context">Контекст: 80% звонков — типовые вопросы</div>
+                    <div class="outcome">Результат: AI отвечает на FAQ автоматически</div>
+                </div>
+                <div class="jtbd-card">
+                    <div class="job">«Когда экстренный вызов, хочу узнать об этом немедленно, чтобы не потерять важного клиента»</div>
+                    <div class="context">Контекст: Аварии, срочные случаи, VIP-клиенты</div>
+                    <div class="outcome">Результат: URGENT notification с приоритетом</div>
+                </div>
+                <div class="jtbd-card">
+                    <div class="job">«Когда я нанимаю ресепшиониста, хочу сэкономить 68 000 ₽/мес, чтобы не разориться»</div>
+                    <div class="context">Контекст: Средняя зарплата ресепшиониста в РФ</div>
+                    <div class="outcome">Результат: AI стоит в разы дешевле человека</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEEDS: BEFORE / AFTER -->
+        <div class="section animate-on-scroll">
+            <h2>🔓 Потребности: До и После</h2>
+            <p style="color: var(--gray); margin-bottom: 20px;">
+                Какие потребности закрывает продукт? Сравнение состояния бизнеса до и после внедрения.
+            </p>
+
+            <div class="needs-comparison">
+                <div class="needs-before">
+                    <h4>❌ БЕЗ AI-Ассистента</h4>
+                    <div class="need-item open">
+                        <span class="status">❌</span>
+                        <span>Клиенты не получают ответ</span>
+                    </div>
+                    <div class="need-item open">
+                        <span class="status">❌</span>
+                        <span>Нет записи — клиент уходит</span>
+                    </div>
+                    <div class="need-item open">
+                        <span class="status">❌</span>
+                        <span>Владелец не знает о звонках</span>
+                    </div>
+                    <div class="need-item open">
+                        <span class="status">❌</span>
+                        <span>Voicemail не работает</span>
+                    </div>
+                    <div class="need-item open">
+                        <span class="status">❌</span>
+                        <span>Экстренные звонки пропущены</span>
+                    </div>
+                    <div class="need-item open">
+                        <span class="status">❌</span>
+                        <span>Ресепшионист = 68 000 ₽/мес</span>
+                    </div>
+                    <div class="need-item open">
+                        <span class="status">❌</span>
+                        <span>Нет работы после часов</span>
+                    </div>
+                    <div class="need-item open">
+                        <span class="status">❌</span>
+                        <span>Конкуренты забирают клиентов</span>
+                    </div>
+                </div>
+
+                <div class="needs-after">
+                    <h4>✅ С AI-Ассистентом</h4>
+                    <div class="need-item fulfilled">
+                        <span class="status">✅</span>
+                        <span>Каждый звонок обработан за 15 сек</span>
+                    </div>
+                    <div class="need-item fulfilled">
+                        <span class="status">✅</span>
+                        <span>Автоматическая запись в календарь</span>
+                    </div>
+                    <div class="need-item fulfilled">
+                        <span class="status">✅</span>
+                        <span>Summary в Telegram после каждого звонка</span>
+                    </div>
+                    <div class="need-item fulfilled">
+                        <span class="status">✅</span>
+                        <span>AI консультирует 24/7</span>
+                    </div>
+                    <div class="need-item fulfilled">
+                        <span class="status">✅</span>
+                        <span>URGENT notification для экстренных</span>
+                    </div>
+                    <div class="need-item fulfilled">
+                        <span class="status">✅</span>
+                        <span>AI стоит в разы дешевле человека</span>
+                    </div>
+                    <div class="need-item fulfilled">
+                        <span class="status">✅</span>
+                        <span>Работает ночью, в выходные, праздники</span>
+                    </div>
+                    <div class="need-item fulfilled">
+                        <span class="status">✅</span>
+                        <span>Клиенты записаны, конкуренты не забирают</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ABSTRACT SCENARIOS -->
+        <div class="section animate-on-scroll">
+            <h2>📋 Абстрактные сценарии</h2>
+            <p style="color: var(--gray); margin-bottom: 20px;">
+                На какие типы делятся все звонки, которые обрабатывает AI? Абстрактные категории без привязки к профессии.
+            </p>
+
+            <div class="scenario-types">
+                <div class="scenario-type">
+                    <div class="icon">💰</div>
+                    <h4>Узнать цену</h4>
+                    <p>«Сколько стоит [услуга]?»</p>
+                </div>
+                <div class="scenario-type">
+                    <div class="icon">📅</div>
+                    <h4>Записаться</h4>
+                    <p>«Когда можно прийти?»</p>
+                </div>
+                <div class="scenario-type">
+                    <div class="icon">🚨</div>
+                    <h4>Экстренный</h4>
+                    <p>«Срочно, нужна помощь!»</p>
+                </div>
+                <div class="scenario-type">
+                    <div class="icon">ℹ️</div>
+                    <h4>Узнать информацию</h4>
+                    <p>«Какие у вас часы?», «Где вы?»</p>
+                </div>
+                <div class="scenario-type">
+                    <div class="icon">🔄</div>
+                    <h4>Статус</h4>
+                    <p>«Моя заявка/ремонт готова?»</p>
+                </div>
+                <div class="scenario-type">
+                    <div class="icon">🎯</div>
+                    <h4>Квалификация</h4>
+                    <p>«Вы занимаетесь [тип услуги]?»</p>
+                </div>
+            </div>
+
+            <div class="highlight-box">
+                <h4>🔗 Детальные сценарии по профессиям</h4>
+                <p>Каждый абстрактный сценарий раскрывается в конкретных диалогах для 15 профессий. <a href="scenarios.html" style="color: var(--primary); font-weight: 600;">Посмотреть все сценарии →</a></p>
+            </div>
+        </div>
+
+        <!-- MARKET SIZE -->
+        <div class="section animate-on-scroll">
+            <h2>📊 Размер рынка</h2>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="number">6.7 млн</span>
+                    <span class="label">МСБ предприятий в РФ</span>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #FF6B6B, #ee5a24);">
+                    <span class="number">34%</span>
+                    <span class="label">звонков пропущено</span>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #00CEC9, #00b894);">
+                    <span class="number">68 000 ₽</span>
+                    <span class="label">зарплата ресепшиониста</span>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #FDCB6E, #e17055);">
+                    <span class="number">5 млрд ₽</span>
+                    <span class="label">рынок чат-ботов РФ 2025</span>
+                </div>
+            </div>
+
+            <h3>Top-5 целевых сегментов</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Сегмент</th>
+                        <th>Кол-во в РФ</th>
+                        <th>Пропуски</th>
+                        <th>Средний чек</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>🦷 Стоматологии</td>
+                        <td>~35 000</td>
+                        <td>34%</td>
+                        <td>5 000 — 65 000 ₽</td>
+                    </tr>
+                    <tr>
+                        <td>⚖️ Юристы</td>
+                        <td>84 351 + 150K</td>
+                        <td>40%</td>
+                        <td>50 000 ₽/дело</td>
+                    </tr>
+                    <tr>
+                        <td>🔧 Домашние сервисы</td>
+                        <td>~500 000</td>
+                        <td>60%</td>
+                        <td>5 000 ₽</td>
+                    </tr>
+                    <tr>
+                        <td>💇 Салоны красоты</td>
+                        <td>~180 000</td>
+                        <td>3-5/день</td>
+                        <td>2 500 ₽</td>
+                    </tr>
+                    <tr>
+                        <td>🚗 Автосервисы</td>
+                        <td>117 500</td>
+                        <td>40%</td>
+                        <td>15 000 ₽</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- SOURCES -->
+        <div class="sources-section">
+            <h2>📚 Источники</h2>
+            <div class="sources-grid">
+                <a href="https://www.economy.gov.ru/material/news/chislennost_malyh_isrednih_predpriyatiy_vrossii_obnovila_rekord_iprevysila_67_mln.html" target="_blank" class="source-item">
+                    <span class="icon">🏛️</span>
+                    <div class="info">
+                        <div class="title">Минэкономразвития РФ</div>
+                        <div class="desc">6.7 млн МСБ предприятий — Q1 2025</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+                <a href="https://tech.megafon.ru/information/vas-zvonok-ocen-vazen-dlia-nas-kak-ne-teriat-budushhix-klientov" target="_blank" class="source-item">
+                    <span class="icon">📱</span>
+                    <div class="info">
+                        <div class="title">МегаФон Tech</div>
+                        <div class="desc">34% пропущенных звонков (13 тыс. компаний)</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+                <a href="https://russia.gorodrabot.ru/salaries/resepshionist?y=2024" target="_blank" class="source-item">
+                    <span class="icon">💰</span>
+                    <div class="info">
+                        <div class="title">ГородРабот</div>
+                        <div class="desc">Зарплата ресепшиониста: 68 174 ₽/мес</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+                <a href="https://m.seonews.ru/blogs/demis-group/chat-boty-i-virtualnye-assistenty-marketingovyy-proryv-2025-goda/" target="_blank" class="source-item">
+                    <span class="icon">🤖</span>
+                    <div class="info">
+                        <div class="title">SEOnews / Just AI</div>
+                        <div class="desc">Рынок чат-ботов: 5 млрд ₽ к 2025</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+                <a href="https://rb.ru/news/oborot-stomat-chastnoj/" target="_blank" class="source-item">
+                    <span class="icon">🦷</span>
+                    <div class="info">
+                        <div class="title">RB.ru</div>
+                        <div class="desc">Стоматологии: 717 млрд ₽ (+15.4%)</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+                <a href="https://fparf.ru/practical-information/statistics/svedeniya-o-sostave-advokatskogo-soobshchestva-v-rossiyskoy-federatsii-za-2024-god/" target="_blank" class="source-item">
+                    <span class="icon">⚖️</span>
+                    <div class="info">
+                        <div class="title">ФПА РФ</div>
+                        <div class="desc">84 351 адвокат в РФ</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+                <a href="https://m.autostat.ru/infographics/59270/" target="_blank" class="source-item">
+                    <span class="icon">🚗</span>
+                    <div class="info">
+                        <div class="title">Автостат</div>
+                        <div class="desc">117.5 тыс. точек автосервиса</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+                <a href="https://tadviser.com/index.php/Article:Beauty_salons_in_Russia" target="_blank" class="source-item">
+                    <span class="icon">💇</span>
+                    <div class="info">
+                        <div class="title">TAdviser</div>
+                        <div class="desc">8 448 салонов в Москве</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+            </div>
+        </div>
+
+        <footer>
+            <p>🤖 AI-Ассистент для МСБ — Продуктовое видение</p>
+            <p style="margin-top: 10px;">
+                <a href="index.html">Продукт</a> •
+                <a href="scenarios.html">Сценарии</a> •
+                <a href="economics.html">Экономика</a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Animate on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

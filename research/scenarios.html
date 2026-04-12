@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Ассистент для МСБ — Сценарии по профессиям</title>
+    <style>
+        :root {
+            --primary: #6C5CE7;
+            --primary-light: #A29BFE;
+            --accent: #00CEC9;
+            --danger: #FF6B6B;
+            --warning: #FDCB6E;
+            --success: #00B894;
+            --dark: #2D3436;
+            --gray: #636E72;
+            --light: #F8F9FA;
+            --white: #FFFFFF;
+            --shadow: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+            --radius: 16px;
+            --radius-sm: 8px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .main-nav {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 15px 25px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+        }
+
+        .main-nav .logo {
+            font-size: 1.3em;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .main-nav .nav-links {
+            display: flex;
+            gap: 8px;
+        }
+
+        .main-nav a {
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            color: var(--gray);
+            font-weight: 500;
+            font-size: 0.9em;
+            transition: all 0.2s;
+        }
+
+        .main-nav a:hover, .main-nav a.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+
+        header {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        header .subtitle {
+            color: var(--gray);
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 20px;
+            border-radius: var(--radius-sm);
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 2em;
+            font-weight: 800;
+            display: block;
+        }
+
+        .stat-card .label {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+
+        .filters {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .filters label { font-weight: 600; margin-right: 10px; }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: 2px solid var(--primary-light);
+            background: var(--white);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .professions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+            gap: 25px;
+        }
+
+        .profession-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .profession-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-header {
+            padding: 25px;
+            color: white;
+            position: relative;
+        }
+
+        .card-header h2 {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+
+        .card-header .tier {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+            background: rgba(255,255,255,0.3);
+        }
+
+        .card-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 15px 25px;
+            background: var(--light);
+        }
+
+        .card-stat {
+            text-align: center;
+        }
+
+        .card-stat .val {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .card-stat .lbl {
+            font-size: 0.75em;
+            color: var(--gray);
+        }
+
+        .card-body { padding: 20px 25px; }
+
+        .card-body h3 {
+            font-size: 1em;
+            color: var(--primary);
+            margin-bottom: 10px;
+            margin-top: 15px;
+        }
+
+        .card-body h3:first-child { margin-top: 0; }
+
+        .card-body ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .card-body li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+            font-size: 0.9em;
+        }
+
+        .card-body li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .scenario {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: var(--radius-sm);
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid var(--primary);
+        }
+
+        .scenario .time {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 0.85em;
+        }
+
+        .scenario .dialog {
+            margin: 8px 0;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 8px;
+            font-size: 0.85em;
+        }
+
+        .scenario .dialog.ai {
+            border-left: 3px solid var(--accent);
+        }
+
+        .scenario .dialog.client {
+            border-left: 3px solid var(--warning);
+        }
+
+        .scenario .result {
+            background: var(--success);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.85em;
+            margin-top: 8px;
+        }
+
+        .roi-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--success), #55efc4);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 0.9em;
+        }
+
+        .software-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .software-tag {
+            background: var(--light);
+            border: 1px solid #ddd;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8em;
+            color: var(--gray);
+        }
+
+        .price-range {
+            background: linear-gradient(135deg, var(--warning), #ffeaa7);
+            padding: 10px 15px;
+            border-radius: var(--radius-sm);
+            text-align: center;
+            font-weight: 700;
+            margin-top: 15px;
+        }
+
+        .sources-section {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 35px;
+            margin-top: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .sources-section h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .sources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 15px;
+        }
+
+        .source-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px;
+            background: var(--light);
+            border-radius: var(--radius-sm);
+            text-decoration: none;
+            color: var(--dark);
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .source-item:hover {
+            background: #e9ecef;
+            border-color: var(--primary-light);
+            transform: translateX(3px);
+        }
+
+        .source-item .icon {
+            font-size: 1.5em;
+            flex-shrink: 0;
+        }
+
+        .source-item .info {
+            flex: 1;
+        }
+
+        .source-item .title {
+            font-weight: 600;
+            font-size: 0.9em;
+            margin-bottom: 3px;
+            color: var(--primary);
+        }
+
+        .source-item .desc {
+            font-size: 0.8em;
+            color: var(--gray);
+        }
+
+        .source-item .arrow {
+            color: var(--accent);
+            font-size: 1.2em;
+            flex-shrink: 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .professions-grid { grid-template-columns: 1fr; }
+            header h1 { font-size: 1.8em; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- NAV -->
+        <nav class="main-nav">
+            <div class="logo">🤖 AI-Ассистент</div>
+            <div class="nav-links">
+                <a href="index.html">Продукт</a>
+                <a href="scenarios.html" class="active">Сценарии</a>
+                <a href="economics.html">Экономика</a>
+            </div>
+        </nav>
+
+        <header>
+            <h1>🤖 AI-Ассистент для МСБ</h1>
+            <p class="subtitle">Детальные сценарии обработки пропущенных звонков по 15 профессиям</p>
+            <p style="color: var(--gray); font-size: 0.9em;">Данные: Росстат, МегаФон, TAdviser, 2ГИС, Автостат, 2024-2025</p>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="number">6.7 млн</span>
+                    <span class="label">МСБ предприятий в РФ</span>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #FF6B6B, #ee5a24);">
+                    <span class="number">34%</span>
+                    <span class="label">звонков пропущено (МегаФон)</span>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #00CEC9, #00b894);">
+                    <span class="number">68 000 ₽</span>
+                    <span class="label">зарплата ресепшиониста</span>
+                </div>
+                <div class="stat-card" style="background: linear-gradient(135deg, #FDCB6E, #e17055);">
+                    <span class="number">5 млрд ₽</span>
+                    <span class="label">рынок чат-ботов РФ 2025</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="filters">
+            <label>Фильтр:</label>
+            <button class="filter-btn active" onclick="filterCards('all')">Все</button>
+            <button class="filter-btn" onclick="filterCards('tier1')">🥇 Tier 1</button>
+            <button class="filter-btn" onclick="filterCards('tier2')">🥈 Tier 2</button>
+            <button class="filter-btn" onclick="filterCards('tier3')">🥉 Tier 3</button>
+            <button class="filter-btn" onclick="filterCards('medical')">🏥 Медицина</button>
+            <button class="filter-btn" onclick="filterCards('services')">🔧 Услуги</button>
+            <button class="filter-btn" onclick="filterCards('beauty')">💇 Красота</button>
+        </div>
+
+        <div class="professions-grid">
+
+            <!-- 1. СТОМАТОЛОГИИ -->
+            <div class="profession-card" data-tier="tier1" data-category="medical">
+                <div class="card-header" style="background: linear-gradient(135deg, #6C5CE7, #a29bfe);">
+                    <h2>🦷 Стоматологии</h2>
+                    <span class="tier">🥇 Tier 1 — Приоритет</span>
+                </div>
+                <div class="card-stats">
+                    <div class="card-stat">
+                        <div class="val">~35 000</div>
+                        <div class="lbl">частных клиник</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">717 млрд ₽</div>
+                        <div class="lbl">рынок 2024</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">34%</div>
+                        <div class="lbl">пропущенных</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h3>📞 Типичные звонки</h3>
+                    <ul>
+                        <li>«Принимаете новых пациентов?»</li>
+                        <li>«Сколько стоит имплант/коронка/винир?»</li>
+                        <li>«Острая боль, можно срочно?»</li>
+                        <li>«Принимаете ли мою страховку?»</li>
+                        <li>«Хочу записаться на чистку/отбеливание»</li>
+                    </ul>
+
+                    <h3>🎬 Сценарий: Острая боль после часов</h3>
+                    <div class="scenario">
+                        <div class="time">⏰ 20:30, клиника закрыта</div>
+                        <div class="dialog client">👤 Клиент: «У меня ужасно болит зуб, вы открыты?»</div>
+                        <div class="dialog ai">🤖 AI: «Понимаю, зубная боль — это серьёзно. Мы сейчас закрыты, но у нас есть окно завтра в 8:00. Записать вас? А пока — примите ибупрофен 400мг, приложите холод к щеке.»</div>
+                        <div class="dialog client">👤 «Да, запишите на 8:00. Меня зовут Анна.»</div>
+                        <div class="dialog ai">🤖 AI: «Анна, вы записаны завтра на 8:00. Напоминание придёт в WhatsApp за 2 часа. Если боль усилится — вызовите скорую.»</div>
+                        <div class="result">✅ Врач получает в Telegram: «🦷 ЭКСТРЕННЫЙ: Анна, 8:00, острая боль. Даны рекомендации по обезболиванию.»</div>
+                    </div>
+
+                    <h3>🎬 Сценарий: Консультация по импланту</h3>
+                    <div class="scenario">
+                        <div class="time">⏰ 14:00, врач на приёме</div>
+                        <div class="dialog client">👤 «Сколько стоит имплант под ключ?»</div>
+                        <div class="dialog ai">🤖 AI: «Имплант под ключ в нашей клинике — от 45 000 до 95 000 ₽ в зависимости от системы. Включает: имплант, абатмент, коронку, все консультации. Хотите записаться на бесплатную консультацию?»</div>
+                        <div class="result">✅ Запись на консультацию. Средний чек клиента: 65 000 ₽.</div>
+                    </div>
+
+                    <h3>💻 ПО и интеграции</h3>
+                    <div class="software-tags">
+                        <span class="software-tag">InfoBox</span>
+                        <span class="software-tag">IDENT</span>
+                        <span class="software-tag">Google Calendar</span>
+                        <span class="software-tag">Telegram</span>
+                        <span class="software-tag">WhatsApp</span>
+                    </div>
+
+                    <h3>⚖️ Регуляторика</h3>
+                    <ul>
+                        <li>152-ФЗ о персональных данных</li>
+                        <li>Лицензия на мед. деятельность</li>
+                        <li>Информированное согласие</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 2. ЮРИСТЫ/АДВОКАТЫ -->
+            <div class="profession-card" data-tier="tier1" data-category="services">
+                <div class="card-header" style="background: linear-gradient(135deg, #2D3436, #636E72);">
+                    <h2>⚖️ Юристы / Адвокаты</h2>
+                    <span class="tier">🥇 Tier 1 — Приоритет</span>
+                </div>
+                <div class="card-stats">
+                    <div class="card-stat">
+                        <div class="val">84 351</div>
+                        <div class="lbl">адвокатов в РФ</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">~150 000</div>
+                        <div class="lbl">юр. компаний</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">50 000 ₽</div>
+                        <div class="lbl">средний чек дела</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h3>📞 Типичные звонки</h3>
+                    <ul>
+                        <li>«Вы занимаетесь разводами/ДТП/наследством?»</li>
+                        <li>«Сколько стоит консультация?»</li>
+                        <li>«Мне нужна срочная помощь!»</li>
+                        <li>«Какой процент выигранных дел?»</li>
+                        <li>«Можно ли бесплатно проконсультироваться?»</li>
+                    </ul>
+
+                    <h3>🎬 Сценарий: Срочный вызов (ДТП)</h3>
+                    <div class="scenario">
+                        <div class="time">⏰ 11:00, адвокат в суде</div>
+                        <div class="dialog client">👤 «Меня только что остановили, мне нужна помощь!»</div>
+                        <div class="dialog ai">🤖 AI: «Понимаю, что ситуация стрессовая. Адвокат сейчас в суде, но я могу помочь. Это связано с ДТП? Вам нужна помощь прямо сейчас?»</div>
+                        <div class="dialog client">👤 «Да, я в ДТП, второй водитель агрессивен.»</div>
+                        <div class="dialog ai">🤖 AI: «Зафиксировала. 1) Не признавайте вину. 2) Фотографируйте всё. 3) Вызывайте ГИБДД. Адвокат перезвонит в течение 15 минут после заседания. Ваш телефон?»</div>
+                        <div class="result">✅ Адвокат получает URGENT notification в Telegram. Перезванивает через 12 мин. Клиент сохранён.</div>
+                    </div>
+
+                    <h3>🎬 Сценарий: Квалификация лида (развод)</h3>
+                    <div class="scenario">
+                        <div class="time">⏰ 15:00, адвокат на встрече</div>
+                        <div class="dialog ai">🤖 AI: «Здравствуйте, это офис адвоката Петрова. Могу помочь с первоначальной консультацией. Какой у вас вопрос?»</div>
+                        <div class="dialog client">👤 «Хочу развестись, есть ребёнок и ипотека.»</div>
+                        <div class="dialog ai">🤖 AI: «Поняла. Это добровольный развод или через суд? Есть ли спор об имуществе?»</div>
+                        <div class="dialog client">👤 «Муж не согласен, спор о квартире.»</div>
+                        <div class="dialog ai">🤖 AI: «Это дело требует личной консультации. Бесплатная 15-минутная консультация — завтра 10:00 или 14:00. Как удобно?»</div>
+                        <div class="result">✅ Лид квалифицирован. Запись на консультацию. Потенциальное дело: 80 000 — 200 000 ₽.</div>
+                    </div>
+
+                    <h3>💻 ПО и интеграции</h3>
+                    <div class="software-tags">
+                        <span class="software-tag">Консультант+</span>
+                        <span class="software-tag">Гарант</span>
+                        <span class="software-tag">1С:Юрист</span>
+                        <span class="software-tag">Telegram</span>
+                        <span class="software-tag">Яндекс.Календарь</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. САНТЕХНИКИ/ЭЛЕКТРИКИ -->
+            <div class="profession-card" data-tier="tier1" data-category="services">
+                <div class="card-header" style="background: linear-gradient(135deg, #0984E3, #74B9FF);">
+                    <h2>🔧 Сантехники / Электрики</h2>
+                    <span class="tier">🥇 Tier 1 — Приоритет</span>
+                </div>
+                <div class="card-stats">
+                    <div class="card-stat">
+                        <div class="val">~500 000</div>
+                        <div class="lbl">ИП и компаний</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">5 000 ₽</div>
+                        <div class="lbl">средний чек</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">60%</div>
+                        <div class="lbl">пропущенных в полях</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h3>📞 Типичные звонки</h3>
+                    <ul>
+                        <li>«Трубу прорвало, срочно!»</li>
+                        <li>«Сколько стоит заменить смеситель?»</li>
+                        <li>«Вы работаете в моём районе?»</li>
+                        <li>«Можете прийти завтра?»</li>
+                        <li>«Вы лицензированы?»</li>
+                    </ul>
+
+                    <h3>🎬 Сценарий: Аварийный вызов</h3>
+                    <div class="scenario">
+                        <div class="time">⏰ 23:15, мастер дома</div>
+                        <div class="dialog client">👤 «У нас потоп! Батарея лопнула!»</div>
+                        <div class="dialog ai">🤖 AI: «Это аварийная ситуация! Ваш адрес? Я вызову ближайшего мастера. Пока перекройте воду — вентиль обычно у входа в квартиру.»</div>
+                        <div class="dialog client">👤 «ул. Ленина 45, кв. 12. Вода перекрыта.»</div>
+                        <div class="dialog ai">🤖 AI: «Мастер Алексей выедет через 30 минут. Стоимость аварийного вызова — от 5 000 ₽. Точная цена после осмотра.»</div>
+                        <div class="result">✅ Мастер получает звонок + адрес в Telegram. Выезд. Средний чек: 12 000 ₽.</div>
+                    </div>
+
+                    <h3>🎬 Сценарий: Плановый вызов (мастер на объекте)</h3>
+                    <div class="scenario">
+                        <div class="time">⏰ 14:00, мастер меняет проводку</div>
+                        <div class="dialog client">👤 «Сколько стоит заменить розетку?»</div>
+                        <div class="dialog ai">🤖 AI: «Замена розетки — от 800 ₽. Замена автомата — от 1 200 ₽. Полная замена проводки в 1-комн. — от 25 000 ₽. Хотите записаться?»</div>
+                        <div class="dialog client">👤 «Да, нужно 3 розетки заменить.»</div>
+                        <div class="dialog ai">🤖 AI: «Ближайшее окно — завтра 10:00. Стоимость ~2 400 ₽. Подтверждаете?»</div>
+                        <div class="result">✅ Запись без участия мастера. Мастер получает заявку в Telegram.</div>
+                    </div>
+
+                    <h3>💻 ПО и интеграции</h3>
+                    <div class="software-tags">
+                        <span class="software-tag">2ГИС</span>
+                        <span class="software-tag">Яндекс.Услуги</span>
+                        <span class="software-tag">Профи.ру</span>
+                        <span class="software-tag">Telegram</span>
+                        <span class="software-tag">Google Calendar</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. САЛОНЫ КРАСОТЫ -->
+            <div class="profession-card" data-tier="tier1" data-category="beauty">
+                <div class="card-header" style="background: linear-gradient(135deg, #E84393, #FD79A8);">
+                    <h2>💇 Салоны красоты / Барбершопы</h2>
+                    <span class="tier">🥇 Tier 1 — Приоритет</span>
+                </div>
+                <div class="card-stats">
+                    <div class="card-stat">
+                        <div class="val">~180 000</div>
+                        <div class="lbl">салонов в РФ</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">2 500 ₽</div>
+                        <div class="lbl">средний чек</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">3-5</div>
+                        <div class="lbl">пропущенных/день</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h3>📞 Типичные звонки</h3>
+                    <ul>
+                        <li>«Есть ли место завтра на стрижку?»</li>
+                        <li>«Сколько стоит окрашивание/маникюр?»</li>
+                        <li>«Можно к конкретному мастеру?»</li>
+                        <li>«Делаете ли балаяж/шатуш?»</li>
+                        <li>«Хочу записаться на маникюр»</li>
+                    </ul>
+
+                    <h3>🎬 Сценарий: Пик в субботу</h3>
+                    <div class="scenario">
+                        <div class="time">⏰ Суббота 13:00, все мастера заняты, администратор на телефоне с клиентом</div>
+                        <div class="dialog client">👤 «Хочу окрашивание завтра.»</div>
+                        <div class="dialog ai">🤖 AI: «Здравствуйте! Салон красоты «Мария». Окрашивание — от 3 500 ₽. На завтра есть окна: 11:00 у мастера Анны, 15:00 у мастера Елены. К кому хотите?»</div>
+                        <div class="dialog client">👤 «К Анне, пожалуйста.»</div>
+                        <div class="dialog ai">🤖 AI: «Записала! Завтра 11:00, Анна, окрашивание. Напоминание придёт в WhatsApp сегодня вечером и завтра за час.»</div>
+                        <div class="result">✅ Клиент записан. No-show снижен на 40% напоминаниями. Выручка: 3 500 ₽.</div>
+                    </div>
+
+                    <h3>🎬 Сценарий: Консультация по услуге</h3>
+                    <div class="scenario">
+                        <div class="time">⏰ 16:00, мастер стрижёт</div>
+                        <div class="dialog client">👤 «Сколько стоит кератиновое выпрямление?»</div>
+                        <div class="dialog ai">🤖 AI: «Кератиновое выпрямление — от 5 000 до 12 000 ₽ в зависимости от длины волос. Процедура занимает 2-3 часа. Эффект 3-6 месяцев. Хотите записаться на консультацию?»</div>
+                        <div class="result">✅ Запись на консультацию. Потенциальная выручка: 8 000 ₽.</div>
+                    </div>
+
+                    <h3>💻 ПО и интеграции</h3>
+                    <div class="software-tags">
+                        <span class="software-tag">YCLIENTS</span>
+                        <span class="software-tag">DIKIDI</span>
+                        <span class="software-tag">Sonline</span>
+                        <span class="software-tag">Telegram</span>
+                        <span class="software-tag">WhatsApp</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. АВТОСЕРВИСЫ -->
+            <div class="profession-card" data-tier="tier1" data-category="services">
+                <div class="card-header" style="background: linear-gradient(135deg, #E17055, #FAB1A0);">
+                    <h2>🚗 Автосервисы / СТО</h2>
+                    <span class="tier">🥇 Tier 1 — Приоритет</span>
+                </div>
+                <div class="card-stats">
+                    <div class="card-stat">
+                        <div class="val">117 500</div>
+                        <div class="lbl">точек в РФ</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">1 трлн ₽</div>
+                        <div class="lbl">рынок 2024</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">40%</div>
+                        <div class="lbl">пропущенных</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h3>📞 Типичные звонки</h3>
+                    <ul>
+                        <li>«Машина не заводится, что делать?»</li>
+                        <li>«Сколько стоит замена тормозных колодок?»</li>
+                        <li>«Вы работаете с [марка авто]?»</li>
+                        <li>«Можно приехать сегодня?»</li>
+                        <li>«Моя машина готова?»</li>
+                    </ul>
+
+                    <h3>🎬 Сценарий: Механик под машиной</h3>
+                    <div class="scenario">
+                        <div class="time">⏰ 10:00, все механики заняты</div>
+                        <div class="dialog client">👤 «У меня стук в подвеске, сколько стоит диагностика?»</div>
+                        <div class="dialog ai">🤖 AI: «Диагностика подвески — 1 500 ₽ (бесплатно при ремонте). Ближайшее окно — сегодня 14:00 или завтра 10:00. Какая марка авто?»</div>
+                        <div class="dialog client">👤 «Toyota Camry, давайте сегодня 14:00.»</div>
+                        <div class="dialog ai">🤖 AI: «Записали! Toyota Camry, сегодня 14:00, диагностика подвески. Адрес: ул. Мира 15. Перезвоним за час.»</div>
+                        <div class="result">✅ Запись без отрыва механиков. Средний чек ремонта: 15 000 ₽.</div>
+                    </div>
+
+                    <h3>🎬 Сценарий: Статус ремонта</h3>
+                    <div class="scenario">
+                        <div class="time">⏰ 16:00, мастер-приёмщик занят</div>
+                        <div class="dialog client">👤 «Моя машина готова? Я оставлял вчера.»</div>
+                        <div class="dialog ai">🤖 AI: «Назовите номер заказа или фамилию?»</div>
+                        <div class="dialog client">👤 «Иванов, ВАЗ-2114.»</div>
+                        <div class="dialog ai">🤖 AI: «Ваш автомобиль — замена ГРМ. Механик ещё работает,预计 готово к 18:00. Забрать можно до 20:00. Стоимость: 12 000 ₽.»</div>
+                        <div class="result">✅ Клиент получил информацию без участия персонала. Экономия 5-10 мин времени.</div>
+                    </div>
+
+                    <h3>💻 ПО и интеграции</h3>
+                    <div class="software-tags">
+                        <span class="software-tag">1С:Автосервис</span>
+                        <span class="software-tag">АвтоДело</span>
+                        <span class="software-tag">Google Calendar</span>
+                        <span class="software-tag">Telegram</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. РИЭЛТОРЫ -->
+            <div class="profession-card" data-tier="tier2" data-category="services">
+                <div class="card-header" style="background: linear-gradient(135deg, #00B894, #55EFC4);">
+                    <h2>🏠 Риэлторы</h2>
+                    <span class="tier">🥈 Tier 2 — Перспективный</span>
+                </div>
+                <div class="card-stats">
+                    <div class="card-stat">
+                        <div class="val">~250 000</div>
+                        <div class="lbl">агентов в РФ</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">150 000 ₽</div>
+                        <div class="lbl">средняя комиссия</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">78%</div>
+                        <div class="lbl">выбирают 1-го ответившего</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h3>📞 Типичные звонки</h3>
+                    <ul>
+                        <li>«Квартира на [улица] ещё доступна?»</li>
+                        <li>«Можно посмотреть завтра?»</li>
+                        <li>«Поможете продать мою квартиру?»</li>
+                        <li>«Работаете с ипотекой?»</li>
+                        <li>«Какая комиссия?»</li>
+                    </ul>
+
+                    <h3>🎬 Сценарий: Покупатель звонит по объявлению</h3>
+                    <div class="scenario">
+                        <div class="time">⏰ 11:00, риэлтор на показе</div>
+                        <div class="dialog client">👤 «Здравствуйте, квартира на ул. Мира 45 ещё доступна?»</div>
+                        <div class="dialog ai">🤖 AI: «Да, квартира доступна! Хотите записаться на просмотр? Есть окна завтра 12:00 или 18:00.»</div>
+                        <div class="dialog client">👤 «Завтра 18:00 удобно.»</div>
+                        <div class="dialog ai">🤖 AI: «Записала! Завтра 18:00, ул. Мира 45, 3-комн., 75 м². Риэлтор перезвонит подтвердить. Ваш телефон?»</div>
+                        <div class="result">✅ Риэлтор получает лид в Telegram. Комиссия при сделке: 150 000 — 300 000 ₽.</div>
+                    </div>
+
+                    <h3>🎬 Сценарий: Продавец хочет оценить квартиру</h3>
+                    <div class="scenario">
+                        <div class="time">⏰ 15:00, риэлтор на сделке</div>
+                        <div class="dialog client">👤 «Хочу продать квартиру, сколько она стоит?»</div>
+                        <div class="dialog ai">🤖 AI: «Помогу с оценкой! Какой адрес, площадь и этаж? Наш риэлтор сделает бесплатный анализ рынка и перезвонит.»</div>
+                        <div class="dialog client">👤 «ул. Ленина 10, 2-комн., 55 м², 5 этаж.»</div>
+                        <div class="dialog ai">🤖 AI: «Приняла. По предварительным данным, аналогичные квартиры в этом районе — 8-10 млн ₽. Риэлтор перезвонит с точной оценкой сегодня до 19:00.»</div>
+                        <div class="result">✅ Лид на продажу. Потенциальная комиссия: 200 000 — 400 000 ₽.</div>
+                    </div>
+
+                    <h3>💻 ПО и интеграции</h3>
+                    <div class="software-tags">
+                        <span class="software-tag">Циан</span>
+                        <span class="software-tag">Авито</span>
+                        <span class="software-tag">Яндекс.Недвижимость</span>
+                        <span class="software-tag">Telegram</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. БУХГАЛТЕРЫ -->
+            <div class="profession-card" data-tier="tier2" data-category="services">
+                <div class="card-header" style="background: linear-gradient(135deg, #636E72, #B2BEC3);">
+                    <h2>📊 Бухгалтеры / Налоговые</h2>
+                    <span class="tier">🥈 Tier 2 — Перспективный</span>
+                </div>
+                <div class="card-stats">
+                    <div class="card-stat">
+                        <div class="val">~200 000</div>
+                        <div class="lbl">ИП и компаний</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">15 000 ₽</div>
+                        <div class="lbl">абонентская плата/мес</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">40%</div>
+                        <div class="lbl">пропусков в сезон</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h3>📞 Типичные звонки</h3>
+                    <ul>
+                        <li>«Сколько стоит ведение ИП на УСН?»</li>
+                        <li>«Поможете сдать декларацию?»</li>
+                        <li>«Мне нужна консультация по налогам»</li>
+                        <li>«Вы работаете с ООО?»</li>
+                        <li>«Срочно! Налоговая прислала требование»</li>
+                    </ul>
+
+                    <h3>🎬 Сценарий: Сезон налогов (январь-апрель)</h3>
+                    <div class="scenario">
+                        <div class="time">⏰ 10:00, бухгалтер сдаёт отчётность</div>
+                        <div class="dialog client">👤 «Мне нужно сдать нулевую отчётность за ИП.»</div>
+                        <div class="dialog ai">🤖 AI: «Нулевая отчётность для ИП — 3 000 ₽. Срок: 1-2 рабочих дня. Вам нужно: ИНН, ОГРНИП. Хотите оформить заявку?»</div>
+                        <div class="dialog client">👤 «Да, давайте.»</div>
+                        <div class="dialog ai">🤖 AI: «Оставьте телефон, бухгалтер перезвонит для уточнения деталей. Или можете прислать документы в WhatsApp.»</div>
+                        <div class="result">✅ Заявка оформлена. Бухгалтер обрабатывает в перерыве. Выручка: 3 000 ₽.</div>
+                    </div>
+
+                    <h3>🎬 Сценарий: Срочное требование налоговой</h3>
+                    <div class="scenario">
+                        <div class="time">⏰ 16:00, бухгалтер на совещании</div>
+                        <div class="dialog client">👤 «Мне пришло требование от налоговой, нужно срочно ответить!»</div>
+                        <div class="dialog ai">🤖 AI: «Понимаю, это важно. Какой срок ответа указан в требовании? Пришлите фото документа в WhatsApp — бухгалтер подготовит ответ.»</div>
+                        <div class="result">✅ URGENT notification бухгалтеру. Срок не пропущен. Штраф предотвращён.</div>
+                    </div>
+
+                    <h3>💻 ПО и интеграции</h3>
+                    <div class="software-tags">
+                        <span class="software-tag">1С:Бухгалтерия</span>
+                        <span class="software-tag">Контур</span>
+                        <span class="software-tag">СБИС</span>
+                        <span class="software-tag">Telegram</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. ВЕТКЛИНИКИ -->
+            <div class="profession-card" data-tier="tier2" data-category="medical">
+                <div class="card-header" style="background: linear-gradient(135deg, #00CEC9, #81ECEC);">
+                    <h2>🐾 Ветклиники</h2>
+                    <span class="tier">🥈 Tier 2 — Перспективный</span>
+                </div>
+                <div class="card-stats">
+                    <div class="card-stat">
+                        <div class="val">~15 000</div>
+                        <div class="lbl">клиник в РФ</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">3 000 ₽</div>
+                        <div class="lbl">средний чек</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">25%</div>
+                        <div class="lbl">пропущенных</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h3>📞 Типичные звонки</h3>
+                    <ul>
+                        <li>«Кот не ест второй день, что делать?»</li>
+                        <li>«Сколько стоит вакцинация?»</li>
+                        <li>«Принимаете ли вы экзотических животных?»</li>
+                        <li>«Нужна экстренная помощь!»</li>
+                        <li>«Хочу записаться на стерилизацию»</li>
+                    </ul>
+
+                    <h3>🎬 Сценарий: Экстренный вызов</h3>
+                    <div class="scenario">
+                        <div class="time">⏰ 22:00, клиника закрыта</div>
+                        <div class="dialog client">👤 «Мой кот упал с балкона, он дышит тяжело!»</div>
+                        <div class="dialog ai">🤖 AI: «Это экстренная ситуация! Ближайшая круглосуточная клиника: [адрес, телефон]. Езжайте немедленно! Не перемещайте кота без осторожности.»</div>
+                        <div class="result">✅ Клиент получил помощь. Утром клиника получает запись о случае для follow-up.</div>
+                    </div>
+
+                    <h3>🎬 Сценарий: Плановая запись</h3>
+                    <div class="scenario">
+                        <div class="time">⏰ 11:00, ветеринар на приёме</div>
+                        <div class="dialog client">👤 «Хочу записать собаку на вакцинацию.»</div>
+                        <div class="dialog ai">🤖 AI: «Вакцинация собаки — от 2 500 ₽ (комплексная). Ближайшие окна: среда 10:00, четверг 15:00. Какая порода и возраст?»</div>
+                        <div class="dialog client">👤 «Лабрадор, 2 года.»</div>
+                        <div class="dialog ai">🤖 AI: «Записала! Среда 10:00, вакцинация лабрадора. Не кормите за 2 часа до приёма.»</div>
+                        <div class="result">✅ Запись. Напоминание за 24ч. Выручка: 2 500 ₽.</div>
+                    </div>
+
+                    <h3>💻 ПО и интеграции</h3>
+                    <div class="software-tags">
+                        <span class="software-tag">VetManager</span>
+                        <span class="software-tag">ЗооКлиника</span>
+                        <span class="software-tag">Telegram</span>
+                        <span class="software-tag">WhatsApp</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9. ПСИХОЛОГИ -->
+            <div class="profession-card" data-tier="tier2" data-category="medical">
+                <div class="card-header" style="background: linear-gradient(135deg, #A29BFE, #DDA0DD);">
+                    <h2>🧠 Психологи / Психотерапевты</h2>
+                    <span class="tier">🥈 Tier 2 — Перспективный</span>
+                </div>
+                <div class="card-stats">
+                    <div class="card-stat">
+                        <div class="val">~50 000</div>
+                        <div class="lbl">практикующих</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">3 500 ₽</div>
+                        <div class="lbl">средний чек/сессия</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">30%</div>
+                        <div class="lbl">пропущенных</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h3>📞 Типичные звонки</h3>
+                    <ul>
+                        <li>«Вы работаете с тревожностью?»</li>
+                        <li>«Сколько стоит сессия?»</li>
+                        <li>«Принимаете ли онлайн?»</li>
+                        <li>«Мне нужна срочная помощь»</li>
+                        <li>«Вы работаете с парами?»</li>
+                    </ul>
+
+                    <h3>🎬 Сценарий: Первый звонок (тревожный клиент)</h3>
+                    <div class="scenario">
+                        <div class="time">⏰ 14:00, психолог на сессии</div>
+                        <div class="dialog client">👤 «Здравствуйте, я... мне нужна помощь. У меня панические атаки.»</div>
+                        <div class="dialog ai">🤖 AI: «Здравствуйте. Спасибо, что позвонили. Психолог сейчас на сессии, но я помогу. Панические атаки — это то, с чем мы работаем. Хотите записаться на первую консультацию?»</div>
+                        <div class="dialog client">👤 «Да, пожалуйста. Мне бы онлайн.»</div>
+                        <div class="dialog ai">🤖 AI: «Онлайн-сессии — 3 500 ₽/50 мин. Ближайшие окна: вторник 11:00, среда 16:00. Как вам?»</div>
+                        <div class="dialog client">👤 «Вторник 11:00.»</div>
+                        <div class="result">✅ Запись. Тихий, спокойный тон. Клиент чувствует себя услышанным.</div>
+                    </div>
+
+                    <h3>🎬 Сценарий: Кризисный звонок</h3>
+                    <div class="scenario">
+                        <div class="time">⏰ 21:00, после часов</div>
+                        <div class="dialog client">👤 «Мне очень плохо, я не справляюсь...»</div>
+                        <div class="dialog ai">🤖 AI: «Мне жаль, что вам тяжело. Телефон доверия: 8-800-2000-122 (бесплатно, 24/7). Психолог перезвонит завтра утром. Вы не одни.»</div>
+                        <div class="result">✅ Клиент получил экстренный контакт. Психолог получает notification для follow-up.</div>
+                    </div>
+
+                    <h3>💻 ПО и интеграции</h3>
+                    <div class="software-tags">
+                        <span class="software-tag">Zigmund.Online</span>
+                        <span class="software-tag">Ясно</span>
+                        <span class="software-tag">Google Calendar</span>
+                        <span class="software-tag">Telegram</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 10. РЕПЕТИТОРЫ -->
+            <div class="profession-card" data-tier="tier2" data-category="services">
+                <div class="card-header" style="background: linear-gradient(135deg, #FDCB6E, #F39C12);">
+                    <h2>📚 Репетиторы / Образование</h2>
+                    <span class="tier">🥈 Tier 2 — Перспективный</span>
+                </div>
+                <div class="card-stats">
+                    <div class="card-stat">
+                        <div class="val">~100 000</div>
+                        <div class="lbl">центров и ИП</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">1 500 ₽</div>
+                        <div class="lbl">средний чек/занятие</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">30%</div>
+                        <div class="lbl">пропущенных</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h3>📞 Типичные звонки</h3>
+                    <ul>
+                        <li>«Готовите ли к ЕГЭ по математике?»</li>
+                        <li>«Сколько стоит занятие?»</li>
+                        <li>«Есть ли групповые занятия?»</li>
+                        <li>«Можно ли пробный урок?»</li>
+                        <li>«Вы работаете с дошкольниками?»</li>
+                    </ul>
+
+                    <h3>🎬 Сценарий: Родитель звонит во время занятия</h3>
+                    <div class="scenario">
+                        <div class="time">⏰ 17:00, репетитор ведёт урок</div>
+                        <div class="dialog client">👤 «Здравствуйте, хочу записать сына на ЕГЭ по математике.»</div>
+                        <div class="dialog ai">🤖 AI: «Подготовка к ЕГЭ по математике — 1 500 ₽/занятие (90 мин). Курс: 36 занятий, 2 раза в неделю. Пробный урок — бесплатно. Когда удобно начать?»</div>
+                        <div class="dialog client">👤 «Можно пробное на следующей неделе?»</div>
+                        <div class="dialog ai">🤖 AI: «Понедельник 16:00 или среда 17:00. Какой день удобнее?»</div>
+                        <div class="result">✅ Пробный урок записан. Конверсия в оплату: ~60%. LTV: 54 000 ₽.</div>
+                    </div>
+
+                    <h3>🎬 Сценарий: Сезон записи (август-сентябрь)</h3>
+                    <div class="scenario">
+                        <div class="time">⏰ Август, 150+ звонков/неделю</div>
+                        <div class="dialog ai">🤖 AI: «Здравствуйте! Центр «Знание». Набор на 2025/2026 открыт. Какие предметы интересуют?»</div>
+                        <div class="dialog client">👤 «Английский для дочки, 3 класс.»</div>
+                        <div class="dialog ai">🤖 AI: «Английский для 3 класса — 1 200 ₽/занятие (60 мин). Группы до 4 человек. Пн/Ср 15:00 или Вт/Чт 16:00.»</div>
+                        <div class="result">✅ AI обрабатывает пиковую нагрузку без доп. персонала.</div>
+                    </div>
+
+                    <h3>💻 ПО и интеграции</h3>
+                    <div class="software-tags">
+                        <span class="software-tag">GetCourse</span>
+                        <span class="software-tag">Google Calendar</span>
+                        <span class="software-tag">Telegram</span>
+                        <span class="software-tag">WhatsApp</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 11. ФОТОГРАФЫ -->
+            <div class="profession-card" data-tier="tier3" data-category="services">
+                <div class="card-header" style="background: linear-gradient(135deg, #FD79A8, #E84393);">
+                    <h2>📸 Фотографы</h2>
+                    <span class="tier">🥉 Tier 3 — Перспективный</span>
+                </div>
+                <div class="card-stats">
+                    <div class="card-stat">
+                        <div class="val">~200 000</div>
+                        <div class="lbl">фотографов в РФ</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">15 000 ₽</div>
+                        <div class="lbl">средний чек</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">40%</div>
+                        <div class="lbl">пропущенных на съёмках</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h3>📞 Типичные звонки</h3>
+                    <ul>
+                        <li>«Сколько стоит свадебная съёмка?»</li>
+                        <li>«Вы свободны [дата]?»</li>
+                        <li>«Можно посмотреть портфолио?»</li>
+                        <li>«Сколько фото получите?»</li>
+                        <li>«Когда будут готовы фото?»</li>
+                    </ul>
+
+                    <h3>🎬 Сценарий: Свадебный запрос</h3>
+                    <div class="scenario">
+                        <div class="time">⏰ 13:00, фотограф на съёмке</div>
+                        <div class="dialog client">👤 «Сколько стоит свадебная съёмка?»</div>
+                        <div class="dialog ai">🤖 AI: «Свадебная съёмка — от 30 000 ₽ (4 часа), от 50 000 ₽ (полный день). Включает: 300+ фото, обработка, флешка. Какая дата свадьбы?»</div>
+                        <div class="dialog client">👤 «15 июня.»</div>
+                        <div class="dialog ai">🤖 AI: «15 июня свободно! Хотите забронировать? Предоплата 30%. Фотограф перезвонит обсудить детали.»</div>
+                        <div class="result">✅ Бронь. Потенциальная выручка: 50 000 ₽.</div>
+                    </div>
+
+                    <h3>💻 ПО и интеграции</h3>
+                    <div class="software-tags">
+                        <span class="software-tag">Google Calendar</span>
+                        <span class="software-tag">Telegram</span>
+                        <span class="software-tag">Instagram</span>
+                        <span class="software-tag">VK</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 12. ФИТНЕС-ТРЕНЕРЫ -->
+            <div class="profession-card" data-tier="tier3" data-category="services">
+                <div class="card-header" style="background: linear-gradient(135deg, #FF6348, #FF4757);">
+                    <h2>💪 Фитнес-тренеры / Студии</h2>
+                    <span class="tier">🥉 Tier 3 — Перспективный</span>
+                </div>
+                <div class="card-stats">
+                    <div class="card-stat">
+                        <div class="val">~70 000</div>
+                        <div class="lbl">студий и залов</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">2 000 ₽</div>
+                        <div class="lbl">среднее занятие</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">33%</div>
+                        <div class="lbl">пропущенных</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h3>📞 Типичные звонки</h3>
+                    <ul>
+                        <li>«Есть ли место на групповое занятие?»</li>
+                        <li>«Сколько стоит персональная тренировка?»</li>
+                        <li>«Можно ли на пробное занятие?»</li>
+                        <li>«Какие у вас часы работы?»</li>
+                        <li>«Есть ли парковка?»</li>
+                    </ul>
+
+                    <h3>🎬 Сценарий: Тренер ведёт тренировку</h3>
+                    <div class="scenario">
+                        <div class="time">⏰ 18:00, вечерний пик</div>
+                        <div class="dialog client">👤 «Хочу записаться на персональную тренировку.»</div>
+                        <div class="dialog ai">🤖 AI: «Персональная тренировка — 2 000 ₽/час. Пробное — 1 000 ₽. Ближайшие окна: завтра 10:00, 14:00, 19:00.»</div>
+                        <div class="dialog client">👤 «Завтра 19:00.»</div>
+                        <div class="dialog ai">🤖 AI: «Записала! Завтра 19:00, пробная тренировка. Возьмите спортивную форму и воду.»</div>
+                        <div class="result">✅ Запись. LTV клиента: 48 000 ₽/год (2 раза в неделю).</div>
+                    </div>
+
+                    <h3>💻 ПО и интеграции</h3>
+                    <div class="software-tags">
+                        <span class="software-tag">YCLIENTS</span>
+                        <span class="software-tag">DIKIDI</span>
+                        <span class="software-tag">Telegram</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 13. РЕСТОРАНЫ -->
+            <div class="profession-card" data-tier="tier3" data-category="services">
+                <div class="card-header" style="background: linear-gradient(135deg, #E55039, #EB2F06);">
+                    <h2>🍽️ Рестораны / Кафе</h2>
+                    <span class="tier">🥉 Tier 3 — Перспективный</span>
+                </div>
+                <div class="card-stats">
+                    <div class="card-stat">
+                        <div class="val">~300 000</div>
+                        <div class="lbl">заведений</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">1 500 ₽</div>
+                        <div class="lbl">средний чек</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">25%</div>
+                        <div class="lbl">пропущенных в пик</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h3>📞 Типичные звонки</h3>
+                    <ul>
+                        <li>«Есть ли столик на двоих сегодня?»</li>
+                        <li>«Принимаете ли банкеты?»</li>
+                        <li>«Есть ли детское меню?»</li>
+                        <li>«До скольки вы работаете?»</li>
+                        <li>«Можно ли заказать доставку?»</li>
+                    </ul>
+
+                    <h3>🎬 Сценарий: Пятничный вечер</h3>
+                    <div class="scenario">
+                        <div class="time">⏰ Пятница 19:00, хостес занята</div>
+                        <div class="dialog client">👤 «Хочу забронировать столик на двоих, сегодня 20:00.»</div>
+                        <div class="dialog ai">🤖 AI: «Здравствуйте! Ресторан «Вкус». На сегодня 20:00 есть столик у окна или в зале. Где предпочитаете?»</div>
+                        <div class="dialog client">👤 «У окна, пожалуйста.»</div>
+                        <div class="dialog ai">🤖 AI: «Забронировано! Столик у окна, 20:00, 2 персоны. Ждём вас! Если планы изменятся, позвоните.»</div>
+                        <div class="result">✅ Бронь. Средний чек: 3 000 ₽ (2 персоны). AI сокращает пропуски до 0%.</div>
+                    </div>
+
+                    <h3>💻 ПО и интеграции</h3>
+                    <div class="software-tags">
+                        <span class="software-tag">iiko</span>
+                        <span class="software-tag">r_keeper</span>
+                        <span class="software-tag">Telegram</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 14. СТРАХОВЫЕ АГЕНТЫ -->
+            <div class="profession-card" data-tier="tier3" data-category="services">
+                <div class="card-header" style="background: linear-gradient(135deg, #3742FA, #5352ED);">
+                    <h2>🛡️ Страховые агенты</h2>
+                    <span class="tier">🥉 Tier 3 — Перспективный</span>
+                </div>
+                <div class="card-stats">
+                    <div class="card-stat">
+                        <div class="val">~300 000</div>
+                        <div class="lbl">агентов в РФ</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">10 000 ₽</div>
+                        <div class="lbl">средняя комиссия/год</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">35%</div>
+                        <div class="lbl">пропущенных</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h3>📞 Типичные звонки</h3>
+                    <ul>
+                        <li>«Хочу застраховать авто/квартиру»</li>
+                        <li>«Мой полис истекает, какие варианты?»</li>
+                        <li>«Как оформить страховой случай?»</li>
+                        <li>«Сколько стоит ОСАГО?»</li>
+                        <li>«Можно ли добавить водителя?»</li>
+                    </ul>
+
+                    <h3>🎬 Сценарий: Оформление ОСАГО</h3>
+                    <div class="scenario">
+                        <div class="time">⏰ 14:00, агент на встрече</div>
+                        <div class="dialog client">👤 «Хочу оформить ОСАГО.»</div>
+                        <div class="dialog ai">🤖 AI: «ОСАГО — от 5 000 ₽ (зависит от региона и стажа). Нужны: ПТС, водительские удостоверения всех водителей. Хотите рассчитать стоимость?»</div>
+                        <div class="dialog client">👤 «Да, Toyota Camry 2020, стаж 10 лет.»</div>
+                        <div class="dialog ai">🤖 AI: «Предварительная стоимость: ~8 500 ₽. Агент перезвонит для точного расчёта и оформления. Ваш телефон?»</div>
+                        <div class="result">✅ Лид квалифицирован. Комиссия агента: ~1 500 ₽.</div>
+                    </div>
+
+                    <h3>💻 ПО и интеграции</h3>
+                    <div class="software-tags">
+                        <span class="software-tag">1С:Страхование</span>
+                        <span class="software-tag">Telegram</span>
+                        <span class="software-tag">WhatsApp</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 15. МЕДИЦИНСКИЕ ЦЕНТРЫ -->
+            <div class="profession-card" data-tier="tier1" data-category="medical">
+                <div class="card-header" style="background: linear-gradient(135deg, #00B894, #00CEC9);">
+                    <h2>🏥 Медицинские центры</h2>
+                    <span class="tier">🥇 Tier 1 — Приоритет</span>
+                </div>
+                <div class="card-stats">
+                    <div class="card-stat">
+                        <div class="val">~25 000</div>
+                        <div class="lbl">частных клиник</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">5 000 ₽</div>
+                        <div class="lbl">средний чек</div>
+                    </div>
+                    <div class="card-stat">
+                        <div class="val">30%</div>
+                        <div class="lbl">пропущенных</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h3>📞 Типичные звонки</h3>
+                    <ul>
+                        <li>«Принимаете ли вы новых пациентов?»</li>
+                        <li>«Сколько стоит приём терапевта/узкого специалиста?»</li>
+                        <li>«Можно ли сдать анализы без записи?»</li>
+                        <li>«Принимаете ли мою страховку ДМС?»</li>
+                        <li>«Есть ли врач [специальность]?»</li>
+                    </ul>
+
+                    <h3>🎬 Сценарий: Запись к узкому специалисту</h3>
+                    <div class="scenario">
+                        <div class="time">⏰ 10:00, администратор на телефоне</div>
+                        <div class="dialog client">👤 «Хочу записаться к кардиологу.»</div>
+                        <div class="dialog ai">🤖 AI: «Кардиолог принимает: вторник 9:00, четверг 14:00, пятница 11:00. Приём — 3 500 ₽. Это первый визит или повторный?»</div>
+                        <div class="dialog client">👤 «Первый. Есть направление от терапевта.»</div>
+                        <div class="dialog ai">🤖 AI: «Записала! Вторник 9:00, кардиолог. Возьмите направление, паспорт и полис ДМС (если есть).»</div>
+                        <div class="result">✅ Запись. Напоминание за 24ч. Выручка: 3 500 ₽ + возможные анализы.</div>
+                    </div>
+
+                    <h3>💻 ПО и интеграции</h3>
+                    <div class="software-tags">
+                        <span class="software-tag">InfoBox</span>
+                        <span class="software-tag">Medsi</span>
+                        <span class="software-tag">1С:Медицина</span>
+                        <span class="software-tag">Telegram</span>
+                    </div>
+
+                    <h3>⚖️ Регуляторика</h3>
+                    <ul>
+                        <li>152-ФЗ о персональных данных</li>
+                        <li>Лицензия на мед. деятельность</li>
+                        <li>Врачебная тайна</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="sources-section">
+            <h2>📋 Опрос для валидации цены</h2>
+            <p style="color: var(--gray); margin-bottom: 20px;">Вопросы для интервью с представителями профессий, чтобы понять реальную готовность платить</p>
+
+            <div style="background: var(--light); padding: 25px; border-radius: var(--radius-sm); margin-bottom: 20px;">
+                <h3 style="margin-bottom: 15px;">🎯 Основные вопросы</h3>
+                <ol style="padding-left: 20px; line-height: 2;">
+                    <li>Сколько входящих звонков вы пропускаете в день?</li>
+                    <li>Сколько клиентов, по вашим оценкам, вы теряете из-за пропущенных?</li>
+                    <li>Какой средний чек у вашего клиента?</li>
+                    <li>Сколько вы теряете в месяц из-за пропущенных звонков (примерно)?</li>
+                    <li>Если бы сервис спасал 30% пропущенных — сколько бы вы готовы были платить в месяц?</li>
+                    <li>Что для вас важнее: запись клиентов, ответы на вопросы или экстренные вызовы?</li>
+                    <li>Как вы сейчас обрабатываете пропущенные звонки?</li>
+                    <li>Беспокоит ли вас, что звонки обрабатывает AI, а не человек?</li>
+                    <li>Какие интеграции вам критичны (календарь, CRM, мессенджеры)?</li>
+                    <li>Готовы ли вы платить за каждый обработанный звонок отдельно?</li>
+                </ol>
+            </div>
+
+            <div style="background: linear-gradient(135deg, #f8f9fa, #e9ecef); padding: 25px; border-radius: var(--radius-sm); border-left: 4px solid var(--accent);">
+                <h3 style="margin-bottom: 15px;">💡 Где проводить опрос</h3>
+                <ul style="padding-left: 20px; line-height: 2;">
+                    <li><strong>Telegram-чаты</strong> предпринимателей по отраслям</li>
+                    <li><strong>Профильные сообщества</strong> (стоматологи, юристы, автосервисы)</li>
+                    <li><strong>Личные интервью</strong> — 10-15 представителей каждой профессии</li>
+                    <li><strong>Google Forms / Typeform</strong> — для массового опроса</li>
+                    <li><strong>2ГИС отзывы</strong> — найти бизнесы с жалобами на пропущенные</li>
+                    <li><strong>Авито / Профи.ру</strong> — связаться с исполнителями напрямую</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="sources-section">
+            <h2>📚 Источники и исследования</h2>
+            <div class="sources-grid">
+
+                <a href="https://www.economy.gov.ru/material/news/chislennost_malyh_isrednih_predpriyatiy_vrossii_obnovila_rekord_iprevysila_67_mln.html" target="_blank" class="source-item">
+                    <span class="icon">🏛️</span>
+                    <div class="info">
+                        <div class="title">Минэкономразвития РФ</div>
+                        <div class="desc">Численность МСБ превысила 6.7 млн — рекордный показатель Q1 2025</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+
+                <a href="https://blog.skgroups.ru/statistika-malogo-biznesa-v-rossii-v-2025-godu/" target="_blank" class="source-item">
+                    <span class="icon">📊</span>
+                    <div class="info">
+                        <div class="title">Статистика МСБ 2025</div>
+                        <div class="desc">6.59 млн предприятий — 81% всех юрлиц и ИП в России</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+
+                <a href="https://tech.megafon.ru/information/vas-zvonok-ocen-vazen-dlia-nas-kak-ne-teriat-budushhix-klientov" target="_blank" class="source-item">
+                    <span class="icon">📱</span>
+                    <div class="info">
+                        <div class="title">МегаФон — Пропущенные звонки</div>
+                        <div class="desc">34% звонков пропущено — статистика 13 тыс. компаний МСБ</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+
+                <a href="https://rb.ru/news/oborot-stomat-chastnoj/" target="_blank" class="source-item">
+                    <span class="icon">🦷</span>
+                    <div class="info">
+                        <div class="title">Рынок стоматологии 2024</div>
+                        <div class="desc">Оборот частных стоматологий вырос на 15.4% до 717 млрд ₽</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+
+                <a href="https://tadviser.com/index.php/Article:The_largest_clinics_in_Russia" target="_blank" class="source-item">
+                    <span class="icon">🏥</span>
+                    <div class="info">
+                        <div class="title">TAdviser — Крупнейшие клиники</div>
+                        <div class="desc">Топ-20 частных медкомпаний: выручка 287 млрд ₽ (+16.7%)</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+
+                <a href="https://fparf.ru/practical-information/statistics/svedeniya-o-sostave-advokatskogo-soobshchestva-v-rossiyskoy-federatsii-za-2024-god/" target="_blank" class="source-item">
+                    <span class="icon">⚖️</span>
+                    <div class="info">
+                        <div class="title">ФПА — Адвокатское сообщество</div>
+                        <div class="desc">84 351 адвокат в РФ на январь 2025</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+
+                <a href="https://www.tadviser.ru/index.php/Статья:Юридические_услуги_(рынок_России)" target="_blank" class="source-item">
+                    <span class="icon">📋</span>
+                    <div class="info">
+                        <div class="title">TAdviser — Юридические услуги</div>
+                        <div class="desc">Обзор рынка юридических услуг в России</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+
+                <a href="https://m.autostat.ru/infographics/59270/" target="_blank" class="source-item">
+                    <span class="icon">🚗</span>
+                    <div class="info">
+                        <div class="title">Автостат — Точки автосервиса</div>
+                        <div class="desc">117.5 тыс. точек автосервиса в России</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+
+                <a href="https://m.autostat.ru/infographics/59238/" target="_blank" class="source-item">
+                    <span class="icon">🔧</span>
+                    <div class="info">
+                        <div class="title">Автостат — Ёмкость рынка</div>
+                        <div class="desc">Рынок автосервиса: 1 трлн рублей в 2024</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+
+                <a href="https://tadviser.com/index.php/Article:Beauty_salons_in_Russia" target="_blank" class="source-item">
+                    <span class="icon">💇</span>
+                    <div class="info">
+                        <div class="title">TAdviser — Салоны красоты</div>
+                        <div class="desc">8 448 салонов в Москве (дек 2025), рынок красоты</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+
+                <a href="https://www.forbes.ru/biznes/493564-den-gi-na-borode-pocemu-barbersopov-otkryvaetsa-bol-se-cem-salonov-krasoty" target="_blank" class="source-item">
+                    <span class="icon">💈</span>
+                    <div class="info">
+                        <div class="title">Forbes — Барбершопы в РФ</div>
+                        <div class="desc">Рост барбершопов на 97% за 4 года (2ГИС)</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+
+                <a href="https://russia.gorodrabot.ru/salaries/resepshionist?y=2024" target="_blank" class="source-item">
+                    <span class="icon">💰</span>
+                    <div class="info">
+                        <div class="title">ГородРабот — Зарплата ресепшиониста</div>
+                        <div class="desc">Средняя зарплата: 68 174 ₽/мес (2024)</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+
+                <a href="https://m.seonews.ru/blogs/demis-group/chat-boty-i-virtualnye-assistenty-marketingovyy-proryv-2025-goda/" target="_blank" class="source-item">
+                    <span class="icon">🤖</span>
+                    <div class="info">
+                        <div class="title">SEOnews — Чат-боты и AI</div>
+                        <div class="desc">Рынок чат-ботов в РФ: 5 млрд ₽ к 2025 (Just AI)</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+
+                <a href="https://tadviser.com/index.php/Article:Artificial_Intelligence_(Russian_market)" target="_blank" class="source-item">
+                    <span class="icon">🧠</span>
+                    <div class="info">
+                        <div class="title">TAdviser — AI в России</div>
+                        <div class="desc">Обзор рынка искусственного интеллекта в РФ 2025</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+
+                <a href="https://www.it-world.ru/it-news/l2r7k8oxoao4wwc44skggg4k800osck.html" target="_blank" class="source-item">
+                    <span class="icon">📈</span>
+                    <div class="info">
+                        <div class="title">IT World — Цифровые сотрудники</div>
+                        <div class="desc">Рынок AI-агентов: $9.8 млрд → $220.9 млрд к 2035 (CAGR 36.5%)</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+
+                <a href="https://biz360.ru/materials/rezat-kosty-ne-variant-kak-malomu-biznesu-perezhit-slozhnye-ekonomicheskie-vremena/" target="_blank" class="source-item">
+                    <span class="icon">💼</span>
+                    <div class="info">
+                        <div class="title">Бизнес.Журнал — МСБ 2025</div>
+                        <div class="desc">Как малому бизнесу пережить сложные экономические времена</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+
+                <a href="https://tenchat.ru/media/3876073-propuschennyye-zvonki-v-restorane--poterya-vyruchki" target="_blank" class="source-item">
+                    <span class="icon">🍽️</span>
+                    <div class="info">
+                        <div class="title">TenChat — Пропуски в ресторанах</div>
+                        <div class="desc">AI сокращает пропущенные звонки до 0%, конверсия +55%</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+
+                <a href="https://oooibrs.ru/vsp/novosti-vsp/04022026polovinarossiiskihchastnyhstomatologiinelegalnychtodelatpotrebitelyu/" target="_blank" class="source-item">
+                    <span class="icon">⚠️</span>
+                    <div class="info">
+                        <div class="title">Частные стоматологии — нелегалы</div>
+                        <div class="desc">Половина частных стоматологий работают нелегально</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+
+                <a href="https://legalacademy.ru/sphere/post/100-tysyach-zaschitnikov-minyust-predlozhil-uvelichit-chislo-advokatov" target="_blank" class="source-item">
+                    <span class="icon">🎓</span>
+                    <div class="info">
+                        <div class="title">Минюст — Число адвокатов</div>
+                        <div class="desc">Предложение увеличить число адвокатов до 100 000</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+
+                <a href="https://dreamjob.ru/salary/sekretar/city-moskva" target="_blank" class="source-item">
+                    <span class="icon">💵</span>
+                    <div class="info">
+                        <div class="title">DreamJob — Зарплата секретаря</div>
+                        <div class="desc">Средняя зарплата секретаря: 74 000 ₽ (Москва)</div>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+
+            </div>
+        </div>
+
+        <footer>
+            <p>📊 Данные: Росстат, МегаФон, TAdviser, 2ГИС, Автостат, ГородРабот, Forbes, Just AI — 2024-2025</p>
+            <p>🤖 AI-Ассистент для МСБ — Исследование рынка</p>
+            <p style="margin-top: 10px; font-size: 0.85em;">
+                <a href="index.html" style="color: rgba(255,255,255,0.7); margin: 0 8px;">Продукт</a> •
+                <a href="scenarios.html" style="color: rgba(255,255,255,0.7); margin: 0 8px;">Сценарии</a> •
+                <a href="economics.html" style="color: rgba(255,255,255,0.7); margin: 0 8px;">Экономика</a>
+            </p>
+            <p style="margin-top: 10px; font-size: 0.85em;">
+                <a href="https://www.economy.gov.ru" target="_blank" style="color: rgba(255,255,255,0.7); margin: 0 8px;">Минэкономразвития</a> •
+                <a href="https://tadviser.com" target="_blank" style="color: rgba(255,255,255,0.7); margin: 0 8px;">TAdviser</a> •
+                <a href="https://m.autostat.ru" target="_blank" style="color: rgba(255,255,255,0.7); margin: 0 8px;">Автостат</a> •
+                <a href="https://russia.gorodrabot.ru" target="_blank" style="color: rgba(255,255,255,0.7); margin: 0 8px;">ГородРабот</a> •
+                <a href="https://tech.megafon.ru" target="_blank" style="color: rgba(255,255,255,0.7); margin: 0 8px;">МегаФон Tech</a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        function filterCards(filter) {
+            const cards = document.querySelectorAll('.profession-card');
+            const buttons = document.querySelectorAll('.filter-btn');
+
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            cards.forEach(card => {
+                if (filter === 'all') {
+                    card.style.display = 'block';
+                } else if (filter === 'tier1' || filter === 'tier2' || filter === 'tier3') {
+                    card.style.display = card.dataset.tier === filter ? 'block' : 'none';
+                } else if (filter === 'medical' || filter === 'services' || filter === 'beauty') {
+                    card.style.display = card.dataset.category === filter ? 'block' : 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
