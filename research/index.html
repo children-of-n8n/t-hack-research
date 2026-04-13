@@ -9,569 +9,64 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: #fafafa;
-            color: #1a1a1a;
-            line-height: 1.7;
-        }
-
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #fafafa; color: #1a1a1a; line-height: 1.7; }
         .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
-
-        /* NAV */
-        nav {
-            background: #fff;
-            border-bottom: 1px solid #e5e5e5;
-            padding: 16px 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        nav .container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        nav .logo {
-            font-weight: 700;
-            font-size: 1.1em;
-            color: #1a1a1a;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
+        nav { background: #fff; border-bottom: 1px solid #e5e5e5; padding: 16px 0; position: sticky; top: 0; z-index: 100; }
+        nav .container { display: flex; justify-content: space-between; align-items: center; }
+        nav .logo { font-weight: 700; font-size: 1.1em; color: #1a1a1a; text-decoration: none; display: flex; align-items: center; gap: 8px; }
         nav .links { display: flex; gap: 24px; }
-
-        nav .links a {
-            text-decoration: none;
-            color: #666;
-            font-size: 0.9em;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-
+        nav .links a { text-decoration: none; color: #666; font-size: 0.9em; font-weight: 500; transition: color 0.2s; }
         nav .links a:hover, nav .links a.active { color: #1a1a1a; }
 
-        /* HERO */
-        .hero {
-            padding: 80px 0 60px;
-            border-bottom: 1px solid #e5e5e5;
-            background: #fff;
-            position: relative;
-            overflow: hidden;
-        }
+        .jury-badge { display: inline-flex; align-items: center; gap: 6px; background: #1a1a1a; color: #fff; padding: 4px 12px; border-radius: 6px; font-size: 0.8em; font-weight: 600; margin-bottom: 16px; }
 
-        .hero .container {
-            display: grid;
-            grid-template-columns: 1fr 300px;
-            gap: 40px;
-            align-items: center;
-        }
+        .hero { padding: 80px 0 60px; border-bottom: 1px solid #e5e5e5; background: #fff; }
+        .hero h1 { font-size: 2.2em; font-weight: 800; margin-bottom: 12px; letter-spacing: -0.02em; line-height: 1.2; }
+        .hero .subtitle { font-size: 1.1em; color: #555; margin-bottom: 20px; max-width: 550px; }
+        .hero .tagline { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: #f5f5f5; border-radius: 6px; font-size: 0.9em; color: #333; font-weight: 500; }
 
-        .hero h1 {
-            font-size: 2.5em;
-            font-weight: 800;
-            margin-bottom: 16px;
-            letter-spacing: -0.02em;
-            line-height: 1.2;
-        }
-
-        .hero .subtitle {
-            font-size: 1.1em;
-            color: #555;
-            margin-bottom: 24px;
-            max-width: 500px;
-        }
-
-        .hero .tagline {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: #f5f5f5;
-            border-radius: 6px;
-            font-size: 0.9em;
-            color: #333;
-            font-weight: 500;
-        }
-
-        .hero-animation {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .logo-animation {
-            width: 200px;
-            height: 200px;
-            position: relative;
-        }
-
-        .logo-ring {
-            position: absolute;
-            border: 3px solid #e5e5e5;
-            border-radius: 50%;
-            animation: rotate 8s linear infinite;
-        }
-
-        .logo-ring:nth-child(1) {
-            width: 200px; height: 200px; top: 0; left: 0;
-            border-top-color: #1a1a1a;
-            animation-duration: 6s;
-        }
-
-        .logo-ring:nth-child(2) {
-            width: 150px; height: 150px; top: 25px; left: 25px;
-            border-right-color: #666;
-            animation-duration: 4s;
-            animation-direction: reverse;
-        }
-
-        .logo-ring:nth-child(3) {
-            width: 100px; height: 100px; top: 50px; left: 50px;
-            border-bottom-color: #999;
-            animation-duration: 3s;
-        }
-
-        .logo-center {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            color: #1a1a1a;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-            50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.1); }
-        }
-
-        /* SECTIONS */
-        .section {
-            padding: 60px 0;
-            border-bottom: 1px solid #e5e5e5;
-            background: #fff;
-        }
-
+        .section { padding: 50px 0; border-bottom: 1px solid #e5e5e5; background: #fff; }
         .section:last-child { border-bottom: none; }
-
-        .section h2 {
-            font-size: 1.8em;
-            font-weight: 700;
-            margin-bottom: 24px;
-            letter-spacing: -0.01em;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
+        .section h2 { font-size: 1.6em; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
         .section h2 i { color: #666; }
+        .section p { color: #555; margin-bottom: 14px; max-width: 650px; }
 
-        .section h3 {
-            font-size: 1.2em;
-            font-weight: 600;
-            margin: 32px 0 16px;
-        }
+        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 24px 0; }
+        .stat-item { text-align: left; padding: 16px; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e5e5; }
+        .stat-item .number { font-size: 1.6em; font-weight: 800; color: #1a1a1a; display: block; margin-bottom: 2px; }
+        .stat-item .label { font-size: 0.8em; color: #666; }
 
-        .section p {
-            color: #555;
-            margin-bottom: 16px;
-            max-width: 700px;
-        }
-
-        /* STATS ROW */
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 24px;
-            margin: 32px 0;
-        }
-
-        .stat-item {
-            text-align: left;
-            padding: 20px;
-            background: #f9fafb;
-            border-radius: 8px;
-            border: 1px solid #e5e5e5;
-        }
-
-        .stat-item .icon {
-            color: #666;
-            margin-bottom: 8px;
-        }
-
-        .stat-item .number {
-            font-size: 1.8em;
-            font-weight: 800;
-            color: #1a1a1a;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .stat-item .label {
-            font-size: 0.85em;
-            color: #666;
-        }
-
-        /* PROBLEM GRID */
-        .problem-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            margin: 24px 0;
-        }
-
-        .problem-card {
-            padding: 20px;
-            border: 1px solid #e5e5e5;
-            border-radius: 8px;
-            background: #f9fafb;
-        }
-
-        .problem-card .icon {
-            color: #dc2626;
-            margin-bottom: 8px;
-        }
-
-        .problem-card h4 {
-            font-size: 1em;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #1a1a1a;
-        }
-
-        .problem-card p {
-            font-size: 0.9em;
-            color: #666;
-            margin: 0;
-        }
-
-        .problem-card .stat {
-            font-size: 1.5em;
-            font-weight: 800;
-            color: #dc2626;
-            margin-top: 12px;
-        }
-
-        /* SOLUTION */
-        .solution-box {
-            background: #f9fafb;
-            border: 1px solid #e5e5e5;
-            border-radius: 8px;
-            padding: 24px;
-            margin: 24px 0;
-        }
-
-        .solution-box ul {
-            padding-left: 20px;
-            margin: 16px 0 0;
-        }
-
-        .solution-box li {
-            margin-bottom: 8px;
-            color: #333;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .solution-box li i {
-            color: #16a34a;
-            flex-shrink: 0;
-        }
-
-        /* FEATURES */
-        .features {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-            margin: 24px 0;
-        }
-
-        .feature {
-            padding: 20px;
-            border: 1px solid #e5e5e5;
-            border-radius: 8px;
-            background: #f9fafb;
-        }
-
-        .feature .icon {
-            color: #1a1a1a;
-            margin-bottom: 8px;
-        }
-
-        .feature h4 { font-size: 0.95em; font-weight: 600; margin-bottom: 6px; }
-        .feature p { font-size: 0.85em; color: #666; margin: 0; }
-
-        /* JTBD */
-        .jtbd-list {
-            margin: 24px 0;
-        }
-
-        .jtbd-item {
-            padding: 16px 0;
-            border-bottom: 1px solid #e5e5e5;
-        }
-
-        .jtbd-item:last-child { border-bottom: none; }
-
-        .jtbd-item .job {
-            font-weight: 600;
-            margin-bottom: 6px;
-            font-style: italic;
-            color: #333;
-        }
-
-        .jtbd-item .context {
-            font-size: 0.85em;
-            color: #666;
-        }
-
-        /* BEFORE/AFTER */
-        .comparison {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin: 24px 0;
-        }
-
-        .before, .after {
-            padding: 20px;
-            border-radius: 8px;
-        }
-
-        .before {
-            background: #fef2f2;
-            border: 1px solid #fecaca;
-        }
-
-        .after {
-            background: #f0fdf4;
-            border: 1px solid #bbf7d0;
-        }
-
-        .before h4, .after h4 {
-            font-size: 0.95em;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .before h4 { color: #dc2626; }
-        .after h4 { color: #16a34a; }
-
-        .need {
-            padding: 6px 0;
-            font-size: 0.9em;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .before .need { color: #991b1b; }
-        .after .need { color: #166534; font-weight: 500; }
-
-        /* SCENARIOS */
-        .scenario-types {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin: 24px 0;
-        }
-
-        .scenario-type {
-            padding: 16px;
-            border: 1px solid #e5e5e5;
-            border-radius: 8px;
-            text-align: center;
-            background: #f9fafb;
-        }
-
-        .scenario-type .icon { margin-bottom: 6px; color: #666; }
-        .scenario-type h4 { font-size: 0.9em; margin-bottom: 4px; }
-        .scenario-type p { font-size: 0.8em; color: #666; margin: 0; }
-
-        /* FLOW */
-        .flow {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            margin: 24px 0;
-            padding: 32px 24px;
-            background: #f9fafb;
-            border-radius: 8px;
-            overflow-x: auto;
-        }
-
-        .flow-step {
-            text-align: center;
-            min-width: 80px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-
-        .flow-step .icon { color: #1a1a1a; }
-        .flow-step .label { font-size: 0.75em; font-weight: 600; }
-
+        .flow { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 24px 0; padding: 24px; background: #f9fafb; border-radius: 8px; overflow-x: auto; }
+        .flow-step { text-align: center; min-width: 70px; }
+        .flow-step .icon { color: #1a1a1a; margin-bottom: 4px; }
+        .flow-step .label { font-size: 0.7em; font-weight: 600; }
         .flow-arrow { color: #999; display: flex; align-items: center; }
 
-        /* TABLE */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 0.9em;
-        }
+        .highlight { background: #f9fafb; border-left: 3px solid #1a1a1a; padding: 14px 18px; margin: 20px 0; }
+        .highlight p { margin: 0; color: #333; font-size: 0.95em; }
 
-        th {
-            background: #f5f5f5;
-            padding: 10px 12px;
-            text-align: left;
-            font-weight: 600;
-            border-bottom: 2px solid #e5e5e5;
-        }
+        .note { background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 16px; margin: 20px 0; font-size: 0.9em; color: #92400e; }
+        .note strong { color: #78350f; }
 
-        td {
-            padding: 10px 12px;
-            border-bottom: 1px solid #e5e5e5;
-        }
+        .source { font-size: 0.8em; color: #888; margin-top: 10px; }
+        .source a { color: #666; text-decoration: underline; }
 
-        /* CHART */
-        .chart-container {
-            position: relative;
-            height: 300px;
-            margin: 24px 0;
-            padding: 20px;
-            background: #f9fafb;
-            border-radius: 8px;
-            border: 1px solid #e5e5e5;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s ease-out;
-        }
+        .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease-out, transform 0.5s ease-out; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
 
-        .chart-container.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* HIGHLIGHT */
-        .highlight {
-            background: #f9fafb;
-            border-left: 3px solid #1a1a1a;
-            padding: 16px 20px;
-            margin: 24px 0;
-        }
-
-        .highlight p { margin: 0; color: #333; }
-
-        /* SOURCE */
-        .source {
-            font-size: 0.8em;
-            color: #888;
-            margin-top: 12px;
-        }
-
-        .source a {
-            color: #666;
-            text-decoration: underline;
-        }
-
-        /* FOOTER */
-        footer {
-            padding: 32px 0;
-            text-align: center;
-            font-size: 0.85em;
-            color: #888;
-            background: #fff;
-            border-top: 1px solid #e5e5e5;
-        }
-
+        footer { padding: 24px 0; text-align: center; font-size: 0.85em; color: #888; background: #fff; border-top: 1px solid #e5e5e5; }
         footer a { color: #666; margin: 0 8px; text-decoration: none; }
         footer a:hover { color: #1a1a1a; }
 
-        /* SCROLL ANIMATIONS */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .reveal-delay-1 { transition-delay: 0.1s; }
-        .reveal-delay-2 { transition-delay: 0.2s; }
-        .reveal-delay-3 { transition-delay: 0.3s; }
-        .reveal-delay-4 { transition-delay: 0.4s; }
-
-        .reveal-left {
-            opacity: 0;
-            transform: translateX(-30px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-
-        .reveal-left.visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .reveal-right {
-            opacity: 0;
-            transform: translateX(30px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-
-        .reveal-right.visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .reveal-scale {
-            opacity: 0;
-            transform: scale(0.95);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-
-        .reveal-scale.visible {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        /* RESPONSIVE */
         @media (max-width: 768px) {
-            .hero .container { grid-template-columns: 1fr; }
-            .hero-animation { display: none; }
             .stats-row { grid-template-columns: repeat(2, 1fr); }
-            .problem-grid { grid-template-columns: 1fr; }
-            .features { grid-template-columns: 1fr; }
-            .comparison { grid-template-columns: 1fr; }
-            .scenario-types { grid-template-columns: repeat(2, 1fr); }
-            .hero h1 { font-size: 1.8em; }
+            .hero h1 { font-size: 1.6em; }
             .flow { flex-direction: column; }
             .flow-arrow { transform: rotate(90deg); }
         }
     </style>
 </head>
 <body>
-
     <nav>
         <div class="container">
             <a href="index.html" class="logo">
@@ -583,6 +78,7 @@
                 <a href="scenarios.html">Сценарии</a>
                 <a href="integrations.html">Интеграции</a>
                 <a href="economics.html">Экономика</a>
+                <a href="focus.html">Фокусы</a>
                 <a href="sources.html">Источники</a>
             </div>
         </div>
@@ -590,195 +86,96 @@
 
     <header class="hero">
         <div class="container">
-            <div>
-                <h1>AI-Ассистент для малого бизнеса</h1>
-                <p class="subtitle">Автоматическая обработка пропущенных звонков с записью клиентов и отправкой сводки владельцу</p>
-                <div class="tagline">
-                    <i data-lucide="phone" style="width: 16px; height: 16px;"></i>
-                    Звонок
-                    <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
-                    <i data-lucide="timer" style="width: 16px; height: 16px;"></i>
-                    15 секунд
-                    <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
-                    <i data-lucide="bot" style="width: 16px; height: 16px;"></i>
-                    AI-ответ
-                    <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
-                    <i data-lucide="calendar" style="width: 16px; height: 16px;"></i>
-                    Запись
-                    <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
-                    <i data-lucide="message-square" style="width: 16px; height: 16px;"></i>
-                    Сводка
-                </div>
-            </div>
-            <div class="hero-animation">
-                <div class="logo-animation">
-                    <div class="logo-ring"></div>
-                    <div class="logo-ring"></div>
-                    <div class="logo-ring"></div>
-                    <div class="logo-center">
-                        <i data-lucide="headphones" style="width: 40px; height: 40px;"></i>
-                    </div>
-                </div>
+            <div class="jury-badge"><i data-lucide="users" style="width: 14px; height: 14px;"></i> Материалы для жюри хакатона</div>
+            <h1>AI-Ассистент для малого бизнеса</h1>
+            <p class="subtitle">Обрабатывает пропущенные звонки: отвечает на вопросы, записывает клиентов, отправляет сводку владельцу.</p>
+            <div class="tagline">
+                <i data-lucide="phone" style="width: 16px; height: 16px;"></i> Звонок
+                <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+                <i data-lucide="timer" style="width: 16px; height: 16px;"></i> 15 секунд
+                <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+                <i data-lucide="bot" style="width: 16px; height: 16px;"></i> AI отвечает
+                <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+                <i data-lucide="calendar" style="width: 16px; height: 16px;"></i> Запись
+                <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+                <i data-lucide="message-square" style="width: 16px; height: 16px;"></i> Сводка владельцу
             </div>
         </div>
     </header>
 
     <section class="section reveal">
         <div class="container">
-            <h2><i data-lucide="repeat" style="width: 28px; height: 28px;"></i> Как это работает</h2>
-            <div class="flow reveal-scale">
-                <div class="flow-step">
-                    <i data-lucide="phone-incoming" style="width: 24px; height: 24px;"></i>
-                    <div class="label">Клиент звонит</div>
-                </div>
-                <div class="flow-arrow"><i data-lucide="arrow-right" style="width: 20px; height: 20px;"></i></div>
-                <div class="flow-step">
-                    <i data-lucide="timer" style="width: 24px; height: 24px;"></i>
-                    <div class="label">15 сек нет ответа</div>
-                </div>
-                <div class="flow-arrow"><i data-lucide="arrow-right" style="width: 20px; height: 20px;"></i></div>
-                <div class="flow-step">
-                    <i data-lucide="bot" style="width: 24px; height: 24px;"></i>
-                    <div class="label">AI отвечает</div>
-                </div>
-                <div class="flow-arrow"><i data-lucide="arrow-right" style="width: 20px; height: 20px;"></i></div>
-                <div class="flow-step">
-                    <i data-lucide="message-circle" style="width: 24px; height: 24px;"></i>
-                    <div class="label">Консультация</div>
-                </div>
-                <div class="flow-arrow"><i data-lucide="arrow-right" style="width: 20px; height: 20px;"></i></div>
-                <div class="flow-step">
-                    <i data-lucide="calendar-check" style="width: 24px; height: 24px;"></i>
-                    <div class="label">Запись</div>
-                </div>
-                <div class="flow-arrow"><i data-lucide="arrow-right" style="width: 20px; height: 20px;"></i></div>
-                <div class="flow-step">
-                    <i data-lucide="send" style="width: 24px; height: 24px;"></i>
-                    <div class="label">Сводка</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section reveal">
-        <div class="container">
-            <h2><i data-lucide="alert-triangle" style="width: 28px; height: 28px;"></i> Проблема</h2>
-            <p>Малый бизнес теряет клиентов каждый день. Владелец не может быть у телефона — он работает, встречается с клиентами. Каждый пропущенный звонок — потеря денег.</p>
+            <h2><i data-lucide="alert-triangle" style="width: 24px; height: 24px;"></i> Проблема</h2>
+            <p>Владелец бизнеса не может быть у телефона всегда — он работает, встречается с клиентами, ведёт приём. Пропущенный звонок чаще всего означает потерянного клиента.</p>
 
             <div class="stats-row">
-                <div class="stat-item reveal reveal-delay-1">
-                    <i data-lucide="phone-off" class="icon" style="width: 24px; height: 24px;"></i>
-                    <span class="number"><a href="https://tech.megafon.ru/information/vas-zvonok-ocen-vazen-dlia-nas-kak-ne-teriat-budushhix-klientov" target="_blank" style="color: inherit; text-decoration: underline; text-decoration-color: #ccc;">34%</a></span>
-                    <span class="label">звонков пропущено</span>
+                <div class="stat-item">
+                    <span class="number">34%</span>
+                    <span class="label">звонков пропускают</span>
                 </div>
-                <div class="stat-item reveal reveal-delay-2">
-                    <i data-lucide="user-x" class="icon" style="width: 24px; height: 24px;"></i>
-                    <span class="number"><a href="https://www.getaira.io/blog/missed-business-calls-statistics" target="_blank" style="color: inherit; text-decoration: underline; text-decoration-color: #ccc;">85%</a></span>
+                <div class="stat-item">
+                    <span class="number">85%</span>
                     <span class="label">не перезванивают</span>
                 </div>
-                <div class="stat-item reveal reveal-delay-3">
-                    <i data-lucide="trending-down" class="icon" style="width: 24px; height: 24px;"></i>
-                    <span class="number"><a href="https://www.dialora.ai/blog/missed-call-costs-smbs-revenue-loss-ai-solutions" target="_blank" style="color: inherit; text-decoration: underline; text-decoration-color: #ccc;">62%</a></span>
-                    <span class="label">уходят к конкуренту</span>
+                <div class="stat-item">
+                    <span class="number">62%</span>
+                    <span class="label">звонят конкуренту</span>
                 </div>
-                <div class="stat-item reveal reveal-delay-4">
-                    <i data-lucide="wallet" class="icon" style="width: 24px; height: 24px;"></i>
-                    <span class="number"><a href="https://russia.gorodrabot.ru/salaries/resepshionist?y=2024" target="_blank" style="color: inherit; text-decoration: underline; text-decoration-color: #ccc;">68 000 ₽</a></span>
+                <div class="stat-item">
+                    <span class="number">68 000 ₽</span>
                     <span class="label">зарплата ресепшиониста</span>
                 </div>
             </div>
 
-            <div class="problem-grid">
-                <div class="problem-card reveal reveal-delay-1">
-                    <i data-lucide="voicemail" class="icon" style="width: 24px; height: 24px;"></i>
-                    <h4>Автоответчик не работает</h4>
-                    <p>80% вешают трубку, не оставив сообщение. Из оставших — менее 20% получают обратный звонок</p>
-                    <div class="stat">80%</div>
-                </div>
-                <div class="problem-card reveal reveal-delay-1">
-                    <i data-lucide="zap" class="icon" style="width: 24px; height: 24px;"></i>
-                    <h4>Скорость решает</h4>
-                    <p><a href="https://www.build100kbusiness.com/blog/speed-to-lead-why-first-responder-wins.html" target="_blank" style="color: inherit; text-decoration: underline;">78% клиентов выбирают того, кто первым ответил</a>. Ответ за 5 минут увеличивает шанс в 21 раз</p>
-                    <div class="stat">21×</div>
-                </div>
-            </div>
-
             <div class="highlight">
-                <p><strong>Ключевой факт:</strong> <a href="https://www.build100kbusiness.com/blog/speed-to-lead-why-first-responder-wins.html" target="_blank" style="color: inherit; text-decoration: underline;">78% клиентов выбирают того, кто первым ответил</a>. Скорость ответа — критический фактор.</p>
+                <p>78% клиентов выбирают того, кто первым ответил. Скорость ответа — главный фактор.</p>
             </div>
 
-            <p class="source">Источник: <a href="https://tech.megafon.ru/information/vas-zvonok-ocen-vazen-dlia-nas-kak-ne-teriat-budushhix-klientov" target="_blank">МегаФон Tech</a>, <a href="https://russia.gorodrabot.ru/salaries/resepshionist?y=2024" target="_blank">ГородРабот</a></p>
+            <p class="source">МегаФон (<a href="https://tech.megafon.ru/information/vas-zvonok-ocen-vazen-dlia-nas-kak-ne-teriat-budushhix-klientov" target="_blank">источник</a>), Aira (<a href="https://www.getaira.io/blog/missed-business-calls-statistics" target="_blank">источник</a>), ГородРабот (<a href="https://russia.gorodrabot.ru/salaries/resepshionist?y=2024" target="_blank">источник</a>), Build100KBusiness (<a href="https://www.build100kbusiness.com/blog/speed-to-lead-why-first-responder-wins.html" target="_blank">источник</a>)</p>
         </div>
     </section>
 
     <section class="section reveal">
         <div class="container">
-            <h2><i data-lucide="check-circle" style="width: 28px; height: 28px;"></i> Решение</h2>
-            <div class="solution-box">
-                <p><strong>AI-Ассистент</strong> — виртуальный ресепшионист, который работает без выходных. Когда владелец не берёт трубку 15-30 секунд, звонок переходит к AI, который:</p>
-                <ul>
-                    <li><i data-lucide="check" style="width: 16px; height: 16px;"></i> Консультирует по вопросам из настроек</li>
-                    <li><i data-lucide="check" style="width: 16px; height: 16px;"></i> Проверяет свободное время и записывает</li>
-                    <li><i data-lucide="check" style="width: 16px; height: 16px;"></i> Отправляет сводку владельцу в мессенджер</li>
-                </ul>
+            <h2><i data-lucide="repeat" style="width: 24px; height: 24px;"></i> Как работает</h2>
+            <div class="flow">
+                <div class="flow-step"><i data-lucide="phone-incoming" class="icon" style="width: 20px; height: 20px;"></i><div class="label">Клиент звонит</div></div>
+                <div class="flow-arrow"><i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i></div>
+                <div class="flow-step"><i data-lucide="timer" class="icon" style="width: 20px; height: 20px;"></i><div class="label">15 сек нет ответа</div></div>
+                <div class="flow-arrow"><i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i></div>
+                <div class="flow-step"><i data-lucide="bot" class="icon" style="width: 20px; height: 20px;"></i><div class="label">AI отвечает</div></div>
+                <div class="flow-arrow"><i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i></div>
+                <div class="flow-step"><i data-lucide="message-circle" class="icon" style="width: 20px; height: 20px;"></i><div class="label">Разговор</div></div>
+                <div class="flow-arrow"><i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i></div>
+                <div class="flow-step"><i data-lucide="calendar-check" class="icon" style="width: 20px; height: 20px;"></i><div class="label">Запись</div></div>
+                <div class="flow-arrow"><i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i></div>
+                <div class="flow-step"><i data-lucide="send" class="icon" style="width: 20px; height: 20px;"></i><div class="label">Сводка</div></div>
             </div>
 
-            <div class="features">
-                <div class="feature reveal reveal-delay-1">
-                    <i data-lucide="zap" class="icon" style="width: 24px; height: 24px;"></i>
-                    <h4>Мгновенный ответ</h4>
-                    <p>AI отвечает через 15 секунд</p>
-                </div>
-                <div class="feature reveal reveal-delay-1">
-                    <i data-lucide="brain" class="icon" style="width: 24px; height: 24px;"></i>
-                    <h4>Умные ответы</h4>
-                    <p>Настраиваемые ответы под бизнес</p>
-                </div>
-                <div class="feature reveal reveal-delay-1">
-                    <i data-lucide="calendar" class="icon" style="width: 24px; height: 24px;"></i>
-                    <h4>Запись</h4>
-                    <p>Проверка окон и бронирование</p>
-                </div>
-                <div class="feature reveal reveal-delay-1">
-                    <i data-lucide="send" class="icon" style="width: 24px; height: 24px;"></i>
-                    <h4>Сводка</h4>
-                    <p>Мгновенное уведомление владельцу</p>
-                </div>
-                <div class="feature reveal reveal-delay-1">
-                    <i data-lucide="clock" class="icon" style="width: 24px; height: 24px;"></i>
-                    <h4>Без выходных</h4>
-                    <p>Работает ночью и в праздники</p>
-                </div>
-                <div class="feature reveal reveal-delay-1">
-                    <i data-lucide="target" class="icon" style="width: 24px; height: 24px;"></i>
-                    <h4>Приоритеты</h4>
-                    <p>Определение срочности звонка</p>
-                </div>
-            </div>
+            <p>AI отвечает на вопросы из настроек бизнеса, проверяет свободное время в календаре, записывает клиента и сразу отправляет владельцу сводку: кто звонил, что спрашивали, что записали.</p>
         </div>
     </section>
 
     <section class="section reveal">
         <div class="container">
-            <h2><i data-lucide="briefcase" style="width: 28px; height: 28px;"></i> Задачи продукта</h2>
-            <p>Какие задачи решает продукт — по методике: задача, контекст, результат.</p>
+            <h2><i data-lucide="target" style="width: 24px; height: 24px;"></i> Какие задачи решает</h2>
 
-            <div class="jtbd-list">
-                <div class="jtbd-item">
-                    <div class="job">«Когда я не у телефона, хочу чтобы клиенты получали ответ, чтобы я не терял деньги»</div>
-                    <div class="context">Контекст: Владелец на встрече, в полях, на приёме. Результат: 0% пропущенных</div>
+            <div style="margin: 20px 0;">
+                <div style="padding: 16px 0; border-bottom: 1px solid #e5e5e5;">
+                    <p style="margin: 0 0 4px; font-weight: 600;">Когда владелец не у телефона — клиенты всё равно получают ответ</p>
+                    <p style="margin: 0; font-size: 0.9em; color: #666;">Владелец на встрече, в полях, на приёме. AI отвечает вместо него. Ни один звонок не потерян.</p>
                 </div>
-                <div class="jtbd-item">
-                    <div class="job">«Когда клиент звонит, хочу записать его сразу, чтобы он не ушёл к конкуренту»</div>
-                    <div class="context">Контекст: 78% выбирают первого ответившего. Результат: Мгновенная запись</div>
+                <div style="padding: 16px 0; border-bottom: 1px solid #e5e5e5;">
+                    <p style="margin: 0 0 4px; font-weight: 600;">Клиент записывается сразу, не уходит к конкуренту</p>
+                    <p style="margin: 0; font-size: 0.9em; color: #666;">78% клиентов выбирают первого, кто ответил. AI отвечает за 15 секунд — клиент не успевает позвонить другому.</p>
                 </div>
-                <div class="jtbd-item">
-                    <div class="job">«Когда я освобождаюсь, хочу видеть сводку звонков, чтобы понимать что произошло»</div>
-                    <div class="context">Контекст: Владелец не знает, кто звонил. Результат: Полная картина в мессенджере</div>
+                <div style="padding: 16px 0; border-bottom: 1px solid #e5e5e5;">
+                    <p style="margin: 0 0 4px; font-weight: 600;">Владелец видит все звонки, даже пропущенные</p>
+                    <p style="margin: 0; font-size: 0.9em; color: #666;">После каждого звонка — сводка в мессенджер: кто, зачем, что решили. Владелец всегда в курсе.</p>
                 </div>
-                <div class="jtbd-item">
-                    <div class="job">«Когда экстренный вызов, хочу узнать об этом немедленно»</div>
-                    <div class="context">Контекст: Аварии, срочные случаи. Результат: Срочное уведомление с приоритетом</div>
+                <div style="padding: 16px 0;">
+                    <p style="margin: 0 0 4px; font-weight: 600;">Срочные звонки не теряются</p>
+                    <p style="margin: 0; font-size: 0.9em; color: #666;">AI определяет срочность и отправляет отдельное уведомление. Авария, острая боль, ДТП — владелец узнаёт сразу.</p>
                 </div>
             </div>
         </div>
@@ -786,118 +183,61 @@
 
     <section class="section reveal">
         <div class="container">
-            <h2><i data-lucide="arrow-left-right" style="width: 28px; height: 28px;"></i> До и после</h2>
-            <div class="comparison">
-                <div class="before">
-                    <h4><i data-lucide="x-circle" style="width: 18px; height: 18px;"></i> Без AI-Ассистента</h4>
-                    <div class="need"><i data-lucide="x" style="width: 14px; height: 14px;"></i> Клиенты не получают ответ</div>
-                    <div class="need"><i data-lucide="x" style="width: 14px; height: 14px;"></i> Нет записи — клиент уходит</div>
-                    <div class="need"><i data-lucide="x" style="width: 14px; height: 14px;"></i> Владелец не знает о звонках</div>
-                    <div class="need"><i data-lucide="x" style="width: 14px; height: 14px;"></i> Автоответчик не работает</div>
-                    <div class="need"><i data-lucide="x" style="width: 14px; height: 14px;"></i> Экстренные звонки пропущены</div>
-                    <div class="need"><i data-lucide="x" style="width: 14px; height: 14px;"></i> Ресепшионист = 68 000 ₽/мес</div>
-                </div>
-                <div class="after">
-                    <h4><i data-lucide="check-circle" style="width: 18px; height: 18px;"></i> С AI-Ассистентом</h4>
-                    <div class="need"><i data-lucide="check" style="width: 14px; height: 14px;"></i> Каждый звонок обработан за 15 сек</div>
-                    <div class="need"><i data-lucide="check" style="width: 14px; height: 14px;"></i> Автоматическая запись</div>
-                    <div class="need"><i data-lucide="check" style="width: 14px; height: 14px;"></i> Сводка после каждого звонка</div>
-                    <div class="need"><i data-lucide="check" style="width: 14px; height: 14px;"></i> AI консультирует без выходных</div>
-                    <div class="need"><i data-lucide="check" style="width: 14px; height: 14px;"></i> Срочное уведомление для экстренных</div>
-                    <div class="need"><i data-lucide="check" style="width: 14px; height: 14px;"></i> Стоит в разы дешевле человека</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="section reveal">
-        <div class="container">
-            <h2><i data-lucide="list" style="width: 28px; height: 28px;"></i> Типы звонков</h2>
-            <p>На какие категории делятся все звонки, которые обрабатывает AI.</p>
-
-            <div class="scenario-types">
-                <div class="scenario-type reveal reveal-delay-1">
-                    <i data-lucide="banknote" class="icon" style="width: 24px; height: 24px;"></i>
-                    <h4>Узнать цену</h4>
-                    <p>«Сколько стоит?»</p>
-                </div>
-                <div class="scenario-type reveal reveal-delay-1">
-                    <i data-lucide="calendar" class="icon" style="width: 24px; height: 24px;"></i>
-                    <h4>Записаться</h4>
-                    <p>«Когда можно прийти?»</p>
-                </div>
-                <div class="scenario-type reveal reveal-delay-1">
-                    <i data-lucide="siren" class="icon" style="width: 24px; height: 24px;"></i>
-                    <h4>Экстренный</h4>
-                    <p>«Срочно, нужна помощь!»</p>
-                </div>
-                <div class="scenario-type reveal reveal-delay-1">
-                    <i data-lucide="info" class="icon" style="width: 24px; height: 24px;"></i>
-                    <h4>Информация</h4>
-                    <p>«Какие часы работы?»</p>
-                </div>
-                <div class="scenario-type reveal reveal-delay-1">
-                    <i data-lucide="refresh-cw" class="icon" style="width: 24px; height: 24px;"></i>
-                    <h4>Статус</h4>
-                    <p>«Моя заявка готова?»</p>
-                </div>
-                <div class="scenario-type reveal reveal-delay-1">
-                    <i data-lucide="target" class="icon" style="width: 24px; height: 24px;"></i>
-                    <h4>Квалификация</h4>
-                    <p>«Вы занимаетесь этим?»</p>
-                </div>
-            </div>
-
-            <p class="source">Подробные сценарии для 15 профессий: <a href="scenarios.html">Сценарии</a></p>
-        </div>
-    </section>
-
-    <section class="section reveal">
-        <div class="container">
-            <h2><i data-lucide="bar-chart-3" style="width: 28px; height: 28px;"></i> Размер рынка</h2>
+            <h2><i data-lucide="bar-chart-3" style="width: 24px; height: 24px;"></i> Размер рынка</h2>
 
             <div class="stats-row">
-                <div class="stat-item reveal reveal-delay-1">
-                    <i data-lucide="building-2" class="icon" style="width: 24px; height: 24px;"></i>
+                <div class="stat-item">
                     <span class="number">6,7 млн</span>
-                    <span class="label">предприятий в РФ</span>
+                    <span class="label">предприятий МСБ в РФ</span>
                 </div>
-                <div class="stat-item reveal reveal-delay-1">
-                    <i data-lucide="phone-off" class="icon" style="width: 24px; height: 24px;"></i>
-                    <span class="number">34%</span>
-                    <span class="label">пропущенных звонков</span>
-                </div>
-                <div class="stat-item reveal reveal-delay-1">
-                    <i data-lucide="bot" class="icon" style="width: 24px; height: 24px;"></i>
-                    <span class="number">5 млрд ₽</span>
-                    <span class="label">рынок ботов в РФ</span>
-                </div>
-                <div class="stat-item reveal reveal-delay-1">
-                    <i data-lucide="users" class="icon" style="width: 24px; height: 24px;"></i>
+                <div class="stat-item">
                     <span class="number">~1 млн</span>
                     <span class="label">целевых бизнесов</span>
                 </div>
+                <div class="stat-item">
+                    <span class="number">58 млрд ₽</span>
+                    <span class="label">рынок GenAI в РФ</span>
+                </div>
+                <div class="stat-item">
+                    <span class="number">15</span>
+                    <span class="label">профессий проработано</span>
+                </div>
             </div>
 
-            <h3>Целевые сегменты</h3>
-            <table>
-                <thead>
-                    <tr><th>Сегмент</th><th>Количество</th><th>Пропуски</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>Стоматологии</td><td>~35 000</td><td>34%</td></tr>
-                    <tr><td>Юристы</td><td>~235 000</td><td>40%</td></tr>
-                    <tr><td>Домашние сервисы</td><td>~500 000</td><td>60%</td></tr>
-                    <tr><td>Салоны красоты</td><td>~180 000</td><td>3-5/день</td></tr>
-                    <tr><td>Автосервисы</td><td>117 500</td><td>40%</td></tr>
-                </tbody>
-            </table>
+            <p class="source">Минэкономразвития (<a href="https://www.economy.gov.ru/material/news/chislennost_malyh_isrednih_predpriyatiy_vrossii_obnovila_rekord_iprevysila_67_mln.html" target="_blank">источник</a>), SCG (<a href="SCG_Цифровизация_МСБ_2025.pdf" target="_blank">PDF</a>), Strategy Partners (<a href="Strategy_Partners_Корпоративный_ИИ_2026.pdf" target="_blank">PDF</a>), Just AI (<a href="https://m.seonews.ru/blogs/demis-group/chat-boty-i-virtualnye-assistenty-marketingovyy-proryv-2025-goda/" target="_blank">источник</a>)</p>
+        </div>
+    </section>
 
-            <div class="chart-container">
-                <canvas id="marketChart"></canvas>
+    <section class="section reveal">
+        <div class="container">
+            <h2><i data-lucide="shield-check" style="width: 24px; height: 24px;"></i> Как мы обрабатываем риски</h2>
+
+            <div class="note">
+                <strong>Важно:</strong> Ниже — как мы решаем проблемы, которые возникают у любого голосового AI-продукта.
             </div>
 
-            <p class="source">Источники: <a href="https://www.economy.gov.ru/material/news/chislennost_malyh_isrednih_predpriyatiy_vrossii_obnovila_rekord_iprevysila_67_mln.html" target="_blank">Минэкономразвития</a>, <a href="https://tech.megafon.ru/information/vas-zvonok-ocen-vazen-dlia-nas-kak-ne-teriat-budushhix-klientov" target="_blank">МегаФон</a>, <a href="https://m.autostat.ru/infographics/59270/" target="_blank">Автостат</a>, <a href="https://fparf.ru/practical-information/statistics/svedeniya-o-sostave-advokatskogo-soobshchestva-v-rossiyskoy-federatsii-za-2024-god/" target="_blank">ФПА РФ</a></p>
+            <div style="margin: 20px 0;">
+                <div style="padding: 16px 0; border-bottom: 1px solid #e5e5e5;">
+                    <p style="margin: 0 0 4px; font-weight: 600;">«Люди не хотят говорить с ботом»</p>
+                    <p style="margin: 0; font-size: 0.9em; color: #666;">Мы не делаем «идеальный голос». Вместо этого — естественное взаимодействие: AI использует фразы-заполнители («записываю», «понял», «секунду»), естественные паузы, фоновые шумы. Клиент чувствует, что говорит с помощником, а не с роботом. Если клиент просит человека — AI говорит: «Специалист перезвонит в течение 15 минут» и передаёт контакт владельцу.</p>
+                </div>
+                <div style="padding: 16px 0; border-bottom: 1px solid #e5e5e5;">
+                    <p style="margin: 0 0 4px; font-weight: 600;">«AI дал неправильный совет»</p>
+                    <p style="margin: 0; font-size: 0.9em; color: #666;">AI не даёт медицинских, юридических или финансовых рекомендаций. Он отвечает на вопросы из настроек бизнеса (цены, часы, услуги) и записывает на приём. Если вопрос выходит за рамки — AI говорит: «Это лучше обсудить со специалистом. Записать вас?»</p>
+                </div>
+                <div style="padding: 16px 0; border-bottom: 1px solid #e5e5e5;">
+                    <p style="margin: 0 0 4px; font-weight: 600;">«AI не понял клиента»</p>
+                    <p style="margin: 0; font-size: 0.9em; color: #666;">Две попытки уточнить. Если не получилось — «Я передам ваш вопрос специалисту, он перезвонит». Запись разговора и контакт клиента сохраняются.</p>
+                </div>
+                <div style="padding: 16px 0; border-bottom: 1px solid #e5e5e5;">
+                    <p style="margin: 0 0 4px; font-weight: 600;">«Данные утекут»</p>
+                    <p style="margin: 0; font-size: 0.9em; color: #666;">Соответствие 152-ФЗ. Записи разговоров шифруются. Данные хранятся на серверах в РФ. Доступ — только у владельца бизнеса.</p>
+                </div>
+                <div style="padding: 16px 0;">
+                    <p style="margin: 0 0 4px; font-weight: 600;">«Акценты, шум, плохая связь»</p>
+                    <p style="margin: 0; font-size: 0.9em; color: #666;">Используем модели распознавания речи, обученные на российских данных. Если AI не разобрал — переспрашивает. Если трижды не понял — передаёт человеку.</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -905,115 +245,22 @@
         <div class="container">
             <a href="index.html">Продукт</a>
             <a href="scenarios.html">Сценарии</a>
-            <a href="integrations.html">Интеграции</a>
+            <a href="integrations.html">Подключения</a>
             <a href="economics.html">Экономика</a>
+            <a href="focus.html">Фокусы</a>
             <a href="sources.html">Источники</a>
         </div>
     </footer>
 
     <script>
-        // Init Lucide icons
         lucide.createIcons();
-
-        // Lenis smooth scroll
-        const lenis = new Lenis({
-            duration: 0.8,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-            orientation: 'vertical',
-            smoothWheel: true
-        });
-
-        function raf(time) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
+        const lenis = new Lenis({ duration: 0.8, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
         requestAnimationFrame(raf);
-
-        // Scroll reveal animations
         const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-
-        document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
-            revealObserver.observe(el);
-        });
-
-        // Stagger animation for child elements
-        const staggerObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const children = entry.target.querySelectorAll('.reveal-delay-1, .reveal-delay-2, .reveal-delay-3, .reveal-delay-4');
-                    children.forEach((child, i) => {
-                        setTimeout(() => {
-                            child.classList.add('visible');
-                        }, i * 100);
-                    });
-                }
-            });
-        }, { threshold: 0.2 });
-
-        document.querySelectorAll('.stats-row, .problem-grid, .features, .scenario-types').forEach(el => {
-            staggerObserver.observe(el);
-        });
-
-        // Chart animation on scroll
-        const chartObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.2 });
-
-        document.querySelectorAll('.chart-container').forEach(el => {
-            chartObserver.observe(el);
-        });
-
-        // Market chart
-        const ctx = document.getElementById('marketChart');
-        if (ctx) {
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Стоматологии', 'Юристы', 'Домашние сервисы', 'Салоны', 'Автосервисы'],
-                    datasets: [{
-                        label: 'Количество бизнесов в РФ',
-                        data: [35000, 235000, 500000, 180000, 117500],
-                        backgroundColor: '#1a1a1a',
-                        borderRadius: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    animation: {
-                        duration: 1000,
-                        easing: 'easeOutQuart'
-                    },
-                    plugins: {
-                        legend: { display: false }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: { color: '#f0f0f0' },
-                            ticks: {
-                                callback: function(value) {
-                                    return value >= 1000 ? (value/1000) + ' тыс' : value;
-                                }
-                            }
-                        },
-                        x: {
-                            grid: { display: false }
-                        }
-                    }
-                }
-            });
-        }
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        document.querySelectorAll('.reveal').forEach(el => { revealObserver.observe(el); });
     </script>
 </body>
 </html>

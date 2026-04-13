@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Ассистент — Ключевые фокусы</title>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="https://unpkg.com/lenis@1.3.21/dist/lenis.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #fafafa; color: #1a1a1a; line-height: 1.7; }
+        .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+        nav { background: #fff; border-bottom: 1px solid #e5e5e5; padding: 16px 0; position: sticky; top: 0; z-index: 100; }
+        nav .container { display: flex; justify-content: space-between; align-items: center; }
+        nav .logo { font-weight: 700; font-size: 1.1em; color: #1a1a1a; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        nav .links { display: flex; gap: 24px; }
+        nav .links a { text-decoration: none; color: #666; font-size: 0.9em; font-weight: 500; transition: color 0.2s; }
+        nav .links a:hover, nav .links a.active { color: #1a1a1a; }
+        .hero { padding: 80px 0 60px; border-bottom: 1px solid #e5e5e5; background: #fff; }
+        .hero h1 { font-size: 2.5em; font-weight: 800; margin-bottom: 16px; letter-spacing: -0.02em; }
+        .hero .subtitle { font-size: 1.2em; color: #555; max-width: 600px; }
+        .section { padding: 60px 0; border-bottom: 1px solid #e5e5e5; background: #fff; }
+        .section:last-child { border-bottom: none; }
+        .section h2 { font-size: 1.8em; font-weight: 700; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+        .section h2 i { color: #666; }
+        .section p { color: #555; margin-bottom: 16px; max-width: 700px; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        /* Focus cards */
+        .focus-card { padding: 40px; border: 1px solid #e5e5e5; border-radius: 12px; margin: 32px 0; background: #fafafa; }
+        .focus-card .focus-header { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+        .focus-card .focus-icon { width: 48px; height: 48px; background: #1a1a1a; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; flex-shrink: 0; }
+        .focus-card h3 { font-size: 1.3em; font-weight: 700; margin: 0; }
+        .focus-card .focus-desc { font-size: 1em; color: #555; margin-bottom: 20px; line-height: 1.7; }
+        .focus-card .focus-details { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+        .focus-detail { padding: 16px; background: #fff; border-radius: 8px; border: 1px solid #e5e5e5; }
+        .focus-detail .label { font-size: 0.8em; color: #888; margin-bottom: 4px; }
+        .focus-detail .value { font-size: 0.95em; font-weight: 600; color: #1a1a1a; }
+
+        /* Summary example */
+        .summary-example { background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 20px; margin: 20px 0; }
+        .summary-example h4 { font-size: 0.95em; margin-bottom: 12px; color: #333; }
+        .summary-line { padding: 6px 0; font-size: 0.85em; border-bottom: 1px solid #f0f0f0; display: flex; gap: 8px; }
+        .summary-line:last-child { border-bottom: none; }
+        .summary-line .key { font-weight: 600; color: #1a1a1a; min-width: 120px; }
+        .summary-line .val { color: #555; }
+
+        footer { padding: 32px 0; text-align: center; font-size: 0.85em; color: #888; background: #fff; border-top: 1px solid #e5e5e5; }
+        footer a { color: #666; margin: 0 8px; text-decoration: none; }
+        footer a:hover { color: #1a1a1a; }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.8em; }
+            .focus-card { padding: 24px; }
+            .focus-card .focus-details { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i data-lucide="headphones" style="width: 20px; height: 20px;"></i>
+                AI-Ассистент
+            </a>
+            <div class="links">
+                <a href="index.html">Продукт</a>
+                <a href="scenarios.html">Сценарии</a>
+                <a href="integrations.html">Интеграции</a>
+                <a href="economics.html">Экономика</a>
+                <a href="focus.html" class="active">Фокусы</a>
+                <a href="sources.html">Источники</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container">
+            <h1>Ключевые фокусы</h1>
+            <p class="subtitle">Четыре вещи, на которых мы фокусируемся. То, что отличает нас от других решений для обработки звонков.</p>
+        </div>
+    </header>
+
+    <section class="section">
+        <div class="container">
+
+            <!-- ФОКУС 1: ГОЛОС -->
+            <div class="focus-card reveal">
+                <div class="focus-header">
+                    <div class="focus-icon">
+                        <i data-lucide="mic" style="width: 24px; height: 24px;"></i>
+                    </div>
+                    <div>
+                        <h3>Естественный голос</h3>
+                    </div>
+                </div>
+                <p class="focus-desc">
+                    Мы не гонимся за «идеальным синтезом речи». Вместо этого создаём атмосферу живого разговора. AI использует фразы-заполнители, естественные паузы и реакции — клиент чувствует, что говорит с помощником, который слушает и понимает.
+                </p>
+                <div class="focus-details">
+                    <div class="focus-detail">
+                        <div class="label">Фразы-заполнители</div>
+                        <div class="value">«Записываю», «Понял», «Секунду», «Ага» — мгновенно, без обращения к нейросети</div>
+                    </div>
+                    <div class="focus-detail">
+                        <div class="label">Естественные паузы</div>
+                        <div class="value">AI не отвечает мгновенно — делает паузу как живой человек</div>
+                    </div>
+                    <div class="focus-detail">
+                        <div class="label">Фоновые шумы</div>
+                        <div class="value">Лёгкий фон офиса — создаёт ощущение реального места</div>
+                    </div>
+                    <div class="focus-detail">
+                        <div class="label">Если просят человека</div>
+                        <div class="value">«Специалист перезвонит через 15 минут» — и передача контакта владельцу</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ФОКУС 2: НАСТРОЙКА -->
+            <div class="focus-card reveal">
+                <div class="focus-header">
+                    <div class="focus-icon">
+                        <i data-lucide="settings" style="width: 24px; height: 24px;"></i>
+                    </div>
+                    <div>
+                        <h3>Простая и гибкая настройка</h3>
+                    </div>
+                </div>
+                <p class="focus-desc">
+                    Подключил за 15 минут — и работает. Без программистов, без долгих внедрений. Загрузил документы о бизнесе, описал услуги — AI уже знает как отвечать. Гибкость в том, что каждый бизнес настраивается под себя.
+                </p>
+                <div class="focus-details">
+                    <div class="focus-detail">
+                        <div class="label">Документы</div>
+                        <div class="value">Загрузи прайс, FAQ, инструкции — AI изучит</div>
+                    </div>
+                    <div class="focus-detail">
+                        <div class="label">Контекст бизнеса</div>
+                        <div class="value">Опиши услуги, правила, стиль общения</div>
+                    </div>
+                    <div class="focus-detail">
+                        <div class="label">Интеграции</div>
+                        <div class="value">Календарь, мессенджеры, таблицы — подключается сам</div>
+                    </div>
+                    <div class="focus-detail">
+                        <div class="label">Время настройки</div>
+                        <div class="value">15 минут до рабочего состояния</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ФОКУС 3: FULL DIALOG SUMMARY -->
+            <div class="focus-card reveal">
+                <div class="focus-header">
+                    <div class="focus-icon">
+                        <i data-lucide="file-text" style="width: 24px; height: 24px;"></i>
+                    </div>
+                    <div>
+                        <h3>Полная сводка диалога</h3>
+                    </div>
+                </div>
+                <p class="focus-desc">
+                    После каждого звонка владелец получает не просто «кто-то звонил», а полную картину: что спрашивали, что ответили, что записали, какое настроение клиента. Владелец всегда в контексте — даже если не брал трубку.
+                </p>
+
+                <div class="summary-example">
+                    <h4>Пример сводки в Telegram:</h4>
+                    <div class="summary-line"><span class="key">📞 Звонок</span><span class="val">Сегодня, 14:32, длительность 2:15</span></div>
+                    <div class="summary-line"><span class="key">👤 Клиент</span><span class="val">Анна, +7 (999) 123-45-67</span></div>
+                    <div class="summary-line"><span class="key">🎯 Цель</span><span class="val">Узнать цену импланта, записаться</span></div>
+                    <div class="summary-line"><span class="key">💬 Что спросила</span><span class="val">Стоимость импланта, принимаете ли новых, страховка</span></div>
+                    <div class="summary-line"><span class="key">🤖 Что ответил AI</span><span class="val">45 000 — 95 000 ₽, новых принимаем, страховка не нужна</span></div>
+                    <div class="summary-line"><span class="key">📅 Результат</span><span class="val">Записана на завтра 10:00, консультация</span></div>
+                    <div class="summary-line"><span class="key">😊 Настроение</span><span class="val">Позитивное, довольна ответами</span></div>
+                    <div class="summary-line"><span class="key">⚡ Срочность</span><span class="val">Обычный, не экстренный</span></div>
+                </div>
+
+                <div class="focus-details">
+                    <div class="focus-detail">
+                        <div class="label">Куда приходит</div>
+                        <div class="value">Telegram, WhatsApp, SMS, почта — куда удобно</div>
+                    </div>
+                    <div class="focus-detail">
+                        <div class="label">Когда</div>
+                        <div class="value">Сразу после звонка, мгновенно</div>
+                    </div>
+                    <div class="focus-detail">
+                        <div class="label">Что внутри</div>
+                        <div class="value">Кто, зачем, что спросили, что ответили, результат</div>
+                    </div>
+                    <div class="focus-detail">
+                        <div class="label">Экстренные</div>
+                        <div class="value">Отдельное уведомление с пометкой СРОЧНО</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ФОКУС 4: ПРИВАТНОСТЬ -->
+            <div class="focus-card reveal">
+                <div class="focus-header">
+                    <div class="focus-icon">
+                        <i data-lucide="shield-check" style="width: 24px; height: 24px;"></i>
+                    </div>
+                    <div>
+                        <h3>Приватность и безопасность</h3>
+                    </div>
+                </div>
+                <p class="focus-desc">
+                    63% МСБ опасаются утечек данных при внедрении AI. Мы это понимаем и строим безопасность с первого дня. Данные клиентов защищены, разговоры шифруются, доступ — только у владельца бизнеса.
+                </p>
+                <div class="focus-details">
+                    <div class="focus-detail">
+                        <div class="label">152-ФЗ</div>
+                        <div class="value">Полное соответствие закону о персональных данных</div>
+                    </div>
+                    <div class="focus-detail">
+                        <div class="label">Шифрование</div>
+                        <div class="value">Все разговоры и данные — в зашифрованном виде</div>
+                    </div>
+                    <div class="focus-detail">
+                        <div class="label">Доступ</div>
+                        <div class="value">Только владелец бизнеса видит свои данные</div>
+                    </div>
+                    <div class="focus-detail">
+                        <div class="label">Хранение</div>
+                        <div class="value">Серверы в РФ, данные не покидают страну</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <a href="index.html">Продукт</a>
+            <a href="scenarios.html">Сценарии</a>
+            <a href="integrations.html">Интеграции</a>
+            <a href="economics.html">Экономика</a>
+            <a href="focus.html">Фокусы</a>
+            <a href="sources.html">Источники</a>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        const lenis = new Lenis({ duration: 0.8, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        document.querySelectorAll('.reveal').forEach(el => { revealObserver.observe(el); });
+    </script>
+</body>
+</html>
