@@ -78,6 +78,9 @@
         .reveal-scale { opacity: 0; transform: scale(0.95); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
         .reveal-scale.visible { opacity: 1; transform: scale(1); }
 
+        .tier-heading { font-size: 1.4em; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .tier-heading i { color: #666; }
+
         @media (max-width: 768px) {
             .stats-row, .prof-stats { grid-template-columns: repeat(2, 1fr); }
             .hero h1 { font-size: 1.8em; }
@@ -96,6 +99,7 @@
                 <a href="scenarios.html" class="active">Сценарии</a>
                 <a href="integrations.html">Интеграции</a>
                 <a href="economics.html">Экономика</a>
+                <a href="sources.html">Источники</a>
             </div>
         </div>
     </nav>
@@ -164,6 +168,7 @@
 
     <section class="section reveal">
         <div class="container">
+            <h2 class="tier-heading" data-tier="tier1"><i data-lucide="star" style="width: 24px; height: 24px;"></i> Приоритетные сегменты</h2>
 
             <div class="prof" data-tier="tier1">
                 <h3><i data-lucide="heart-pulse" style="width: 24px; height: 24px;"></i> Стоматологии</h3>
@@ -278,7 +283,7 @@
 
     <section class="section reveal">
         <div class="container">
-            <h2>Перспективные сегменты</h2>
+            <h2 class="tier-heading" data-tier="tier2"><i data-lucide="trending-up" style="width: 24px; height: 24px;"></i> Перспективные сегменты</h2>
 
             <div class="prof" data-tier="tier2">
                 <h3><i data-lucide="home" style="width: 24px; height: 24px;"></i> Риэлторы</h3>
@@ -357,7 +362,7 @@
 
     <section class="section reveal">
         <div class="container">
-            <h2>Дополнительные сегменты</h2>
+            <h2 class="tier-heading" data-tier="tier3"><i data-lucide="layers" style="width: 24px; height: 24px;"></i> Дополнительные сегменты</h2>
 
             <div class="prof" data-tier="tier3">
                 <h3><i data-lucide="camera" style="width: 24px; height: 24px;"></i> Фотографы</h3>
@@ -468,6 +473,7 @@
             <a href="scenarios.html">Сценарии</a>
             <a href="integrations.html">Интеграции</a>
             <a href="economics.html">Экономика</a>
+            <a href="sources.html">Источники</a>
         </div>
     </footer>
 
@@ -486,8 +492,21 @@
         function filter(t) {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             event.target.classList.add('active');
+
+            // Show/hide professions
             document.querySelectorAll('.prof').forEach(p => {
                 p.style.display = (t === 'all' || p.dataset.tier === t) ? 'block' : 'none';
+            });
+
+            // Show/hide entire sections based on tier
+            document.querySelectorAll('.tier-heading').forEach(h => {
+                const section = h.closest('.section');
+                if (t === 'all' || h.dataset.tier === t) {
+                    section.style.display = 'block';
+                    h.style.display = 'flex';
+                } else {
+                    section.style.display = 'none';
+                }
             });
         }
 

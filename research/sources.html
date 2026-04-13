@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Ассистент — Источники данных</title>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="https://unpkg.com/lenis@1.3.21/dist/lenis.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #fafafa; color: #1a1a1a; line-height: 1.7; }
+        .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+        nav { background: #fff; border-bottom: 1px solid #e5e5e5; padding: 16px 0; position: sticky; top: 0; z-index: 100; }
+        nav .container { display: flex; justify-content: space-between; align-items: center; }
+        nav .logo { font-weight: 700; font-size: 1.1em; color: #1a1a1a; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+        nav .links { display: flex; gap: 24px; }
+        nav .links a { text-decoration: none; color: #666; font-size: 0.9em; font-weight: 500; transition: color 0.2s; }
+        nav .links a:hover, nav .links a.active { color: #1a1a1a; }
+        .hero { padding: 80px 0 60px; border-bottom: 1px solid #e5e5e5; background: #fff; }
+        .hero h1 { font-size: 2.5em; font-weight: 800; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+        .hero h1 i { color: #666; }
+        .hero .subtitle { font-size: 1.2em; color: #555; }
+        .section { padding: 60px 0; border-bottom: 1px solid #e5e5e5; background: #fff; }
+        .section:last-child { border-bottom: none; }
+        .section h2 { font-size: 1.8em; font-weight: 700; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
+        .section h2 i { color: #666; }
+        .section p { color: #555; margin-bottom: 16px; }
+        .source-group { margin: 32px 0; }
+        .source-group h3 { font-size: 1.2em; font-weight: 600; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid #e5e5e5; }
+        .source-card { display: flex; gap: 16px; padding: 20px; border: 1px solid #e5e5e5; border-radius: 8px; margin-bottom: 12px; background: #f9fafb; }
+        .source-card .icon { flex-shrink: 0; margin-top: 2px; color: #666; }
+        .source-card .content { flex: 1; }
+        .source-card .title { font-weight: 600; margin-bottom: 4px; }
+        .source-card .title a { color: #1a1a1a; text-decoration: none; }
+        .source-card .title a:hover { text-decoration: underline; }
+        .source-card .meta { font-size: 0.85em; color: #888; margin-bottom: 6px; }
+        .source-card .desc { font-size: 0.9em; color: #555; }
+        .source-card .stat { display: inline-block; background: #1a1a1a; color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; font-weight: 600; margin-top: 6px; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        footer { padding: 32px 0; text-align: center; font-size: 0.85em; color: #888; background: #fff; border-top: 1px solid #e5e5e5; }
+        footer a { color: #666; margin: 0 8px; text-decoration: none; }
+        footer a:hover { color: #1a1a1a; }
+        @media (max-width: 768px) { .hero h1 { font-size: 1.8em; } .source-card { flex-direction: column; } }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i data-lucide="headphones" style="width: 20px; height: 20px;"></i>
+                AI-Ассистент
+            </a>
+            <div class="links">
+                <a href="index.html">Продукт</a>
+                <a href="scenarios.html">Сценарии</a>
+                <a href="integrations.html">Интеграции</a>
+                <a href="economics.html">Экономика</a>
+                <a href="sources.html" class="active">Источники</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container">
+            <h1><i data-lucide="book-open" style="width: 32px; height: 32px;"></i> Источники данных</h1>
+            <p class="subtitle">Все цифры, статистика и исследования, использованные на сайте</p>
+        </div>
+    </header>
+
+    <section class="section">
+        <div class="container">
+
+            <div class="source-group reveal">
+                <h3>Пропущенные звонки</h3>
+
+                <div class="source-card">
+                    <i data-lucide="phone-off" class="icon" style="width: 20px; height: 20px;"></i>
+                    <div class="content">
+                        <div class="title"><a href="https://tech.megafon.ru/information/vas-zvonok-ocen-vazen-dlia-nas-kak-ne-teriat-budushhix-klientov" target="_blank">МегаФон Tech — «Как не потерять будущих клиентов»</a></div>
+                        <div class="meta">tech.megafon.ru · 2024 · 13 000 компаний МСБ</div>
+                        <div class="desc">Анализ статистики звонков 13 тысяч компаний малого и среднего бизнеса. Сколько звонков пропускают, как это влияет на выручку.</div>
+                        <span class="stat">34% пропущенных звонков</span>
+                    </div>
+                </div>
+
+                <div class="source-card">
+                    <i data-lucide="user-x" class="icon" style="width: 20px; height: 20px;"></i>
+                    <div class="content">
+                        <div class="title"><a href="https://www.getaira.io/blog/missed-business-calls-statistics" target="_blank">Aira — «62% of Business Calls Go Unanswered»</a></div>
+                        <div class="meta">getaira.io · 2025 · Исследование SMB</div>
+                        <div class="desc">Исследование о влиянии пропущенных звонков на малый бизнес. Сколько звонков остаётся без ответа, какой процент callers не перезванивает.</div>
+                        <span class="stat">85% не перезванивают</span>
+                        <span class="stat">62% уходят к конкуренту</span>
+                    </div>
+                </div>
+
+                <div class="source-card">
+                    <i data-lucide="trending-down" class="icon" style="width: 20px; height: 20px;"></i>
+                    <div class="content">
+                        <div class="title"><a href="https://www.dialora.ai/blog/missed-call-costs-smbs-revenue-loss-ai-solutions" target="_blank">Dialora — «Missed Call Costs SMBs»</a></div>
+                        <div class="meta">dialora.ai · 2025 · Анализ потерь МСБ</div>
+                        <div class="desc">Расчёт ежегодных потерь малого бизнеса из-за пропущенных звонков. Средний SMB теряет $126 000/год.</div>
+                        <span class="stat">$126 000/год потеря</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="source-group reveal">
+                <h3>Скорость ответа</h3>
+
+                <div class="source-card">
+                    <i data-lucide="zap" class="icon" style="width: 20px; height: 20px;"></i>
+                    <div class="content">
+                        <div class="title"><a href="https://www.build100kbusiness.com/blog/speed-to-lead-why-first-responder-wins.html" target="_blank">Build100KBusiness — «Why 78% of Leads Go to the First Responder»</a></div>
+                        <div class="meta">build100kbusiness.com · 2025 · Анализ поведения клиентов</div>
+                        <div class="desc">78% клиентов покупают у того бизнеса, который ответил первым. Не у самого дешёвого, не у самого лучшего — у первого.</div>
+                        <span class="stat">78% выбирают первого ответившего</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="source-group reveal">
+                <h3>Рынок труда</h3>
+
+                <div class="source-card">
+                    <i data-lucide="wallet" class="icon" style="width: 20px; height: 20px;"></i>
+                    <div class="content">
+                        <div class="title"><a href="https://russia.gorodrabot.ru/salaries/resepshionist?y=2024" target="_blank">ГородРабот — Зарплата ресепшиониста</a></div>
+                        <div class="meta">gorodrabot.ru · 2024 · Данные по зарплатам</div>
+                        <div class="desc">Средняя зарплата ресепшиониста в России за 2024 год. Рост на 13.5% за год.</div>
+                        <span class="stat">68 174 ₽/мес</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="source-group reveal">
+                <h3>Размер рынка МСБ</h3>
+
+                <div class="source-card">
+                    <i data-lucide="building-2" class="icon" style="width: 20px; height: 20px;"></i>
+                    <div class="content">
+                        <div class="title"><a href="https://www.economy.gov.ru/material/news/chislennost_malyh_isrednih_predpriyatiy_vrossii_obnovila_rekord_iprevysila_67_mln.html" target="_blank">Минэкономразвития — Численность МСБ</a></div>
+                        <div class="meta">economy.gov.ru · Q1 2025 · Официальная статистика</div>
+                        <div class="desc">Численность малых и средних предприятий в России превысила 6,7 млн — рекордный показатель с начала ведения статистики.</div>
+                        <span class="stat">6,7 млн предприятий</span>
+                    </div>
+                </div>
+
+                <div class="source-card">
+                    <i data-lucide="bot" class="icon" style="width: 20px; height: 20px;"></i>
+                    <div class="content">
+                        <div class="title"><a href="https://m.seonews.ru/blogs/demis-group/chat-boty-i-virtualnye-assistenty-marketingovyy-proryv-2025-goda/" target="_blank">SEOnews / Just AI — Рынок чат-ботов</a></div>
+                        <div class="meta">seonews.ru · 2025 · Аналитика рынка</div>
+                        <div class="desc">Рынок разговорного ИИ в России вырастет до 5 млрд рублей к 2025 году по прогнозам Just AI.</div>
+                        <span class="stat">5 млрд ₽ рынок ботов</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="source-group reveal">
+                <h3>Стоматологии</h3>
+
+                <div class="source-card">
+                    <i data-lucide="heart-pulse" class="icon" style="width: 20px; height: 20px;"></i>
+                    <div class="content">
+                        <div class="title"><a href="https://rb.ru/news/oborot-stomat-chastnoj/" target="_blank">RB.ru — Оборот стоматологий вырос на 15%</a></div>
+                        <div class="meta">rb.ru · Январь 2025 · Рынок частных стоматологий</div>
+                        <div class="desc">Оборот рынка частных стоматологических услуг в России в 2024 году вырос на 15,4% до 717 млрд рублей.</div>
+                        <span class="stat">717 млрд ₽ рынок</span>
+                        <span class="stat">~35 000 клиник</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="source-group reveal">
+                <h3>Юристы</h3>
+
+                <div class="source-card">
+                    <i data-lucide="scale" class="icon" style="width: 20px; height: 20px;"></i>
+                    <div class="content">
+                        <div class="title"><a href="https://fparf.ru/practical-information/statistics/svedeniya-o-sostave-advokatskogo-soobshchestva-v-rossiyskoy-federatsii-za-2024-god/" target="_blank">ФПА РФ — Состав адвокатского сообщества</a></div>
+                        <div class="meta">fparf.ru · Январь 2025 · Официальная статистика</div>
+                        <div class="desc">За период с января 2023 по январь 2025 число адвокатов выросло на 825 и достигло 84 351.</div>
+                        <span class="stat">84 351 адвокат</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="source-group reveal">
+                <h3>Автосервисы</h3>
+
+                <div class="source-card">
+                    <i data-lucide="car" class="icon" style="width: 20px; height: 20px;"></i>
+                    <div class="content">
+                        <div class="title"><a href="https://m.autostat.ru/infographics/59270/" target="_blank">Автостат — Точки автосервиса в России</a></div>
+                        <div class="meta">autostat.ru · Январь 2025 · Отраслевая статистика</div>
+                        <div class="desc">В России числится 117,5 тысяч точек по обслуживанию и ремонту легковых автомобилей.</div>
+                        <span class="stat">117 500 точек</span>
+                        <span class="stat">1 трлн ₽ рынок</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="source-group reveal">
+                <h3>Салоны красоты</h3>
+
+                <div class="source-card">
+                    <i data-lucide="scissors" class="icon" style="width: 20px; height: 20px;"></i>
+                    <div class="content">
+                        <div class="title"><a href="https://tadviser.com/index.php/Article:Beauty_salons_in_Russia" target="_blank">TAdviser — Салоны красоты в России</a></div>
+                        <div class="meta">tadviser.com · Декабрь 2025 · Отраслевая статистика</div>
+                        <div class="desc">8 448 салонов красоты работает в Москве. Рынок салонов красоты и парикмахерских в России.</div>
+                        <span class="stat">~180 000 салонов в РФ</span>
+                    </div>
+                </div>
+
+                <div class="source-card">
+                    <i data-lucide="scissors" class="icon" style="width: 20px; height: 20px;"></i>
+                    <div class="content">
+                        <div class="title"><a href="https://www.forbes.ru/biznes/493564-den-gi-na-borode-pocemu-barbersopov-otkryvaetsa-bol-se-cem-salonov-krasoty" target="_blank">Forbes — Рост барбершопов на 97%</a></div>
+                        <div class="meta">forbes.ru · 2023 · Данные 2ГИС</div>
+                        <div class="desc">За последние четыре года количество барбершопов в России выросло на 97% по данным 2ГИС.</div>
+                        <span class="stat">+97% барбершопов</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="source-group reveal">
+                <h3>Дополнительные источники</h3>
+
+                <div class="source-card">
+                    <i data-lucide="file-text" class="icon" style="width: 20px; height: 20px;"></i>
+                    <div class="content">
+                        <div class="title"><a href="https://blog.skgroups.ru/statistika-malogo-biznesa-v-rossii-v-2025-godu/" target="_blank">SK Groups — Статистика МСБ 2025</a></div>
+                        <div class="meta">skgroups.ru · Октябрь 2025</div>
+                        <div class="desc">Количество малых и средних предприятий достигло 6,59 млн — 81% всех зарегистрированных юридических лиц и предпринимателей.</div>
+                    </div>
+                </div>
+
+                <div class="source-card">
+                    <i data-lucide="file-text" class="icon" style="width: 20px; height: 20px;"></i>
+                    <div class="content">
+                        <div class="title"><a href="https://dreamjob.ru/salary/sekretar/city-moskva" target="_blank">DreamJob — Зарплата секретаря в Москве</a></div>
+                        <div class="meta">dreamjob.ru · 2025</div>
+                        <div class="desc">Средняя зарплата секретаря в Москве — 74 000 ₽. Диапазон: 50 000 — 98 000 ₽.</div>
+                    </div>
+                </div>
+
+                <div class="source-card">
+                    <i data-lucide="file-text" class="icon" style="width: 20px; height: 20px;"></i>
+                    <div class="content">
+                        <div class="title"><a href="https://tadviser.com/index.php/Article:Artificial_Intelligence_(Russian_market)" target="_blank">TAdviser — AI в России</a></div>
+                        <div class="meta">tadviser.com · Февраль 2025</div>
+                        <div class="desc">Обзор рынка искусственного интеллекта в России. Бум AI набирает обороты в 2025 году.</div>
+                    </div>
+                </div>
+
+                <div class="source-card">
+                    <i data-lucide="file-text" class="icon" style="width: 20px; height: 20px;"></i>
+                    <div class="content">
+                        <div class="title"><a href="https://www.it-world.ru/it-news/l2r7k8oxoao4wwc44skggg4k800osck.html" target="_blank">IT World — Цифровые сотрудники</a></div>
+                        <div class="meta">it-world.ru · Январь 2026</div>
+                        <div class="desc">Мировой рынок AI-агентов вырастет с $9,8 млрд в 2025 до $220,9 млрд к 2035 (CAGR 36,5%).</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <a href="index.html">Продукт</a>
+            <a href="scenarios.html">Сценарии</a>
+            <a href="integrations.html">Интеграции</a>
+            <a href="economics.html">Экономика</a>
+            <a href="sources.html">Источники</a>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        const lenis = new Lenis({ duration: 0.8, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        document.querySelectorAll('.reveal').forEach(el => { revealObserver.observe(el); });
+    </script>
+</body>
+</html>
