@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Ассистент — Конкуренты</title>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script src="https://unpkg.com/lenis@1.3.21/dist/lenis.min.js"></script>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:#fafafa;color:#1a1a1a;line-height:1.7}
+        .container{max-width:960px;margin:0 auto;padding:0 24px}
+        nav{background:#fff;border-bottom:1px solid #e5e5e5;padding:16px 0;position:sticky;top:0;z-index:100}
+        nav .container{display:flex;justify-content:space-between;align-items:center}
+        nav .logo{font-weight:700;font-size:1.1em;color:#1a1a1a;text-decoration:none;display:flex;align-items:center;gap:8px}
+        nav .links{display:flex;gap:24px}
+        nav .links a{text-decoration:none;color:#666;font-size:0.9em;font-weight:500;transition:color 0.2s}
+        nav .links a:hover,nav .links a.active{color:#1a1a1a}
+        .hero{padding:80px 0 60px;border-bottom:1px solid #e5e5e5;background:#fff}
+        .hero h1{font-size:2.2em;font-weight:800;margin-bottom:12px}
+        .hero .subtitle{font-size:1.1em;color:#555;max-width:600px}
+        .section{padding:50px 0;border-bottom:1px solid #e5e5e5;background:#fff}
+        .section:last-child{border-bottom:none}
+        .section h2{font-size:1.6em;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+        .section h2 i{color:#666}
+        .section p{color:#555;margin-bottom:14px;max-width:650px}
+        .competitor-card{border:1px solid #e5e5e5;border-radius:10px;padding:24px;margin:16px 0;background:#fafafa}
+        .competitor-card .header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+        .competitor-card .logo-box{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.8em;color:#fff;flex-shrink:0}
+        .competitor-card h3{font-size:1.1em;margin:0}
+        .competitor-card .tag{display:inline-block;padding:2px 8px;border-radius:8px;font-size:0.7em;font-weight:600;margin-top:2px}
+        .tag-b2c{background:#f0f0f0;color:#666}
+        .tag-b2b{background:#dbeafe;color:#1e40af}
+        .tag-partial{background:#fef3c7;color:#92400e}
+        .competitor-card .desc{font-size:0.9em;color:#555;margin-bottom:12px}
+        .competitor-card .verdict{padding:10px 14px;background:#fff;border-radius:6px;border:1px solid #e5e5e5;font-size:0.85em}
+        .competitor-card .verdict strong{color:#1a1a1a}
+        table{width:100%;border-collapse:collapse;margin:20px 0;font-size:0.85em}
+        th{background:#f5f5f5;padding:10px 12px;text-align:left;font-weight:600;border-bottom:2px solid #e5e5e5}
+        td{padding:10px 12px;border-bottom:1px solid #e5e5e5}
+        .summary-box{background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:24px;margin:24px 0}
+        .summary-box h3{color:#166534;margin-bottom:12px;font-size:1.1em}
+        .summary-box ul{padding-left:20px}
+        .summary-box li{margin-bottom:6px;font-size:0.9em;color:#166534}
+        .gap-box{background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:24px;margin:24px 0}
+        .gap-box h3{color:#92400e;margin-bottom:12px;font-size:1.1em}
+        .gap-box ul{padding-left:20px}
+        .gap-box li{margin-bottom:6px;font-size:0.9em;color:#92400e}
+        .reveal{opacity:0;transform:translateY(20px);transition:opacity 0.5s ease-out,transform 0.5s ease-out}
+        .reveal.visible{opacity:1;transform:translateY(0)}
+        footer{padding:24px 0;text-align:center;font-size:0.85em;color:#888;background:#fff;border-top:1px solid #e5e5e5}
+        footer a{color:#666;margin:0 8px;text-decoration:none}
+        footer a:hover{color:#1a1a1a}
+        @media(max-width:768px){.hero h1{font-size:1.6em}.competitor-card{padding:16px}}
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <a href="index.html" class="logo"><i data-lucide="headphones" style="width:20px;height:20px"></i>AI-Ассистент</a>
+            <div class="links">
+                <a href="index.html">Продукт</a>
+                <a href="scenarios.html">Сценарии</a>
+                <a href="integrations.html">Интеграции</a>
+                <a href="economics.html">Экономика</a>
+                <a href="focus.html">Фокусы</a>
+                <a href="competitors.html" class="active">Конкуренты</a>
+                <a href="sources.html">Источники</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container">
+            <h1>Анализ конкурентов</h1>
+            <p class="subtitle">Кто ещё обрабатывает пропущенные звонки бизнеса через переадресацию на AI. Критерий: звонок переадресуется, когда долго не берут трубку.</p>
+        </div>
+    </header>
+
+    <section class="section reveal">
+        <div class="container">
+            <h2><i data-lucide="building-2" style="width:24px;height:24px"></i>Большая четвёрка телекома</h2>
+            <p>Четыре крупнейших оператора связи в России. У всех есть переадресация звонков, но есть ли AI-ассистент для бизнеса?</p>
+
+            <div class="competitor-card">
+                <div class="header">
+                    <div class="logo-box" style="background:#7B2D8E">МФ</div>
+                    <div><h3>МегаФон — Ева</h3><span class="tag tag-b2c">Для физических лиц</span></div>
+                </div>
+                <p class="desc">Виртуальный секретарь «Ева» отвечает на звонки, когда абонент долго не берёт трубку, занят или сбросил вызов. Записывает данные, отправляет запись разговора в приложение. Работает на базе AI.</p>
+                <div class="verdict"><strong>Вердикт:</strong> Переадресация при «долго не берут» — есть. Но продукт только для физических лиц, не для бизнеса. Нет записи в календарь, нет сводок владельцу, нет настройки под бизнес.</div>
+            </div>
+
+            <div class="competitor-card">
+                <div class="header">
+                    <div class="logo-box" style="background:#000">T2</div>
+                    <div><h3>Tele2 — Астра</h3><span class="tag tag-b2c">Для физических лиц</span></div>
+                </div>
+                <p class="desc">Виртуальный секретарь «Астра» отвечает на входящие, если абонент не поднимает трубку, находится вне зоны сети или сбрасывает звонок.</p>
+                <div class="verdict"><strong>Вердикт:</strong> Переадресация при «долго не берут» — есть. Но только для физических лиц. Нет бизнес-функций: календарь, запись клиентов, сводки.</div>
+            </div>
+
+            <div class="competitor-card">
+                <div class="header">
+                    <div class="logo-box" style="background:#E30611">МТС</div>
+                    <div><h3>МТС</h3><span class="tag tag-partial">Нет AI-ассистента</span></div>
+                </div>
+                <p class="desc">У МТС есть переадресация звонков (в том числе по условию «не отвечает»), но AI-ассистента, который бы обрабатывал переадресованные звонки для бизнеса, на момент анализа не обнаружено.</p>
+                <div class="verdict"><strong>Вердикт:</strong> Переадресация — есть. AI-обработка переадресованных звонков для бизнеса — нет.</div>
+            </div>
+
+            <div class="competitor-card">
+                <div class="header">
+                    <div class="logo-box" style="background:#2D5AA0">РТ</div>
+                    <div><h3>Ростелеком / Телфин</h3><span class="tag tag-partial">Виртуальная АТС</span></div>
+                </div>
+                <p class="desc">Виртуальная АТС с переадресацией, маршрутизацией, SMS на пропущенные. Телфин заявляет сокращение пропущенных в 3 раза. Но это не AI-ассистент, который разговаривает с клиентом.</p>
+                <div class="verdict"><strong>Вердикт:</strong> Переадресация — есть. AI-разговор с клиентом — нет. SMS на пропущенные — есть, но это не замена разговору.</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section reveal">
+        <div class="container">
+            <h2><i data-lucide="rocket" style="width:24px;height:24px"></i>Стартапы и другие решения</h2>
+
+            <div class="competitor-card">
+                <div class="header">
+                    <div class="logo-box" style="background:#FF6B00">ZD</div>
+                    <div><h3>Zadarma — AI Voice Agent</h3><span class="tag tag-b2b">Для бизнеса</span></div>
+                </div>
+                <p class="desc">Облачная телефония + AI-голосовой агент. Работает 24/7, поддерживает 20+ языков, снижает пропущенные в часы пик.</p>
+                <div class="verdict"><strong>Вердикт:</strong> AI для бизнеса — есть. Но это замена телефонии, а не надстройка над существующей. Клиент должен перейти на Zadarma полностью. Переадресация с личного номера на AI — нет.</div>
+            </div>
+
+            <div class="competitor-card">
+                <div class="header">
+                    <div class="logo-box" style="background:#4F46E5">V1</div>
+                    <div><h3>voice-one.ai</h3><span class="tag tag-b2b">Для бизнеса</span></div>
+                </div>
+                <p class="desc">ИИ-телефонный ассистент для бизнеса. Отвечает 24/7, записывает на приём, маршрутизирует звонки.</p>
+                <div class="verdict"><strong>Вердикт:</strong> AI для бизнеса — есть. Но это замена телефонии, не надстройка. Переадресация с существующего номера после «долго не берут» — не заявлено.</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section reveal">
+        <div class="container">
+            <h2><i data-lucide="check-circle" style="width:24px;height:24px"></i>Итоговое сравнение</h2>
+            <table>
+                <thead><tr><th>Решение</th><th style="text-align:center">Переадресация</th><th style="text-align:center">AI-разговор</th><th style="text-align:center">Для бизнеса</th><th style="text-align:center">Календарь</th><th style="text-align:center">Сводка</th></tr></thead>
+                <tbody>
+                    <tr><td style="font-weight:600">AI-Ассистент (мы)</td><td style="text-align:center;color:#16a34a">✓</td><td style="text-align:center;color:#16a34a">✓</td><td style="text-align:center;color:#16a34a">✓</td><td style="text-align:center;color:#16a34a">✓</td><td style="text-align:center;color:#16a34a">✓</td></tr>
+                    <tr><td>МегаФон — Ева</td><td style="text-align:center;color:#16a34a">✓</td><td style="text-align:center;color:#16a34a">✓</td><td style="text-align:center;color:#dc2626">✗</td><td style="text-align:center;color:#dc2626">✗</td><td style="text-align:center;color:#dc2626">✗</td></tr>
+                    <tr><td>Tele2 — Астра</td><td style="text-align:center;color:#16a34a">✓</td><td style="text-align:center;color:#16a34a">✓</td><td style="text-align:center;color:#dc2626">✗</td><td style="text-align:center;color:#dc2626">✗</td><td style="text-align:center;color:#dc2626">✗</td></tr>
+                    <tr><td>МТС</td><td style="text-align:center;color:#16a34a">✓</td><td style="text-align:center;color:#dc2626">✗</td><td style="text-align:center;color:#dc2626">✗</td><td style="text-align:center;color:#dc2626">✗</td><td style="text-align:center;color:#dc2626">✗</td></tr>
+                    <tr><td>Ростелеком</td><td style="text-align:center;color:#16a34a">✓</td><td style="text-align:center;color:#dc2626">✗</td><td style="text-align:center;color:#16a34a">✓</td><td style="text-align:center;color:#dc2626">✗</td><td style="text-align:center;color:#dc2626">✗</td></tr>
+                    <tr><td>Zadarma AI</td><td style="text-align:center;color:#dc2626">✗</td><td style="text-align:center;color:#16a34a">✓</td><td style="text-align:center;color:#16a34a">✓</td><td style="text-align:center;color:#16a34a">✓</td><td style="text-align:center;color:#16a34a">✓</td></tr>
+                    <tr><td>voice-one.ai</td><td style="text-align:center;color:#dc2626">✗</td><td style="text-align:center;color:#16a34a">✓</td><td style="text-align:center;color:#16a34a">✓</td><td style="text-align:center;color:#16a34a">✓</td><td style="text-align:center;color:#888">?</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="section reveal">
+        <div class="container">
+            <div class="gap-box">
+                <h3>Наша ниша</h3>
+                <p style="color:#92400e;margin:0 0 12px;font-size:0.9em">Ни один конкурент не закрывает все три условия одновременно:</p>
+                <ul>
+                    <li><strong>Переадресация</strong> с существующего номера после «долго не берут» — есть у операторов, но нет у AI-стартапов</li>
+                    <li><strong>AI-разговор</strong> с клиентом — есть у стартапов, но нет у операторов (для бизнеса)</li>
+                    <li><strong>Для бизнеса</strong> с календарём и сводками — есть у Zadarma, но без переадресации</li>
+                </ul>
+            </div>
+
+            <div class="summary-box">
+                <h3>Наше конкурентное преимущество</h3>
+                <ul>
+                    <li>Работает через переадресацию — подключается к любому номеру</li>
+                    <li>AI-разговор + запись в календарь + сводка владельцу — всё в одном</li>
+                    <li>Настройка за 15 минут — загрузил документы о бизнесе, подключил календарь</li>
+                    <li>Цена от 499 ₽/мес — в 100+ раз дешевле ресепшиониста</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <a href="index.html">Продукт</a>
+            <a href="scenarios.html">Сценарии</a>
+            <a href="integrations.html">Интеграции</a>
+            <a href="economics.html">Экономика</a>
+            <a href="focus.html">Фокусы</a>
+            <a href="competitors.html">Конкуренты</a>
+            <a href="sources.html">Источники</a>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        const lenis=new Lenis({duration:0.8,easing:(t)=>Math.min(1,1.001-Math.pow(2,-10*t)),smoothWheel:true});
+        function raf(time){lenis.raf(time);requestAnimationFrame(raf);}
+        requestAnimationFrame(raf);
+        const revealObserver=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+        document.querySelectorAll('.reveal').forEach(el=>{revealObserver.observe(el);});
+    </script>
+</body>
+</html>

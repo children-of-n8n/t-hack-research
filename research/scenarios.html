@@ -8,98 +8,78 @@
     <script src="https://unpkg.com/lenis@1.3.21/dist/lenis.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #fafafa; color: #1a1a1a; line-height: 1.7; }
-        .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
-        nav { background: #fff; border-bottom: 1px solid #e5e5e5; padding: 16px 0; position: sticky; top: 0; z-index: 100; }
-        nav .container { display: flex; justify-content: space-between; align-items: center; }
-        nav .logo { font-weight: 700; font-size: 1.1em; color: #1a1a1a; text-decoration: none; display: flex; align-items: center; gap: 8px; }
-        nav .links { display: flex; gap: 24px; }
-        nav .links a { text-decoration: none; color: #666; font-size: 0.9em; font-weight: 500; transition: color 0.2s; }
-        nav .links a:hover, nav .links a.active { color: #1a1a1a; }
-        .hero { padding: 80px 0 60px; border-bottom: 1px solid #e5e5e5; background: #fff; }
-        .hero h1 { font-size: 2.5em; font-weight: 800; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
-        .hero h1 i { color: #666; }
-        .hero .subtitle { font-size: 1.2em; color: #555; }
-        .section { padding: 60px 0; border-bottom: 1px solid #e5e5e5; background: #fff; }
-        .section:last-child { border-bottom: none; }
-        .section h2 { font-size: 1.8em; font-weight: 700; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; }
-        .section h2 i { color: #666; }
-        .section h3 { font-size: 1.2em; font-weight: 600; margin: 32px 0 16px; }
-        .section p { color: #555; margin-bottom: 16px; }
-        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin: 24px 0; }
-        .stat-item { text-align: left; padding: 20px; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e5e5; }
-        .stat-item .icon { color: #666; margin-bottom: 8px; }
-        .stat-item .number { font-size: 1.8em; font-weight: 800; display: block; margin-bottom: 4px; }
-        .stat-item .label { font-size: 0.85em; color: #666; }
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.9em; }
-        th { background: #f5f5f5; padding: 10px 12px; text-align: left; font-weight: 600; border-bottom: 2px solid #e5e5e5; }
-        td { padding: 10px 12px; border-bottom: 1px solid #e5e5e5; }
-        .highlight { background: #f9fafb; border-left: 3px solid #1a1a1a; padding: 16px 20px; margin: 24px 0; }
-        .highlight p { margin: 0; color: #333; }
-        .source { font-size: 0.8em; color: #888; margin-top: 12px; }
-        .source a { color: #666; text-decoration: underline; }
-        .chart-container { position: relative; height: 250px; margin: 24px 0; padding: 20px; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e5e5; opacity: 0; transform: translateY(20px); transition: all 0.6s ease-out; }
-        .chart-container.visible { opacity: 1; transform: translateY(0); }
-
-        .prof { padding: 32px 0; border-bottom: 1px solid #e5e5e5; }
-        .prof:last-child { border-bottom: none; }
-        .prof h3 { font-size: 1.4em; margin: 0 0 16px; display: flex; align-items: center; gap: 10px; }
-        .prof h3 i { color: #666; }
-        .prof-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 16px 0; }
-        .prof-stat { text-align: center; padding: 12px; background: #f9fafb; border-radius: 6px; border: 1px solid #e5e5e5; }
-        .prof-stat .val { font-size: 1.3em; font-weight: 800; display: block; }
-        .prof-stat .lbl { font-size: 0.8em; color: #666; }
-        .prof ul { padding-left: 20px; margin: 12px 0; }
-        .prof li { margin-bottom: 6px; color: #555; font-size: 0.9em; }
-
-        .dialog-box { background: #f9fafb; border: 1px solid #e5e5e5; border-radius: 8px; padding: 20px; margin: 16px 0; }
-        .dialog-box .time { font-size: 0.85em; font-weight: 600; color: #666; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
-        .dialog { padding: 10px 14px; margin: 8px 0; border-radius: 6px; font-size: 0.9em; background: #fff; }
-        .dialog.client { border-left: 3px solid #999; }
-        .dialog.ai { border-left: 3px solid #1a1a1a; }
-        .dialog .who { font-weight: 700; margin-right: 6px; }
-        .result { background: #f0fdf4; border: 1px solid #bbf7d0; padding: 10px 14px; border-radius: 6px; font-size: 0.85em; margin-top: 12px; color: #166534; }
-
-        .filters { display: flex; gap: 8px; margin: 20px 0; flex-wrap: wrap; }
-        .filter-btn { padding: 6px 14px; border: 1px solid #ddd; background: #fff; border-radius: 4px; cursor: pointer; font-size: 0.85em; transition: all 0.2s; }
-        .filter-btn:hover, .filter-btn.active { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
-
-        .survey { background: #f9fafb; border: 1px solid #e5e5e5; border-radius: 8px; padding: 24px; margin: 24px 0; }
-        .survey ol { padding-left: 20px; }
-        .survey li { margin-bottom: 8px; color: #333; font-size: 0.9em; }
-
-        footer { padding: 32px 0; text-align: center; font-size: 0.85em; color: #888; background: #fff; border-top: 1px solid #e5e5e5; }
-        footer a { color: #666; margin: 0 8px; text-decoration: none; }
-        footer a:hover { color: #1a1a1a; }
-
-        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
-        .reveal.visible { opacity: 1; transform: translateY(0); }
-        .reveal-scale { opacity: 0; transform: scale(0.95); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
-        .reveal-scale.visible { opacity: 1; transform: scale(1); }
-
-        .tier-heading { font-size: 1.4em; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
-        .tier-heading i { color: #666; }
-
-        @media (max-width: 768px) {
-            .stats-row, .prof-stats { grid-template-columns: repeat(2, 1fr); }
-            .hero h1 { font-size: 1.8em; }
-        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:#fafafa;color:#1a1a1a;line-height:1.7}
+        .container{max-width:960px;margin:0 auto;padding:0 24px}
+        nav{background:#fff;border-bottom:1px solid #e5e5e5;padding:16px 0;position:sticky;top:0;z-index:100}
+        nav .container{display:flex;justify-content:space-between;align-items:center}
+        nav .logo{font-weight:700;font-size:1.1em;color:#1a1a1a;text-decoration:none;display:flex;align-items:center;gap:8px}
+        nav .links{display:flex;gap:24px}
+        nav .links a{text-decoration:none;color:#666;font-size:0.9em;font-weight:500;transition:color 0.2s}
+        nav .links a:hover,nav .links a.active{color:#1a1a1a}
+        .hero{padding:80px 0 60px;border-bottom:1px solid #e5e5e5;background:#fff}
+        .hero h1{font-size:2.2em;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:12px}
+        .hero h1 i{color:#666}
+        .hero .subtitle{font-size:1.1em;color:#555}
+        .section{padding:50px 0;border-bottom:1px solid #e5e5e5;background:#fff}
+        .section:last-child{border-bottom:none}
+        .section h2{font-size:1.6em;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+        .section h2 i{color:#666}
+        .section p{color:#555;margin-bottom:14px;max-width:650px}
+        .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:24px 0}
+        .stat-item{text-align:left;padding:16px;background:#f9fafb;border-radius:8px;border:1px solid #e5e5e5}
+        .stat-item .number{font-size:1.6em;font-weight:800;color:#1a1a1a;display:block;margin-bottom:2px}
+        .stat-item .label{font-size:0.8em;color:#666}
+        table{width:100%;border-collapse:collapse;margin:20px 0;font-size:0.9em}
+        th{background:#f5f5f5;padding:10px 12px;text-align:left;font-weight:600;border-bottom:2px solid #e5e5e5}
+        td{padding:10px 12px;border-bottom:1px solid #e5e5e5}
+        .chart-container{position:relative;height:250px;margin:24px 0;padding:20px;background:#f9fafb;border-radius:8px;border:1px solid #e5e5e5}
+        .filters{display:flex;gap:8px;margin:20px 0;flex-wrap:wrap}
+        .filter-btn{padding:6px 14px;border:1px solid #ddd;background:#fff;border-radius:4px;cursor:pointer;font-size:0.85em;transition:all 0.2s}
+        .filter-btn:hover,.filter-btn.active{background:#1a1a1a;color:#fff;border-color:#1a1a1a}
+        .prof{padding:32px 0;border-bottom:1px solid #e5e5e5}
+        .prof:last-child{border-bottom:none}
+        .prof h3{font-size:1.3em;margin:0 0 16px;display:flex;align-items:center;gap:10px}
+        .prof h3 i{color:#666}
+        .prof-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:16px 0}
+        .prof-stat{text-align:center;padding:12px;background:#f9fafb;border-radius:6px;border:1px solid #e5e5e5}
+        .prof-stat .val{font-size:1.2em;font-weight:800;display:block}
+        .prof-stat .lbl{font-size:0.8em;color:#666}
+        .prof ul{padding-left:20px;margin:12px 0}
+        .prof li{margin-bottom:6px;color:#555;font-size:0.9em}
+        .dialog-box{background:#f9fafb;border:1px solid #e5e5e5;border-radius:8px;padding:20px;margin:16px 0}
+        .dialog-box .time{font-size:0.8em;font-weight:600;color:#666;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+        .dialog{padding:8px 12px;margin:6px 0;border-radius:6px;font-size:0.85em;background:#fff}
+        .dialog.client{border-left:3px solid #999}
+        .dialog.ai{border-left:3px solid #1a1a1a}
+        .dialog .who{font-weight:700;margin-right:4px}
+        .result{background:#f0fdf4;border:1px solid #bbf7d0;padding:10px 12px;border-radius:6px;font-size:0.85em;margin-top:10px;color:#166534}
+        .survey{background:#f9fafb;border:1px solid #e5e5e5;border-radius:8px;padding:24px;margin:24px 0}
+        .survey ol{padding-left:20px}
+        .survey li{margin-bottom:8px;color:#333;font-size:0.9em}
+        .tier-heading{font-size:1.4em;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+        .tier-heading i{color:#666}
+        .source{font-size:0.8em;color:#888;margin-top:10px}
+        .source a{color:#666;text-decoration:underline}
+        .reveal{opacity:0;transform:translateY(20px);transition:opacity 0.5s ease-out,transform 0.5s ease-out}
+        .reveal.visible{opacity:1;transform:translateY(0)}
+        footer{padding:24px 0;text-align:center;font-size:0.85em;color:#888;background:#fff;border-top:1px solid #e5e5e5}
+        footer a{color:#666;margin:0 8px;text-decoration:none}
+        footer a:hover{color:#1a1a1a}
+        @media(max-width:768px){.stats-row,.prof-stats{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:1.6em}}
     </style>
 </head>
 <body>
     <nav>
         <div class="container">
-            <a href="index.html" class="logo">
-                <i data-lucide="headphones" style="width: 20px; height: 20px;"></i>
-                AI-Ассистент
-            </a>
+            <a href="index.html" class="logo"><i data-lucide="headphones" style="width:20px;height:20px"></i>AI-Ассистент</a>
             <div class="links">
                 <a href="index.html">Продукт</a>
                 <a href="scenarios.html" class="active">Сценарии</a>
                 <a href="integrations.html">Интеграции</a>
                 <a href="economics.html">Экономика</a>
                 <a href="focus.html">Фокусы</a>
+                <a href="competitors.html">Конкуренты</a>
                 <a href="sources.html">Источники</a>
             </div>
         </div>
@@ -107,38 +87,21 @@
 
     <header class="hero">
         <div class="container">
-            <h1><i data-lucide="message-square" style="width: 32px; height: 32px;"></i> Сценарии по профессиям</h1>
+            <h1><i data-lucide="message-square" style="width:32px;height:32px"></i>Сценарии по профессиям</h1>
             <p class="subtitle">Детальные диалоги AI с клиентами для 15 профессий</p>
         </div>
     </header>
 
     <section class="section reveal">
         <div class="container">
-            <h2><i data-lucide="bar-chart-3" style="width: 28px; height: 28px;"></i> Обзор рынка</h2>
+            <h2><i data-lucide="bar-chart-3" style="width:24px;height:24px"></i>Обзор рынка</h2>
             <div class="stats-row">
-                <div class="stat-item">
-                    <i data-lucide="building-2" class="icon" style="width: 24px; height: 24px;"></i>
-                    <span class="number">6,7 млн</span>
-                    <span class="label">предприятий в РФ</span>
-                </div>
-                <div class="stat-item">
-                    <i data-lucide="phone-off" class="icon" style="width: 24px; height: 24px;"></i>
-                    <span class="number">34%</span>
-                    <span class="label">пропущенных звонков</span>
-                </div>
-                <div class="stat-item">
-                    <i data-lucide="briefcase" class="icon" style="width: 24px; height: 24px;"></i>
-                    <span class="number">15</span>
-                    <span class="label">профессий разобрано</span>
-                </div>
-                <div class="stat-item">
-                    <i data-lucide="users" class="icon" style="width: 24px; height: 24px;"></i>
-                    <span class="number">~1 млн</span>
-                    <span class="label">целевых бизнесов</span>
-                </div>
+                <div class="stat-item"><span class="number">6,7 млн</span><span class="label">предприятий в РФ</span></div>
+                <div class="stat-item"><span class="number">34%</span><span class="label">пропущенных звонков</span></div>
+                <div class="stat-item"><span class="number">15</span><span class="label">профессий разобрано</span></div>
+                <div class="stat-item"><span class="number">~1 млн</span><span class="label">целевых бизнесов</span></div>
             </div>
-
-            <h3>Приоритетные сегменты</h3>
+            <h3 style="font-size:1.2em;font-weight:600;margin:24px 0 16px">Приоритетные сегменты</h3>
             <table>
                 <thead><tr><th>Сегмент</th><th>Количество</th><th>Пропуски</th><th>Средний чек</th></tr></thead>
                 <tbody>
@@ -149,15 +112,14 @@
                     <tr><td>Автосервисы</td><td>117 500</td><td>40%</td><td>15 000 ₽</td></tr>
                 </tbody>
             </table>
-
             <div class="chart-container"><canvas id="segmentsChart"></canvas></div>
-            <p class="source">Источники: <a href="https://www.economy.gov.ru/material/news/chislennost_malyh_isrednih_predpriyatiy_vrossii_obnovila_rekord_iprevysila_67_mln.html" target="_blank">Минэкономразвития</a>, <a href="https://tech.megafon.ru/information/vas-zvonok-ocen-vazen-dlia-nas-kak-ne-teriat-budushhix-klientov" target="_blank">МегаФон</a>, <a href="https://m.autostat.ru/infographics/59270/" target="_blank">Автостат</a></p>
+            <p class="source">Минэкономразвития (<a href="https://www.economy.gov.ru/material/news/chislennost_malyh_isrednih_predpriyatiy_vrossii_obnovila_rekord_iprevysila_67_mln.html" target="_blank">источник</a>), МегаФон (<a href="https://tech.megafon.ru/information/vas-zvonok-ocen-vazen-dlia-nas-kak-ne-teriat-budushhix-klientov" target="_blank">источник</a>), Автостат (<a href="https://m.autostat.ru/infographics/59270/" target="_blank">источник</a>)</p>
         </div>
     </section>
 
     <section class="section reveal">
         <div class="container">
-            <h2><i data-lucide="filter" style="width: 28px; height: 28px;"></i> Фильтр</h2>
+            <h2><i data-lucide="filter" style="width:24px;height:24px"></i>Фильтр</h2>
             <div class="filters">
                 <button class="filter-btn active" onclick="filter('all')">Все</button>
                 <button class="filter-btn" onclick="filter('tier1')">Приоритет</button>
@@ -169,30 +131,28 @@
 
     <section class="section reveal">
         <div class="container">
-            <h2 class="tier-heading" data-tier="tier1"><i data-lucide="star" style="width: 24px; height: 24px;"></i> Приоритетные сегменты</h2>
+            <h2 class="tier-heading" data-tier="tier1"><i data-lucide="star" style="width:24px;height:24px"></i>Приоритетные сегменты</h2>
 
             <div class="prof" data-tier="tier1">
-                <h3><i data-lucide="heart-pulse" style="width: 24px; height: 24px;"></i> Стоматологии</h3>
+                <h3><i data-lucide="heart-pulse" style="width:24px;height:24px"></i>Стоматологии</h3>
                 <div class="prof-stats">
                     <div class="prof-stat"><span class="val">~35 000</span><span class="lbl">клиник</span></div>
                     <div class="prof-stat"><span class="val">717 млрд ₽</span><span class="lbl">рынок</span></div>
                     <div class="prof-stat"><span class="val">34%</span><span class="lbl">пропусков</span></div>
                 </div>
                 <p><strong>Типичные звонки:</strong> «Новых принимаете?», «Сколько имплант?», «Острая боль, срочно!», «Страховку принимаете?»</p>
-
-                <h4>Сценарий: острая боль после часов</h4>
+                <h4 style="font-size:1em;font-weight:600;margin:16px 0 12px">Сценарий: острая боль после часов</h4>
                 <div class="dialog-box">
-                    <div class="time"><i data-lucide="clock" style="width: 14px; height: 14px;"></i> 20:30, клиника закрыта</div>
+                    <div class="time"><i data-lucide="clock" style="width:14px;height:14px"></i> 20:30, клиника закрыта</div>
                     <div class="dialog client"><span class="who">Клиент:</span> «У меня ужасно болит зуб, вы открыты?»</div>
                     <div class="dialog ai"><span class="who">AI:</span> «Понимаю, зубная боль — это серьёзно. Мы сейчас закрыты, но есть окно завтра в 8:00. Записать? А пока — примите ибупрофен 400мг, приложите холод.»</div>
                     <div class="dialog client"><span class="who">Клиент:</span> «Да, запишите на 8:00. Анна.»</div>
                     <div class="dialog ai"><span class="who">AI:</span> «Анна, вы записаны завтра на 8:00. Напоминание придёт за 2 часа. Если боль усилится — вызовите скорую.»</div>
                     <div class="result">Врач получает: «ЭКСТРЕННЫЙ: Анна, 8:00, острая боль. Даны рекомендации.»</div>
                 </div>
-
-                <h4>Сценарий: консультация по импланту</h4>
+                <h4 style="font-size:1em;font-weight:600;margin:16px 0 12px">Сценарий: консультация по импланту</h4>
                 <div class="dialog-box">
-                    <div class="time"><i data-lucide="clock" style="width: 14px; height: 14px;"></i> 14:00, врач на приёме</div>
+                    <div class="time"><i data-lucide="clock" style="width:14px;height:14px"></i> 14:00, врач на приёме</div>
                     <div class="dialog client"><span class="who">Клиент:</span> «Сколько стоит имплант под ключ?»</div>
                     <div class="dialog ai"><span class="who">AI:</span> «Имплант под ключ — от 45 000 до 95 000 ₽. Включает: имплант, абатмент, коронку. Хотите на бесплатную консультацию?»</div>
                     <div class="result">Запись на консультацию. Средний чек: 65 000 ₽.</div>
@@ -200,17 +160,16 @@
             </div>
 
             <div class="prof" data-tier="tier1">
-                <h3><i data-lucide="scale" style="width: 24px; height: 24px;"></i> Юристы</h3>
+                <h3><i data-lucide="scale" style="width:24px;height:24px"></i>Юристы</h3>
                 <div class="prof-stats">
                     <div class="prof-stat"><span class="val">84 351</span><span class="lbl">адвокатов</span></div>
                     <div class="prof-stat"><span class="val">50 000 ₽</span><span class="lbl">средний чек</span></div>
                     <div class="prof-stat"><span class="val">40%</span><span class="lbl">пропусков</span></div>
                 </div>
                 <p><strong>Типичные звонки:</strong> «Разводы/ДТП?», «Сколько консультация?», «Срочная помощь!», «Процент выигранных?»</p>
-
-                <h4>Сценарий: ДТП</h4>
+                <h4 style="font-size:1em;font-weight:600;margin:16px 0 12px">Сценарий: ДТП</h4>
                 <div class="dialog-box">
-                    <div class="time"><i data-lucide="clock" style="width: 14px; height: 14px;"></i> 11:00, адвокат в суде</div>
+                    <div class="time"><i data-lucide="clock" style="width:14px;height:14px"></i> 11:00, адвокат в суде</div>
                     <div class="dialog client"><span class="who">Клиент:</span> «Меня остановили, нужна помощь!»</div>
                     <div class="dialog ai"><span class="who">AI:</span> «Понимаю. Адвокат в суде. Это ДТП? Вам нужна помощь прямо сейчас?»</div>
                     <div class="dialog client"><span class="who">Клиент:</span> «Да, я в ДТП, второй водитель агрессивен.»</div>
@@ -220,37 +179,35 @@
             </div>
 
             <div class="prof" data-tier="tier1">
-                <h3><i data-lucide="wrench" style="width: 24px; height: 24px;"></i> Домашние сервисы</h3>
+                <h3><i data-lucide="wrench" style="width:24px;height:24px"></i>Домашние сервисы</h3>
                 <div class="prof-stats">
                     <div class="prof-stat"><span class="val">~500 000</span><span class="lbl">ИП и компаний</span></div>
                     <div class="prof-stat"><span class="val">5 000 ₽</span><span class="lbl">средний чек</span></div>
                     <div class="prof-stat"><span class="val">60%</span><span class="lbl">пропусков</span></div>
                 </div>
                 <p><strong>Типичные звонки:</strong> «Трубу прорвало!», «Сколько смеситель?», «В моём районе работаете?», «Лицензия есть?»</p>
-
-                <h4>Сценарий: аварийный вызов</h4>
+                <h4 style="font-size:1em;font-weight:600;margin:16px 0 12px">Сценарий: аварийный вызов</h4>
                 <div class="dialog-box">
-                    <div class="time"><i data-lucide="clock" style="width: 14px; height: 14px;"></i> 23:15, мастер дома</div>
+                    <div class="time"><i data-lucide="clock" style="width:14px;height:14px"></i> 23:15, мастер дома</div>
                     <div class="dialog client"><span class="who">Клиент:</span> «У нас потоп! Батарея лопнула!»</div>
                     <div class="dialog ai"><span class="who">AI:</span> «Это аварийная ситуация! Ваш адрес? Перекройте воду — вентиль у входа.»</div>
                     <div class="dialog client"><span class="who">Клиент:</span> «ул. Ленина 45. Вода перекрыта.»</div>
                     <div class="dialog ai"><span class="who">AI:</span> «Мастер выедет через 30 минут. Аварийный вызов — от 5 000 ₽. Точная цена после осмотра.»</div>
-                    <div class="result">Мастер получает адрес. Выезд. Средний чек: 12 000 ₽.</div>
+                    <div class="result">Мастер уведомлён. Средний чек: 12 000 ₽.</div>
                 </div>
             </div>
 
             <div class="prof" data-tier="tier1">
-                <h3><i data-lucide="scissors" style="width: 24px; height: 24px;"></i> Салоны красоты</h3>
+                <h3><i data-lucide="scissors" style="width:24px;height:24px"></i>Салоны красоты</h3>
                 <div class="prof-stats">
                     <div class="prof-stat"><span class="val">~180 000</span><span class="lbl">салонов</span></div>
                     <div class="prof-stat"><span class="val">2 500 ₽</span><span class="lbl">средний чек</span></div>
                     <div class="prof-stat"><span class="val">3-5/день</span><span class="lbl">пропусков</span></div>
                 </div>
                 <p><strong>Типичные звонки:</strong> «Место завтра?», «Сколько окрашивание?», «К конкретному мастеру можно?»</p>
-
-                <h4>Сценарий: пик в субботу</h4>
+                <h4 style="font-size:1em;font-weight:600;margin:16px 0 12px">Сценарий: пик в субботу</h4>
                 <div class="dialog-box">
-                    <div class="time"><i data-lucide="clock" style="width: 14px; height: 14px;"></i> Суббота 13:00, все мастера заняты</div>
+                    <div class="time"><i data-lucide="clock" style="width:14px;height:14px"></i> Суббота 13:00, все мастера заняты</div>
                     <div class="dialog client"><span class="who">Клиент:</span> «Хочу окрашивание завтра.»</div>
                     <div class="dialog ai"><span class="who">AI:</span> «Окрашивание — от 3 500 ₽. На завтра: 11:00 у Анны, 15:00 у Елены. К кому?»</div>
                     <div class="dialog client"><span class="who">Клиент:</span> «К Анне.»</div>
@@ -260,43 +217,41 @@
             </div>
 
             <div class="prof" data-tier="tier1">
-                <h3><i data-lucide="car" style="width: 24px; height: 24px;"></i> Автосервисы</h3>
+                <h3><i data-lucide="car" style="width:24px;height:24px"></i>Автосервисы</h3>
                 <div class="prof-stats">
                     <div class="prof-stat"><span class="val">117 500</span><span class="lbl">точек</span></div>
                     <div class="prof-stat"><span class="val">1 трлн ₽</span><span class="lbl">рынок</span></div>
                     <div class="prof-stat"><span class="val">40%</span><span class="lbl">пропусков</span></div>
                 </div>
                 <p><strong>Типичные звонки:</strong> «Не заводится», «Сколько колодки?», «С моей маркой работаете?», «Машина готова?»</p>
-
-                <h4>Сценарий: механик под машиной</h4>
+                <h4 style="font-size:1em;font-weight:600;margin:16px 0 12px">Сценарий: механик под машиной</h4>
                 <div class="dialog-box">
-                    <div class="time"><i data-lucide="clock" style="width: 14px; height: 14px;"></i> 10:00, все механики заняты</div>
+                    <div class="time"><i data-lucide="clock" style="width:14px;height:14px"></i> 10:00, все механики заняты</div>
                     <div class="dialog client"><span class="who">Клиент:</span> «Стук в подвеске, сколько диагностика?»</div>
                     <div class="dialog ai"><span class="who">AI:</span> «Диагностика — 1 500 ₽ (бесплатно при ремонте). Окна: сегодня 14:00 или завтра 10:00. Марка авто?»</div>
                     <div class="dialog client"><span class="who">Клиент:</span> «Toyota Camry, сегодня 14:00.»</div>
                     <div class="dialog ai"><span class="who">AI:</span> «Записали! Toyota Camry, 14:00, диагностика. Адрес: ул. Мира 15.»</div>
-                    <div class="result">Запись без механиков. Средний чек ремонта: 15 000 ₽.</div>
+                    <div class="result">Записан. Средний чек ремонта: 15 000 ₽.</div>
                 </div>
             </div>
-
         </div>
     </section>
 
     <section class="section reveal">
         <div class="container">
-            <h2 class="tier-heading" data-tier="tier2"><i data-lucide="trending-up" style="width: 24px; height: 24px;"></i> Перспективные сегменты</h2>
+            <h2 class="tier-heading" data-tier="tier2"><i data-lucide="trending-up" style="width:24px;height:24px"></i>Перспективные сегменты</h2>
 
             <div class="prof" data-tier="tier2">
-                <h3><i data-lucide="home" style="width: 24px; height: 24px;"></i> Риэлторы</h3>
+                <h3><i data-lucide="home" style="width:24px;height:24px"></i>Риэлторы</h3>
                 <div class="prof-stats">
                     <div class="prof-stat"><span class="val">~250 000</span><span class="lbl">агентов</span></div>
                     <div class="prof-stat"><span class="val">150 000 ₽</span><span class="lbl">комиссия</span></div>
                     <div class="prof-stat"><span class="val">78%</span><span class="lbl">выбирают первого</span></div>
                 </div>
                 <div class="dialog-box">
-                    <div class="time"><i data-lucide="clock" style="width: 14px; height: 14px;"></i> 11:00, риэлтор на показе</div>
+                    <div class="time"><i data-lucide="clock" style="width:14px;height:14px"></i> 11:00, риэлтор на показе</div>
                     <div class="dialog client"><span class="who">Клиент:</span> «Квартира на ул. Мира 45 доступна?»</div>
-                    <div class="dialog ai"><span class="who">AI:</span> «Да! Записать на просмотр? Завтра 12:00 или 18:00.»</div>
+                    <div class="dialog ai"><span class="who">AI:</span> «Да! Записать на просмотр? Завтра 12:00 или 18:00?»</div>
                     <div class="dialog client"><span class="who">Клиент:</span> «18:00.»</div>
                     <div class="dialog ai"><span class="who">AI:</span> «Записала! Завтра 18:00, 3-комн., 75 м². Риэлтор подтвердит.»</div>
                     <div class="result">Комиссия при сделке: 150 000 — 300 000 ₽.</div>
@@ -304,58 +259,59 @@
             </div>
 
             <div class="prof" data-tier="tier2">
-                <h3><i data-lucide="calculator" style="width: 24px; height: 24px;"></i> Бухгалтеры</h3>
+                <h3><i data-lucide="calculator" style="width:24px;height:24px"></i>Бухгалтеры</h3>
                 <div class="prof-stats">
                     <div class="prof-stat"><span class="val">~200 000</span><span class="lbl">ИП</span></div>
                     <div class="prof-stat"><span class="val">40%</span><span class="lbl">в сезон</span></div>
                 </div>
                 <div class="dialog-box">
-                    <div class="time"><i data-lucide="clock" style="width: 14px; height: 14px;"></i> 10:00, бухгалтер сдаёт отчётность</div>
+                    <div class="time"><i data-lucide="clock" style="width:14px;height:14px"></i> 10:00, бухгалтер сдаёт отчётность</div>
                     <div class="dialog client"><span class="who">Клиент:</span> «Нужна нулевая отчётность за ИП.»</div>
-                    <div class="dialog ai"><span class="who">AI:</span> «Нулевая отчётность — 3 000 ₽, срок 1-2 дня. Нужны ИНН, ОГРНИП. Оформить?»</div>
+                    <div class="dialog ai"><span class="who">AI:</span> «Нулевая — 3 000 ₽, срок 1-2 дня. Нужны ИНН, ОГРНИП. Оформить?»</div>
                     <div class="result">Заявка оформлена. Бухгалтер обрабатывает в перерыве.</div>
                 </div>
             </div>
 
             <div class="prof" data-tier="tier2">
-                <h3><i data-lucide="cat" style="width: 24px; height: 24px;"></i> Ветклиники</h3>
+                <h3><i data-lucide="cat" style="width:24px;height:24px"></i>Ветклиники</h3>
                 <div class="prof-stats">
                     <div class="prof-stat"><span class="val">~15 000</span><span class="lbl">клиник</span></div>
                     <div class="prof-stat"><span class="val">3 000 ₽</span><span class="lbl">средний чек</span></div>
                 </div>
                 <div class="dialog-box">
-                    <div class="time"><i data-lucide="clock" style="width: 14px; height: 14px;"></i> 22:00, клиника закрыта</div>
-                    <div class="dialog client"><span class="who">Клиент:</span> «Кот упал с балкона, дышит тяжело!»</div>
+                    <div class="time"><i data-lucide="clock" style="width:14px;height:14px"></i> 22:00, клиника закрыта</div>
+                    <div class="dialog client"><span class="who">Клиент:</span> «Кот упал с балкона!»</div>
                     <div class="dialog ai"><span class="who">AI:</span> «Экстренная ситуация! Ближайшая круглосуточная клиника: [адрес]. Езжайте немедленно!»</div>
-                    <div class="result">Клиент получил помощь. Утром клиника получает запись о случае.</div>
+                    <div class="result">Клиент получил помощь.</div>
                 </div>
             </div>
 
             <div class="prof" data-tier="tier2">
-                <h3><i data-lucide="brain" style="width: 24px; height: 24px;"></i> Психологи</h3>
+                <h3><i data-lucide="brain" style="width:24px;height:24px"></i>Психологи</h3>
                 <div class="prof-stats">
                     <div class="prof-stat"><span class="val">~50 000</span><span class="lbl">практикующих</span></div>
                     <div class="prof-stat"><span class="val">3 500 ₽</span><span class="lbl">сессия</span></div>
                 </div>
                 <div class="dialog-box">
-                    <div class="time"><i data-lucide="clock" style="width: 14px; height: 14px;"></i> 14:00, психолог на сессии</div>
+                    <div class="time"><i data-lucide="clock" style="width:14px;height:14px"></i> 14:00, психолог на сессии</div>
                     <div class="dialog client"><span class="who">Клиент:</span> «Мне нужна помощь. Панические атаки.»</div>
-                    <div class="dialog ai"><span class="who">AI:</span> «Спасибо, что позвонили. Психолог на сессии. Онлайн-сессии — 3 500 ₽/50 мин. Вторник 11:00 или среда 16:00?»</div>
-                    <div class="result">Запись. Тихий тон. Клиент чувствует себя услышанным.</div>
+                    <div class="dialog ai"><span class="who">AI:</span> «Спасибо, что позвонили. Онлайн — 3 500 ₽/50 мин. Вторник 11:00?»</div>
+                    <div class="dialog client"><span class="who">Клиент:</span> «Да.»</div>
+                    <div class="result">Запись. Тихий тон.</div>
                 </div>
             </div>
 
             <div class="prof" data-tier="tier2">
-                <h3><i data-lucide="graduation-cap" style="width: 24px; height: 24px;"></i> Репетиторы</h3>
+                <h3><i data-lucide="graduation-cap" style="width:24px;height:24px"></i>Репетиторы</h3>
                 <div class="prof-stats">
                     <div class="prof-stat"><span class="val">~100 000</span><span class="lbl">центров</span></div>
                     <div class="prof-stat"><span class="val">1 500 ₽</span><span class="lbl">занятие</span></div>
                 </div>
                 <div class="dialog-box">
-                    <div class="time"><i data-lucide="clock" style="width: 14px; height: 14px;"></i> 17:00, репетитор ведёт урок</div>
+                    <div class="time"><i data-lucide="clock" style="width:14px;height:14px"></i> 17:00, репетитор ведёт урок</div>
                     <div class="dialog client"><span class="who">Клиент:</span> «Подготовка к ЕГЭ по математике.»</div>
-                    <div class="dialog ai"><span class="who">AI:</span> «1 500 ₽/занятие (90 мин). Курс: 36 занятий. Пробный урок — бесплатно. Когда начать?»</div>
-                    <div class="result">Пробный урок. Конверсия в оплату: ~60%. LTV: 54 000 ₽.</div>
+                    <div class="dialog ai"><span class="who">AI:</span> «1 500 ₽/занятие. Курс 36 занятий. Пробный — бесплатно. Когда начать?»</div>
+                    <div class="result">Конверсия в оплату: ~60%. LTV: 54 000 ₽.</div>
                 </div>
             </div>
         </div>
@@ -363,85 +319,80 @@
 
     <section class="section reveal">
         <div class="container">
-            <h2 class="tier-heading" data-tier="tier3"><i data-lucide="layers" style="width: 24px; height: 24px;"></i> Дополнительные сегменты</h2>
+            <h2 class="tier-heading" data-tier="tier3"><i data-lucide="layers" style="width:24px;height:24px"></i>Дополнительные сегменты</h2>
 
             <div class="prof" data-tier="tier3">
-                <h3><i data-lucide="camera" style="width: 24px; height: 24px;"></i> Фотографы</h3>
+                <h3><i data-lucide="camera" style="width:24px;height:24px"></i>Фотографы</h3>
                 <div class="prof-stats">
                     <div class="prof-stat"><span class="val">~200 000</span><span class="lbl">фотографов</span></div>
                     <div class="prof-stat"><span class="val">15 000 ₽</span><span class="lbl">средний чек</span></div>
                 </div>
                 <div class="dialog-box">
-                    <div class="time"><i data-lucide="clock" style="width: 14px; height: 14px;"></i> 13:00, фотограф на съёмке</div>
+                    <div class="time"><i data-lucide="clock" style="width:14px;height:14px"></i> 13:00, фотограф на съёмке</div>
                     <div class="dialog client"><span class="who">Клиент:</span> «Сколько свадебная съёмка?»</div>
-                    <div class="dialog ai"><span class="who">AI:</span> «От 30 000 ₽ (4 часа), от 50 000 ₽ (полный день). 300+ фото. Какая дата?»</div>
+                    <div class="dialog ai"><span class="who">AI:</span> «От 30 000 ₽ (4 часа). Какая дата?»</div>
                     <div class="dialog client"><span class="who">Клиент:</span> «15 июня.»</div>
-                    <div class="dialog ai"><span class="who">AI:</span> «Свободно! Забронировать? Предоплата 30%. Фотограф обсудит детали.»</div>
+                    <div class="dialog ai"><span class="who">AI:</span> «Свободно! Забронировать? Предоплата 30%.»</div>
                     <div class="result">Бронь. Потенциал: 50 000 ₽.</div>
                 </div>
             </div>
 
             <div class="prof" data-tier="tier3">
-                <h3><i data-lucide="dumbbell" style="width: 24px; height: 24px;"></i> Фитнес</h3>
+                <h3><i data-lucide="dumbbell" style="width:24px;height:24px"></i>Фитнес</h3>
                 <div class="prof-stats">
                     <div class="prof-stat"><span class="val">~70 000</span><span class="lbl">студий</span></div>
                     <div class="prof-stat"><span class="val">2 000 ₽</span><span class="lbl">занятие</span></div>
                 </div>
                 <div class="dialog-box">
-                    <div class="time"><i data-lucide="clock" style="width: 14px; height: 14px;"></i> 18:00, вечерний пик</div>
+                    <div class="time"><i data-lucide="clock" style="width:14px;height:14px"></i> 18:00, вечерний пик</div>
                     <div class="dialog client"><span class="who">Клиент:</span> «Персональная тренировка.»</div>
-                    <div class="dialog ai"><span class="who">AI:</span> «2 000 ₽/час. Пробное — 1 000 ₽. Окна: завтра 10:00, 14:00, 19:00.»</div>
+                    <div class="dialog ai"><span class="who">AI:</span> «2 000 ₽/час. Пробное — 1 000 ₽. Завтра 10:00, 14:00 или 19:00?»</div>
                     <div class="dialog client"><span class="who">Клиент:</span> «19:00.»</div>
-                    <div class="dialog ai"><span class="who">AI:</span> «Записала! Завтра 19:00. Возьмите форму и воду.»</div>
                     <div class="result">LTV клиента: 48 000 ₽/год.</div>
                 </div>
             </div>
 
             <div class="prof" data-tier="tier3">
-                <h3><i data-lucide="utensils" style="width: 24px; height: 24px;"></i> Рестораны</h3>
+                <h3><i data-lucide="utensils" style="width:24px;height:24px"></i>Рестораны</h3>
                 <div class="prof-stats">
                     <div class="prof-stat"><span class="val">~300 000</span><span class="lbl">заведений</span></div>
                     <div class="prof-stat"><span class="val">25%</span><span class="lbl">в пик</span></div>
                 </div>
                 <div class="dialog-box">
-                    <div class="time"><i data-lucide="clock" style="width: 14px; height: 14px;"></i> Пятница 19:00, хостес занята</div>
-                    <div class="dialog client"><span class="who">Клиент:</span> «Столик на двоих, 20:00.»</div>
+                    <div class="time"><i data-lucide="clock" style="width:14px;height:14px"></i> Пятница 19:00, хостес занята</div>
+                    <div class="dialog client"><span class="who">Клиент:</span> «Столик на двоих, сегодня 20:00.»</div>
                     <div class="dialog ai"><span class="who">AI:</span> «Есть у окна или в зале. Где предпочитаете?»</div>
                     <div class="dialog client"><span class="who">Клиент:</span> «У окна.»</div>
-                    <div class="dialog ai"><span class="who">AI:</span> «Забронировано! У окна, 20:00, 2 персоны.»</div>
-                    <div class="result">Средний чек: 3 000 ₽ (2 персоны).</div>
+                    <div class="result">Забронировано. Средний чек: 3 000 ₽.</div>
                 </div>
             </div>
 
             <div class="prof" data-tier="tier3">
-                <h3><i data-lucide="shield" style="width: 24px; height: 24px;"></i> Страховые агенты</h3>
+                <h3><i data-lucide="shield" style="width:24px;height:24px"></i>Страховые</h3>
                 <div class="prof-stats">
                     <div class="prof-stat"><span class="val">~300 000</span><span class="lbl">агентов</span></div>
                     <div class="prof-stat"><span class="val">10 000 ₽</span><span class="lbl">комиссия/год</span></div>
                 </div>
                 <div class="dialog-box">
-                    <div class="time"><i data-lucide="clock" style="width: 14px; height: 14px;"></i> 14:00, агент на встрече</div>
-                    <div class="dialog client"><span class="who">Клиент:</span> «ОСАГО.»</div>
-                    <div class="dialog ai"><span class="who">AI:</span> «От 5 000 ₽. Нужны: ПТС, права всех водителей. Рассчитать?»</div>
-                    <div class="dialog client"><span class="who">Клиент:</span> «Toyota Camry 2020, стаж 10 лет.»</div>
-                    <div class="dialog ai"><span class="who">AI:</span> «~8 500 ₽. Агент перезвонит для оформления.»</div>
-                    <div class="result">Лид квалифицирован. Комиссия: ~1 500 ₽.</div>
+                    <div class="time"><i data-lucide="clock" style="width:14px;height:14px"></i> 14:00, агент на встрече</div>
+                    <div class="dialog client"><span class="who">Клиент:</span> «Хочу ОСАГО.»</div>
+                    <div class="dialog ai"><span class="who">AI:</span> «От 5 000 ₽. Нужны ПТС, права. Рассчитать?»</div>
+                    <div class="result">Лид квалифицирован.</div>
                 </div>
             </div>
 
             <div class="prof" data-tier="tier3">
-                <h3><i data-lucide="hospital" style="width: 24px; height: 24px;"></i> Медицинские центры</h3>
+                <h3><i data-lucide="hospital" style="width:24px;height:24px"></i>Мед. центры</h3>
                 <div class="prof-stats">
                     <div class="prof-stat"><span class="val">~25 000</span><span class="lbl">клиник</span></div>
                     <div class="prof-stat"><span class="val">5 000 ₽</span><span class="lbl">средний чек</span></div>
                 </div>
                 <div class="dialog-box">
-                    <div class="time"><i data-lucide="clock" style="width: 14px; height: 14px;"></i> 10:00, администратор на телефоне</div>
+                    <div class="time"><i data-lucide="clock" style="width:14px;height:14px"></i> 10:00, администратор на телефоне</div>
                     <div class="dialog client"><span class="who">Клиент:</span> «К кардиологу.»</div>
-                    <div class="dialog ai"><span class="who">AI:</span> «Кардиолог: вторник 9:00, четверг 14:00, пятница 11:00. Приём — 3 500 ₽. Первый визит?»</div>
-                    <div class="dialog client"><span class="who">Клиент:</span> «Первый, есть направление.»</div>
-                    <div class="dialog ai"><span class="who">AI:</span> «Вторник 9:00. Возьмите направление, паспорт, полис.»</div>
-                    <div class="result">Запись. Напоминание за 24ч. Выручка: 3 500 ₽ + анализы.</div>
+                    <div class="dialog ai"><span class="who">AI:</span> «Вторник 9:00, четверг 14:00, пятница 11:00. Приём — 3 500 ₽.»</div>
+                    <div class="dialog client"><span class="who">Клиент:</span> «Вторник 9:00.»</div>
+                    <div class="result">Запись. Напоминание за 24ч.</div>
                 </div>
             </div>
         </div>
@@ -449,7 +400,7 @@
 
     <section class="section reveal">
         <div class="container">
-            <h2><i data-lucide="clipboard-list" style="width: 28px; height: 28px;"></i> Опрос для валидации</h2>
+            <h2><i data-lucide="clipboard-list" style="width:24px;height:24px"></i>Опрос для валидации</h2>
             <p>Вопросы для интервью с представителями профессий.</p>
             <div class="survey">
                 <ol>
@@ -474,77 +425,30 @@
             <a href="scenarios.html">Сценарии</a>
             <a href="integrations.html">Интеграции</a>
             <a href="economics.html">Экономика</a>
-                <a href="focus.html">Фокусы</a>
+            <a href="focus.html">Фокусы</a>
+            <a href="competitors.html">Конкуренты</a>
             <a href="sources.html">Источники</a>
         </div>
     </footer>
 
     <script>
         lucide.createIcons();
-
-        const lenis = new Lenis({ duration: 0.8, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
-        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        const lenis=new Lenis({duration:0.8,easing:(t)=>Math.min(1,1.001-Math.pow(2,-10*t)),smoothWheel:true});
+        function raf(time){lenis.raf(time);requestAnimationFrame(raf);}
         requestAnimationFrame(raf);
-
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-        document.querySelectorAll('.reveal, .reveal-scale').forEach(el => { revealObserver.observe(el); });
-
-        function filter(t) {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        const revealObserver=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+        document.querySelectorAll('.reveal').forEach(el=>{revealObserver.observe(el);});
+        function filter(t){
+            document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
             event.target.classList.add('active');
-
-            // Show/hide professions
-            document.querySelectorAll('.prof').forEach(p => {
-                p.style.display = (t === 'all' || p.dataset.tier === t) ? 'block' : 'none';
-            });
-
-            // Show/hide entire sections based on tier
-            document.querySelectorAll('.tier-heading').forEach(h => {
-                const section = h.closest('.section');
-                if (t === 'all' || h.dataset.tier === t) {
-                    section.style.display = 'block';
-                    h.style.display = 'flex';
-                } else {
-                    section.style.display = 'none';
-                }
+            document.querySelectorAll('.prof').forEach(p=>{p.style.display=(t==='all'||p.dataset.tier===t)?'block':'none';});
+            document.querySelectorAll('.tier-heading').forEach(h=>{
+                const section=h.closest('.section');
+                if(t==='all'||h.dataset.tier===t){section.style.display='block';h.style.display='flex';}
+                else{section.style.display='none';}
             });
         }
-
-        const chartObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.2 });
-
-        document.querySelectorAll('.chart-container').forEach(el => {
-            chartObserver.observe(el);
-        });
-
-        new Chart(document.getElementById('segmentsChart'), {
-            type: 'bar',
-            data: {
-                labels: ['Стоматологии', 'Юристы', 'Дом. сервисы', 'Салоны', 'Автосервисы'],
-                datasets: [{
-                    label: 'Количество бизнесов',
-                    data: [35000, 235000, 500000, 180000, 117500],
-                    backgroundColor: '#1a1a1a',
-                    borderRadius: 4
-                }]
-            },
-            options: {
-                responsive: true, maintainAspectRatio: false,
-                animation: { duration: 1000, easing: 'easeOutQuart' },
-                plugins: { legend: { display: false } },
-                scales: {
-                    y: { beginAtZero: true, grid: { color: '#f0f0f0' }, ticks: { callback: v => (v/1000) + ' тыс' } },
-                    x: { grid: { display: false } }
-                }
-            }
-        });
+        new Chart(document.getElementById('segmentsChart'),{type:'bar',data:{labels:['Стоматологии','Юристы','Дом. сервисы','Салоны','Автосервисы'],datasets:[{label:'Количество бизнесов',data:[35000,235000,500000,180000,117500],backgroundColor:'#1a1a1a',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000,easing:'easeOutQuart'},plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'#f0f0f0'},ticks:{callback:v=>(v/1000)+' тыс'}},x:{grid:{display:false}}}}});
     </script>
 </body>
 </html>

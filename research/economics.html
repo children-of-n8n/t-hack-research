@@ -8,90 +8,77 @@
     <script src="https://unpkg.com/lenis@1.3.21/dist/lenis.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #fafafa; color: #1a1a1a; line-height: 1.7; }
-        .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
-        nav { background: #fff; border-bottom: 1px solid #e5e5e5; padding: 16px 0; position: sticky; top: 0; z-index: 100; }
-        nav .container { display: flex; justify-content: space-between; align-items: center; }
-        nav .logo { font-weight: 700; font-size: 1.1em; color: #1a1a1a; text-decoration: none; display: flex; align-items: center; gap: 8px; }
-        nav .links { display: flex; gap: 24px; }
-        nav .links a { text-decoration: none; color: #666; font-size: 0.9em; font-weight: 500; transition: color 0.2s; }
-        nav .links a:hover, nav .links a.active { color: #1a1a1a; }
-        .hero { padding: 80px 0 60px; border-bottom: 1px solid #e5e5e5; background: #fff; }
-        .hero h1 { font-size: 2.5em; font-weight: 800; margin-bottom: 16px; letter-spacing: -0.02em; display: flex; align-items: center; gap: 12px; }
-        .hero h1 i { color: #666; }
-        .hero .subtitle { font-size: 1.2em; color: #555; }
-        .section { padding: 60px 0; border-bottom: 1px solid #e5e5e5; background: #fff; }
-        .section:last-child { border-bottom: none; }
-        .section h2 { font-size: 1.8em; font-weight: 700; margin-bottom: 24px; letter-spacing: -0.01em; display: flex; align-items: center; gap: 12px; }
-        .section h2 i { color: #666; }
-        .section h3 { font-size: 1.2em; font-weight: 600; margin: 32px 0 16px; }
-        .section p { color: #555; margin-bottom: 16px; max-width: 700px; }
-        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin: 32px 0; }
-        .stat-item { text-align: left; padding: 20px; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e5e5; }
-        .stat-item .icon { color: #666; margin-bottom: 8px; }
-        .stat-item .number { font-size: 1.8em; font-weight: 800; color: #1a1a1a; display: block; margin-bottom: 4px; }
-        .stat-item .label { font-size: 0.85em; color: #666; }
-        table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.9em; }
-        th { background: #f5f5f5; padding: 10px 12px; text-align: left; font-weight: 600; border-bottom: 2px solid #e5e5e5; }
-        td { padding: 10px 12px; border-bottom: 1px solid #e5e5e5; }
-        .highlight { background: #f9fafb; border-left: 3px solid #1a1a1a; padding: 16px 20px; margin: 24px 0; }
-        .highlight p { margin: 0; color: #333; }
-        .source { font-size: 0.8em; color: #888; margin-top: 12px; }
-        .source a { color: #666; text-decoration: underline; }
-        .chart-container { position: relative; height: 300px; margin: 24px 0; padding: 20px; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e5e5; opacity: 0; transform: translateY(20px); transition: all 0.6s ease-out; }
-        .chart-container.visible { opacity: 1; transform: translateY(0); }
-        .metric-box { background: #f9fafb; border: 1px solid #e5e5e5; border-radius: 8px; padding: 24px; margin: 20px 0; }
-        .metric-box h3 { margin: 0 0 16px; font-size: 1.1em; }
-        .metric-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e5e5e5; }
-        .metric-row:last-child { border-bottom: none; }
-        .metric-row .label { font-weight: 500; }
-        .metric-row .value { font-weight: 700; }
-        .metric-row .value.profit { color: #16a34a; background: #f0fdf4; padding: 4px 12px; border-radius: 4px; }
-        .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 24px 0; }
-        .pricing-card { padding: 24px; border: 1px solid #e5e5e5; border-radius: 8px; }
-        .pricing-card.featured { border-color: #1a1a1a; border-width: 2px; }
-        .pricing-card .name { font-weight: 700; margin-bottom: 8px; }
-        .pricing-card .price { font-size: 2em; font-weight: 800; margin: 12px 0; }
-        .pricing-card .price span { font-size: 0.4em; font-weight: 400; color: #666; }
-        .pricing-card ul { list-style: none; padding: 0; margin: 16px 0 0; }
-        .pricing-card li { padding: 6px 0; padding-left: 20px; position: relative; font-size: 0.9em; color: #555; }
-        .pricing-card li::before { content: ''; position: absolute; left: 0; top: 8px; width: 14px; height: 14px; }
-        .calc { background: #f9fafb; border: 1px solid #e5e5e5; border-radius: 8px; padding: 24px; margin: 24px 0; }
-        .calc h3 { margin: 0 0 16px; }
-        .calc-inputs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 16px; }
-        .calc-input label { display: block; font-size: 0.85em; color: #666; margin-bottom: 4px; font-weight: 500; }
-        .calc-input input { width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 1em; }
-        .calc-result { background: #1a1a1a; color: #fff; padding: 16px; border-radius: 6px; text-align: center; font-weight: 700; }
-        footer { padding: 32px 0; text-align: center; font-size: 0.85em; color: #888; background: #fff; border-top: 1px solid #e5e5e5; }
-        footer a { color: #666; margin: 0 8px; text-decoration: none; }
-        footer a:hover { color: #1a1a1a; }
-
-        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
-        .reveal.visible { opacity: 1; transform: translateY(0); }
-        .reveal-scale { opacity: 0; transform: scale(0.95); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
-        .reveal-scale.visible { opacity: 1; transform: scale(1); }
-
-        @media (max-width: 768px) {
-            .stats-row { grid-template-columns: repeat(2, 1fr); }
-            .pricing-grid { grid-template-columns: 1fr; }
-            .calc-inputs { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 1.8em; }
-        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:#fafafa;color:#1a1a1a;line-height:1.7}
+        .container{max-width:960px;margin:0 auto;padding:0 24px}
+        nav{background:#fff;border-bottom:1px solid #e5e5e5;padding:16px 0;position:sticky;top:0;z-index:100}
+        nav .container{display:flex;justify-content:space-between;align-items:center}
+        nav .logo{font-weight:700;font-size:1.1em;color:#1a1a1a;text-decoration:none;display:flex;align-items:center;gap:8px}
+        nav .links{display:flex;gap:24px}
+        nav .links a{text-decoration:none;color:#666;font-size:0.9em;font-weight:500;transition:color 0.2s}
+        nav .links a:hover,nav .links a.active{color:#1a1a1a}
+        .hero{padding:80px 0 60px;border-bottom:1px solid #e5e5e5;background:#fff}
+        .hero h1{font-size:2.2em;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:12px}
+        .hero h1 i{color:#666}
+        .hero .subtitle{font-size:1.1em;color:#555}
+        .section{padding:50px 0;border-bottom:1px solid #e5e5e5;background:#fff}
+        .section:last-child{border-bottom:none}
+        .section h2{font-size:1.6em;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+        .section h2 i{color:#666}
+        .section p{color:#555;margin-bottom:14px;max-width:650px}
+        .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:24px 0}
+        .stat-item{text-align:left;padding:16px;background:#f9fafb;border-radius:8px;border:1px solid #e5e5e5}
+        .stat-item .number{font-size:1.6em;font-weight:800;color:#1a1a1a;display:block;margin-bottom:2px}
+        .stat-item .label{font-size:0.8em;color:#666}
+        table{width:100%;border-collapse:collapse;margin:20px 0;font-size:0.9em}
+        th{background:#f5f5f5;padding:10px 12px;text-align:left;font-weight:600;border-bottom:2px solid #e5e5e5}
+        td{padding:10px 12px;border-bottom:1px solid #e5e5e5}
+        .highlight{background:#f9fafb;border-left:3px solid #1a1a1a;padding:14px 18px;margin:20px 0}
+        .highlight p{margin:0;color:#333;font-size:0.95em}
+        .note{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:14px 18px;margin:20px 0;font-size:0.9em;color:#92400e}
+        .note strong{color:#78350f}
+        .metric-box{background:#f9fafb;border:1px solid #e5e5e5;border-radius:8px;padding:20px;margin:20px 0}
+        .metric-box h3{margin:0 0 12px;font-size:1em}
+        .metric-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #e5e5e5}
+        .metric-row:last-child{border-bottom:none}
+        .metric-row .label{font-weight:500}
+        .metric-row .value{font-weight:700}
+        .metric-row .value.profit{color:#16a34a;background:#f0fdf4;padding:4px 12px;border-radius:4px}
+        .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:24px 0}
+        .pricing-card{padding:24px;border:1px solid #e5e5e5;border-radius:8px}
+        .pricing-card.featured{border-color:#1a1a1a;border-width:2px}
+        .pricing-card .name{font-weight:700;margin-bottom:8px}
+        .pricing-card .price{font-size:2em;font-weight:800;margin:12px 0}
+        .pricing-card .price span{font-size:0.4em;font-weight:400;color:#666}
+        .pricing-card ul{list-style:none;padding:0;margin:16px 0 0}
+        .pricing-card li{padding:6px 0;padding-left:20px;position:relative;font-size:0.9em;color:#555}
+        .pricing-card li::before{content:'';position:absolute;left:0;top:8px;width:14px;height:14px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2316a34a' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E") no-repeat center}
+        .calc{background:#f9fafb;border:1px solid #e5e5e5;border-radius:8px;padding:24px;margin:24px 0}
+        .calc h3{margin:0 0 16px}
+        .calc-inputs{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
+        .calc-input label{display:block;font-size:0.85em;color:#666;margin-bottom:4px;font-weight:500}
+        .calc-input input{width:100%;padding:8px 12px;border:1px solid #ddd;border-radius:4px;font-size:1em}
+        .calc-result{background:#1a1a1a;color:#fff;padding:16px;border-radius:6px;text-align:center;font-weight:700}
+        .chart-container{position:relative;height:300px;margin:24px 0;padding:20px;background:#f9fafb;border-radius:8px;border:1px solid #e5e5e5}
+        .reveal{opacity:0;transform:translateY(20px);transition:opacity 0.5s ease-out,transform 0.5s ease-out}
+        .reveal.visible{opacity:1;transform:translateY(0)}
+        footer{padding:24px 0;text-align:center;font-size:0.85em;color:#888;background:#fff;border-top:1px solid #e5e5e5}
+        footer a{color:#666;margin:0 8px;text-decoration:none}
+        footer a:hover{color:#1a1a1a}
+        @media(max-width:768px){.stats-row{grid-template-columns:repeat(2,1fr)}.pricing-grid{grid-template-columns:1fr}.calc-inputs{grid-template-columns:1fr}.hero h1{font-size:1.6em}}
     </style>
 </head>
 <body>
     <nav>
         <div class="container">
-            <a href="index.html" class="logo">
-                <i data-lucide="headphones" style="width: 20px; height: 20px;"></i>
-                AI-Ассистент
-            </a>
+            <a href="index.html" class="logo"><i data-lucide="headphones" style="width:20px;height:20px"></i>AI-Ассистент</a>
             <div class="links">
                 <a href="index.html">Продукт</a>
                 <a href="scenarios.html">Сценарии</a>
                 <a href="integrations.html">Интеграции</a>
                 <a href="economics.html" class="active">Экономика</a>
+                <a href="focus.html">Фокусы</a>
+                <a href="competitors.html">Конкуренты</a>
                 <a href="sources.html">Источники</a>
             </div>
         </div>
@@ -99,40 +86,22 @@
 
     <header class="hero">
         <div class="container">
-            <h1><i data-lucide="bar-chart-3" style="width: 32px; height: 32px;"></i> Экономика</h1>
+            <h1><i data-lucide="bar-chart-3" style="width:32px;height:32px"></i>Экономика</h1>
             <p class="subtitle">Расчёт выгоды для клиентов, цены и наша экономика</p>
         </div>
     </header>
 
     <section class="section reveal">
         <div class="container">
-            <h2><i data-lucide="alert-circle" style="width: 28px; height: 28px;"></i> Сколько стоит проблема</h2>
+            <h2><i data-lucide="alert-circle" style="width:24px;height:24px"></i>Сколько стоит проблема</h2>
             <p>Прежде чем говорить о цене решения — посчитаем потери без него.</p>
-
             <div class="stats-row">
-                <div class="stat-item">
-                    <i data-lucide="phone-off" class="icon" style="width: 24px; height: 24px;"></i>
-                    <span class="number">34%</span>
-                    <span class="label">звонков пропущено</span>
-                </div>
-                <div class="stat-item">
-                    <i data-lucide="user-x" class="icon" style="width: 24px; height: 24px;"></i>
-                    <span class="number">85%</span>
-                    <span class="label">не перезванивают</span>
-                </div>
-                <div class="stat-item">
-                    <i data-lucide="trending-down" class="icon" style="width: 24px; height: 24px;"></i>
-                    <span class="number">62%</span>
-                    <span class="label">уходят к конкуренту</span>
-                </div>
-                <div class="stat-item">
-                    <i data-lucide="wallet" class="icon" style="width: 24px; height: 24px;"></i>
-                    <span class="number">68 000 ₽</span>
-                    <span class="label">зарплата ресепшиониста</span>
-                </div>
+                <div class="stat-item"><span class="number">34%</span><span class="label">звонков пропущено</span></div>
+                <div class="stat-item"><span class="number">85%</span><span class="label">не перезванивают</span></div>
+                <div class="stat-item"><span class="number">62%</span><span class="label">уходят к конкуренту</span></div>
+                <div class="stat-item"><span class="number">68 000 ₽</span><span class="label">зарплата ресепшиониста</span></div>
             </div>
-
-            <h3>Расчёт потерь для типичного бизнеса</h3>
+            <h3 style="font-size:1.2em;font-weight:600;margin:24px 0 16px">Расчёт потерь для типичного бизнеса</h3>
             <table>
                 <thead><tr><th>Параметр</th><th>Значение</th></tr></thead>
                 <tbody>
@@ -144,18 +113,14 @@
                     <tr><td><strong>Потеря в месяц (22 дня)</strong></td><td><strong>440 000 ₽</strong></td></tr>
                 </tbody>
             </table>
-
-            <div class="highlight">
-                <p><strong>Ключевой факт:</strong> Перехват 30% пропущенных = 132 000 ₽ спасённой выручки в месяц.</p>
-            </div>
-
+            <div class="highlight"><p><strong>Ключевой факт:</strong> Перехват 30% пропущенных = 132 000 ₽ спасённой выручки в месяц.</p></div>
             <p class="source">Источник: <a href="https://tech.megafon.ru/information/vas-zvonok-ocen-vazen-dlia-nas-kak-ne-teriat-budushhix-klientov" target="_blank">МегаФон Tech</a></p>
         </div>
     </section>
 
     <section class="section reveal">
         <div class="container">
-            <h2><i data-lucide="shuffle" style="width: 28px; height: 28px;"></i> Альтернативы</h2>
+            <h2><i data-lucide="shuffle" style="width:24px;height:24px"></i>Альтернативы</h2>
             <table>
                 <thead><tr><th>Решение</th><th>Стоимость/мес</th><th>Покрытие</th><th>Масштабируемость</th></tr></thead>
                 <tbody>
@@ -170,41 +135,23 @@
 
     <section class="section reveal">
         <div class="container">
-            <h2><i data-lucide="tag" style="width: 28px; height: 28px;"></i> Цены</h2>
+            <h2><i data-lucide="tag" style="width:24px;height:24px"></i>Цены</h2>
             <p>Подписка. Прозрачно, предсказуемо.</p>
-
             <div class="pricing-grid">
                 <div class="pricing-card">
                     <div class="name">Стартовый</div>
-                    <div class="price">499 ₽ <span>/мес</span></div>
-                    <ul>
-                        <li>50 звонков</li>
-                        <li>Базовые ответы</li>
-                        <li>Запись в календарь</li>
-                        <li>Сводка в мессенджер</li>
-                    </ul>
+                    <div class="price">499 ₽<span>/мес</span></div>
+                    <ul><li>50 звонков</li><li>Базовые ответы</li><li>Запись в календарь</li><li>Сводка в мессенджер</li></ul>
                 </div>
                 <div class="pricing-card featured">
                     <div class="name">Профессиональный</div>
-                    <div class="price">999 ₽ <span>/мес</span></div>
-                    <ul>
-                        <li>200 звонков</li>
-                        <li>Квалификация лидов</li>
-                        <li>Срочная маршрутизация</li>
-                        <li>Без выходных</li>
-                        <li>Напоминания о записях</li>
-                    </ul>
+                    <div class="price">999 ₽<span>/мес</span></div>
+                    <ul><li>200 звонков</li><li>Квалификация лидов</li><li>Срочная маршрутизация</li><li>Без выходных</li><li>Напоминания о записях</li></ul>
                 </div>
                 <div class="pricing-card">
                     <div class="name">Бизнес</div>
-                    <div class="price">1 999 ₽ <span>/мес</span></div>
-                    <ul>
-                        <li>Безлимит</li>
-                        <li>Всё из Профессионального</li>
-                        <li>Подключение к системе учёта</li>
-                        <li>Аналитика</li>
-                        <li>Несколько языков</li>
-                    </ul>
+                    <div class="price">1 999 ₽<span>/мес</span></div>
+                    <ul><li>Безлимит</li><li>Всё из Профессионального</li><li>Подключение к системе учёта</li><li>Аналитика</li><li>Несколько языков</li></ul>
                 </div>
             </div>
         </div>
@@ -212,8 +159,7 @@
 
     <section class="section reveal">
         <div class="container">
-            <h2><i data-lucide="trending-up" style="width: 28px; height: 28px;"></i> Выгода клиента</h2>
-
+            <h2><i data-lucide="trending-up" style="width:24px;height:24px"></i>Выгода клиента</h2>
             <div class="metric-box">
                 <h3>Стоматология — тариф Профессиональный (999 ₽/мес)</h3>
                 <div class="metric-row"><span class="label">Входящих звонков/мес</span><span class="value">440</span></div>
@@ -225,7 +171,6 @@
                 <div class="metric-row"><span class="label">Стоимость AI</span><span class="value">-999 ₽</span></div>
                 <div class="metric-row"><span class="label"><strong>Чистая выгода (оценка)</strong></span><span class="value profit"><strong>44 000 — 114 000 ₽/мес</strong></span></div>
             </div>
-
             <div class="metric-box">
                 <h3>Автосервис — тариф Профессиональный (999 ₽/мес)</h3>
                 <div class="metric-row"><span class="label">Входящих звонков/мес</span><span class="value">300</span></div>
@@ -237,41 +182,29 @@
                 <div class="metric-row"><span class="label">Стоимость AI</span><span class="value">-999 ₽</span></div>
                 <div class="metric-row"><span class="label"><strong>Чистая выгода (оценка)</strong></span><span class="value profit"><strong>104 000 — 269 000 ₽/мес</strong></span></div>
             </div>
-
-            <div class="chart-container">
-                <canvas id="revenueChart"></canvas>
-            </div>
-
-            <div class="chart-container">
-                <canvas id="costChart"></canvas>
-            </div>
+            <div class="chart-container"><canvas id="revenueChart"></canvas></div>
+            <div class="chart-container"><canvas id="costChart"></canvas></div>
         </div>
     </section>
 
     <section class="section reveal">
         <div class="container">
-            <h2><i data-lucide="building" style="width: 28px; height: 28px;"></i> Наша экономика</h2>
-
-            <div class="note" style="background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 14px 18px; margin-bottom: 20px; font-size: 0.9em; color: #92400e;">
-                <strong>Предварительная оценка.</strong> Точные цифры станут ясны после пилотов с реальными клиентами. Ниже — модель на текущем этапе.
-            </div>
-
+            <h2><i data-lucide="building" style="width:24px;height:24px"></i>Наша экономика</h2>
+            <div class="note"><strong>Предварительная оценка.</strong> Точные цифры станут ясны после пилотов с реальными клиентами. Ниже — модель на текущем этапе.</div>
             <div class="metric-box">
                 <h3>На 1 клиенте (тариф Профессиональный)</h3>
                 <div class="metric-row"><span class="label">Цена подписки</span><span class="value">999 ₽/мес</span></div>
                 <div class="metric-row"><span class="label">Расходы (расчётно)</span><span class="value">~300-500 ₽</span></div>
                 <div class="metric-row"><span class="label"><strong>Прибыль (оценка)</strong></span><span class="value profit"><strong>500-700 ₽ (50-70%)</strong></span></div>
             </div>
-
-            <p style="font-size: 0.9em; color: #666; margin-top: 16px;">Расходы включают: распознавание речи, обработка нейросетью, синтез ответа, телефонный номер, серверы. При масштабировании расходы на клиента снижаются.</p>
+            <p style="font-size:0.9em;color:#666;margin-top:16px">Расходы включают: распознавание речи, обработка нейросетью, синтез ответа, телефонный номер, серверы. При масштабировании расходы на клиента снижаются.</p>
         </div>
     </section>
 
     <section class="section reveal">
         <div class="container">
-            <h2><i data-lucide="calculator" style="width: 28px; height: 28px;"></i> Калькулятор выгоды</h2>
+            <h2><i data-lucide="calculator" style="width:24px;height:24px"></i>Калькулятор выгоды</h2>
             <p>Посчитайте свои потери и возможную выгоду.</p>
-
             <div class="calc">
                 <h3>Введите данные</h3>
                 <div class="calc-inputs">
@@ -291,86 +224,23 @@
             <a href="scenarios.html">Сценарии</a>
             <a href="integrations.html">Интеграции</a>
             <a href="economics.html">Экономика</a>
-                <a href="focus.html">Фокусы</a>
+            <a href="focus.html">Фокусы</a>
+            <a href="competitors.html">Конкуренты</a>
             <a href="sources.html">Источники</a>
         </div>
     </footer>
 
     <script>
         lucide.createIcons();
-
-        // Lenis smooth scroll
-        const lenis = new Lenis({ duration: 0.8, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
-        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        const lenis=new Lenis({duration:0.8,easing:(t)=>Math.min(1,1.001-Math.pow(2,-10*t)),smoothWheel:true});
+        function raf(time){lenis.raf(time);requestAnimationFrame(raf);}
         requestAnimationFrame(raf);
-
-        // Reveal on scroll
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-        document.querySelectorAll('.reveal, .reveal-scale').forEach(el => { revealObserver.observe(el); });
-
-        function calc() {
-            const c = parseInt(document.getElementById('calls').value) || 0;
-            const m = parseInt(document.getElementById('missed').value) || 0;
-            const ch = parseInt(document.getElementById('check').value) || 0;
-            const d = parseInt(document.getElementById('days').value) || 0;
-            const lost = Math.round(c * m / 100 * ch * d);
-            const saved = Math.round(c * m / 100 * 0.3 * 0.5 * ch * d);
-            document.getElementById('result').textContent = 'Потеря: ' + lost.toLocaleString('ru-RU') + ' ₽/мес | Выгода: ' + saved.toLocaleString('ru-RU') + ' ₽/мес';
-        }
+        const revealObserver=new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+        document.querySelectorAll('.reveal').forEach(el=>{revealObserver.observe(el);});
+        function calc(){const c=parseInt(document.getElementById('calls').value)||0;const m=parseInt(document.getElementById('missed').value)||0;const ch=parseInt(document.getElementById('check').value)||0;const d=parseInt(document.getElementById('days').value)||0;const lost=Math.round(c*m/100*ch*d);const saved=Math.round(c*m/100*0.3*0.5*ch*d);document.getElementById('result').textContent='Потеря: '+lost.toLocaleString('ru-RU')+' ₽/мес | Выгода: '+saved.toLocaleString('ru-RU')+' ₽/мес';}
         calc();
-
-        const chartObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.2 });
-
-        document.querySelectorAll('.chart-container').forEach(el => {
-            chartObserver.observe(el);
-        });
-
-        new Chart(document.getElementById('revenueChart'), {
-            type: 'bar',
-            data: {
-                labels: ['Стоматология', 'Автосервис'],
-                datasets: [{
-                    label: 'Спасённая выручка, ₽/мес',
-                    data: [115000, 270000],
-                    backgroundColor: '#1a1a1a',
-                    borderRadius: 4
-                }]
-            },
-            options: {
-                responsive: true, maintainAspectRatio: false,
-                animation: { duration: 1000, easing: 'easeOutQuart' },
-                plugins: { legend: { display: false } },
-                scales: { y: { beginAtZero: true, grid: { color: '#f0f0f0' }, ticks: { callback: v => (v/1000) + ' тыс' } }, x: { grid: { display: false } } }
-            }
-        });
-
-        new Chart(document.getElementById('costChart'), {
-            type: 'bar',
-            data: {
-                labels: ['Стоматология', 'Автосервис'],
-                datasets: [{
-                    label: 'Стоимость AI, ₽/мес',
-                    data: [999, 999],
-                    backgroundColor: '#dc2626',
-                    borderRadius: 4
-                }]
-            },
-            options: {
-                responsive: true, maintainAspectRatio: false,
-                animation: { duration: 1000, easing: 'easeOutQuart' },
-                plugins: { legend: { display: false } },
-                scales: { y: { beginAtZero: true, max: 2000, grid: { color: '#f0f0f0' } }, x: { grid: { display: false } } }
-            }
-        });
-
+        new Chart(document.getElementById('revenueChart'),{type:'bar',data:{labels:['Стоматология','Автосервис'],datasets:[{label:'Спасённая выручка, ₽/мес',data:[115000,270000],backgroundColor:'#1a1a1a',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000,easing:'easeOutQuart'},plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'#f0f0f0'},ticks:{callback:v=>(v/1000)+' тыс'}},x:{grid:{display:false}}}}});
+        new Chart(document.getElementById('costChart'),{type:'bar',data:{labels:['Стоматология','Автосервис'],datasets:[{label:'Стоимость AI, ₽/мес',data:[999,999],backgroundColor:'#dc2626',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1000,easing:'easeOutQuart'},plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,max:2000,grid:{color:'#f0f0f0'}},x:{grid:{display:false}}}}});
     </script>
 </body>
 </html>

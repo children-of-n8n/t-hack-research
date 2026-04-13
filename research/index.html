@@ -8,69 +8,53 @@
     <script src="https://unpkg.com/lenis@1.3.21/dist/lenis.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: #fafafa; color: #1a1a1a; line-height: 1.7; }
-        .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
-        nav { background: #fff; border-bottom: 1px solid #e5e5e5; padding: 16px 0; position: sticky; top: 0; z-index: 100; }
-        nav .container { display: flex; justify-content: space-between; align-items: center; }
-        nav .logo { font-weight: 700; font-size: 1.1em; color: #1a1a1a; text-decoration: none; display: flex; align-items: center; gap: 8px; }
-        nav .links { display: flex; gap: 24px; }
-        nav .links a { text-decoration: none; color: #666; font-size: 0.9em; font-weight: 500; transition: color 0.2s; }
-        nav .links a:hover, nav .links a.active { color: #1a1a1a; }
-
-        .jury-badge { display: inline-flex; align-items: center; gap: 6px; background: #1a1a1a; color: #fff; padding: 4px 12px; border-radius: 6px; font-size: 0.8em; font-weight: 600; margin-bottom: 16px; }
-
-        .hero { padding: 80px 0 60px; border-bottom: 1px solid #e5e5e5; background: #fff; }
-        .hero h1 { font-size: 2.2em; font-weight: 800; margin-bottom: 12px; letter-spacing: -0.02em; line-height: 1.2; }
-        .hero .subtitle { font-size: 1.1em; color: #555; margin-bottom: 20px; max-width: 550px; }
-        .hero .tagline { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: #f5f5f5; border-radius: 6px; font-size: 0.9em; color: #333; font-weight: 500; }
-
-        .section { padding: 50px 0; border-bottom: 1px solid #e5e5e5; background: #fff; }
-        .section:last-child { border-bottom: none; }
-        .section h2 { font-size: 1.6em; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
-        .section h2 i { color: #666; }
-        .section p { color: #555; margin-bottom: 14px; max-width: 650px; }
-
-        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 24px 0; }
-        .stat-item { text-align: left; padding: 16px; background: #f9fafb; border-radius: 8px; border: 1px solid #e5e5e5; }
-        .stat-item .number { font-size: 1.6em; font-weight: 800; color: #1a1a1a; display: block; margin-bottom: 2px; }
-        .stat-item .label { font-size: 0.8em; color: #666; }
-
-        .flow { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 24px 0; padding: 24px; background: #f9fafb; border-radius: 8px; overflow-x: auto; }
-        .flow-step { text-align: center; min-width: 70px; }
-        .flow-step .icon { color: #1a1a1a; margin-bottom: 4px; }
-        .flow-step .label { font-size: 0.7em; font-weight: 600; }
-        .flow-arrow { color: #999; display: flex; align-items: center; }
-
-        .highlight { background: #f9fafb; border-left: 3px solid #1a1a1a; padding: 14px 18px; margin: 20px 0; }
-        .highlight p { margin: 0; color: #333; font-size: 0.95em; }
-
-        .note { background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; padding: 16px; margin: 20px 0; font-size: 0.9em; color: #92400e; }
-        .note strong { color: #78350f; }
-
-        .source { font-size: 0.8em; color: #888; margin-top: 10px; }
-        .source a { color: #666; text-decoration: underline; }
-
-        .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease-out, transform 0.5s ease-out; }
-        .reveal.visible { opacity: 1; transform: translateY(0); }
-
-        footer { padding: 24px 0; text-align: center; font-size: 0.85em; color: #888; background: #fff; border-top: 1px solid #e5e5e5; }
-        footer a { color: #666; margin: 0 8px; text-decoration: none; }
-        footer a:hover { color: #1a1a1a; }
-
-        @media (max-width: 768px) {
-            .stats-row { grid-template-columns: repeat(2, 1fr); }
-            .hero h1 { font-size: 1.6em; }
-            .flow { flex-direction: column; }
-            .flow-arrow { transform: rotate(90deg); }
-        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:#fafafa;color:#1a1a1a;line-height:1.7}
+        .container{max-width:960px;margin:0 auto;padding:0 24px}
+        nav{background:#fff;border-bottom:1px solid #e5e5e5;padding:16px 0;position:sticky;top:0;z-index:100}
+        nav .container{display:flex;justify-content:space-between;align-items:center}
+        nav .logo{font-weight:700;font-size:1.1em;color:#1a1a1a;text-decoration:none;display:flex;align-items:center;gap:8px}
+        nav .links{display:flex;gap:24px}
+        nav .links a{text-decoration:none;color:#666;font-size:0.9em;font-weight:500;transition:color 0.2s}
+        nav .links a:hover,nav .links a.active{color:#1a1a1a}
+        .jury-badge{display:inline-flex;align-items:center;gap:6px;background:#1a1a1a;color:#fff;padding:4px 12px;border-radius:6px;font-size:0.8em;font-weight:600;margin-bottom:16px}
+        .hero{padding:80px 0 60px;border-bottom:1px solid #e5e5e5;background:#fff}
+        .hero h1{font-size:2.2em;font-weight:800;margin-bottom:12px;letter-spacing:-0.02em;line-height:1.2}
+        .hero .subtitle{font-size:1.1em;color:#555;margin-bottom:20px;max-width:550px}
+        .hero .tagline{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:#f5f5f5;border-radius:6px;font-size:0.9em;color:#333;font-weight:500}
+        .section{padding:50px 0;border-bottom:1px solid #e5e5e5;background:#fff}
+        .section:last-child{border-bottom:none}
+        .section h2{font-size:1.6em;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+        .section h2 i{color:#666}
+        .section p{color:#555;margin-bottom:14px;max-width:650px}
+        .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:24px 0}
+        .stat-item{text-align:left;padding:16px;background:#f9fafb;border-radius:8px;border:1px solid #e5e5e5}
+        .stat-item .number{font-size:1.6em;font-weight:800;color:#1a1a1a;display:block;margin-bottom:2px}
+        .stat-item .label{font-size:0.8em;color:#666}
+        .flow{display:flex;align-items:center;justify-content:center;gap:12px;margin:24px 0;padding:24px;background:#f9fafb;border-radius:8px;overflow-x:auto}
+        .flow-step{text-align:center;min-width:70px}
+        .flow-step .icon{color:#1a1a1a;margin-bottom:4px}
+        .flow-step .label{font-size:0.7em;font-weight:600}
+        .flow-arrow{color:#999;display:flex;align-items:center}
+        .highlight{background:#f9fafb;border-left:3px solid #1a1a1a;padding:14px 18px;margin:20px 0}
+        .highlight p{margin:0;color:#333;font-size:0.95em}
+        .note{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:14px 18px;margin:20px 0;font-size:0.9em;color:#92400e}
+        .note strong{color:#78350f}
+        .source{font-size:0.8em;color:#888;margin-top:10px}
+        .source a{color:#666;text-decoration:underline}
+        .reveal{opacity:0;transform:translateY(20px);transition:opacity 0.5s ease-out,transform 0.5s ease-out}
+        .reveal.visible{opacity:1;transform:translateY(0)}
+        footer{padding:24px 0;text-align:center;font-size:0.85em;color:#888;background:#fff;border-top:1px solid #e5e5e5}
+        footer a{color:#666;margin:0 8px;text-decoration:none}
+        footer a:hover{color:#1a1a1a}
+        @media(max-width:768px){.stats-row{grid-template-columns:repeat(2,1fr)}.hero h1{font-size:1.6em}.flow{flex-direction:column}.flow-arrow{transform:rotate(90deg)}}
     </style>
 </head>
 <body>
     <nav>
         <div class="container">
             <a href="index.html" class="logo">
-                <i data-lucide="headphones" style="width: 20px; height: 20px;"></i>
+                <i data-lucide="headphones" style="width:20px;height:20px"></i>
                 AI-Ассистент
             </a>
             <div class="links">
@@ -79,6 +63,7 @@
                 <a href="integrations.html">Интеграции</a>
                 <a href="economics.html">Экономика</a>
                 <a href="focus.html">Фокусы</a>
+                <a href="competitors.html">Конкуренты</a>
                 <a href="sources.html">Источники</a>
             </div>
         </div>
@@ -86,96 +71,77 @@
 
     <header class="hero">
         <div class="container">
-            <div class="jury-badge"><i data-lucide="users" style="width: 14px; height: 14px;"></i> Материалы для жюри хакатона</div>
+            <div class="jury-badge"><i data-lucide="users" style="width:14px;height:14px"></i> Материалы для жюри хакатона</div>
             <h1>AI-Ассистент для малого бизнеса</h1>
             <p class="subtitle">Обрабатывает пропущенные звонки: отвечает на вопросы, записывает клиентов, отправляет сводку владельцу.</p>
             <div class="tagline">
-                <i data-lucide="phone" style="width: 16px; height: 16px;"></i> Звонок
-                <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
-                <i data-lucide="timer" style="width: 16px; height: 16px;"></i> 15 секунд
-                <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
-                <i data-lucide="bot" style="width: 16px; height: 16px;"></i> AI отвечает
-                <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
-                <i data-lucide="calendar" style="width: 16px; height: 16px;"></i> Запись
-                <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
-                <i data-lucide="message-square" style="width: 16px; height: 16px;"></i> Сводка владельцу
+                <i data-lucide="phone" style="width:16px;height:16px"></i> Звонок
+                <i data-lucide="arrow-right" style="width:14px;height:14px"></i>
+                <i data-lucide="timer" style="width:16px;height:16px"></i> 15 секунд
+                <i data-lucide="arrow-right" style="width:14px;height:14px"></i>
+                <i data-lucide="bot" style="width:16px;height:16px"></i> AI отвечает
+                <i data-lucide="arrow-right" style="width:14px;height:14px"></i>
+                <i data-lucide="calendar" style="width:16px;height:16px"></i> Запись
+                <i data-lucide="arrow-right" style="width:14px;height:14px"></i>
+                <i data-lucide="message-square" style="width:16px;height:16px"></i> Сводка
             </div>
         </div>
     </header>
 
     <section class="section reveal">
         <div class="container">
-            <h2><i data-lucide="alert-triangle" style="width: 24px; height: 24px;"></i> Проблема</h2>
+            <h2><i data-lucide="alert-triangle" style="width:24px;height:24px"></i> Проблема</h2>
             <p>Владелец бизнеса не может быть у телефона всегда — он работает, встречается с клиентами, ведёт приём. Пропущенный звонок чаще всего означает потерянного клиента.</p>
-
             <div class="stats-row">
-                <div class="stat-item">
-                    <span class="number">34%</span>
-                    <span class="label">звонков пропускают</span>
-                </div>
-                <div class="stat-item">
-                    <span class="number">85%</span>
-                    <span class="label">не перезванивают</span>
-                </div>
-                <div class="stat-item">
-                    <span class="number">62%</span>
-                    <span class="label">звонят конкуренту</span>
-                </div>
-                <div class="stat-item">
-                    <span class="number">68 000 ₽</span>
-                    <span class="label">зарплата ресепшиониста</span>
-                </div>
+                <div class="stat-item"><span class="number">34%</span><span class="label">звонков пропускают</span></div>
+                <div class="stat-item"><span class="number">85%</span><span class="label">не перезванивают</span></div>
+                <div class="stat-item"><span class="number">62%</span><span class="label">звонят конкуренту</span></div>
+                <div class="stat-item"><span class="number">68 000 ₽</span><span class="label">зарплата ресепшиониста</span></div>
             </div>
-
-            <div class="highlight">
-                <p>78% клиентов выбирают того, кто первым ответил. Скорость ответа — главный фактор.</p>
-            </div>
-
+            <div class="highlight"><p>78% клиентов выбирают того, кто первым ответил. Скорость ответа — главный фактор.</p></div>
             <p class="source">МегаФон (<a href="https://tech.megafon.ru/information/vas-zvonok-ocen-vazen-dlia-nas-kak-ne-teriat-budushhix-klientov" target="_blank">источник</a>), Aira (<a href="https://www.getaira.io/blog/missed-business-calls-statistics" target="_blank">источник</a>), ГородРабот (<a href="https://russia.gorodrabot.ru/salaries/resepshionist?y=2024" target="_blank">источник</a>), Build100KBusiness (<a href="https://www.build100kbusiness.com/blog/speed-to-lead-why-first-responder-wins.html" target="_blank">источник</a>)</p>
         </div>
     </section>
 
     <section class="section reveal">
         <div class="container">
-            <h2><i data-lucide="repeat" style="width: 24px; height: 24px;"></i> Как работает</h2>
+            <h2><i data-lucide="repeat" style="width:24px;height:24px"></i> Как работает</h2>
             <div class="flow">
-                <div class="flow-step"><i data-lucide="phone-incoming" class="icon" style="width: 20px; height: 20px;"></i><div class="label">Клиент звонит</div></div>
-                <div class="flow-arrow"><i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i></div>
-                <div class="flow-step"><i data-lucide="timer" class="icon" style="width: 20px; height: 20px;"></i><div class="label">15 сек нет ответа</div></div>
-                <div class="flow-arrow"><i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i></div>
-                <div class="flow-step"><i data-lucide="bot" class="icon" style="width: 20px; height: 20px;"></i><div class="label">AI отвечает</div></div>
-                <div class="flow-arrow"><i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i></div>
-                <div class="flow-step"><i data-lucide="message-circle" class="icon" style="width: 20px; height: 20px;"></i><div class="label">Разговор</div></div>
-                <div class="flow-arrow"><i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i></div>
-                <div class="flow-step"><i data-lucide="calendar-check" class="icon" style="width: 20px; height: 20px;"></i><div class="label">Запись</div></div>
-                <div class="flow-arrow"><i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i></div>
-                <div class="flow-step"><i data-lucide="send" class="icon" style="width: 20px; height: 20px;"></i><div class="label">Сводка</div></div>
+                <div class="flow-step"><i data-lucide="phone-incoming" class="icon" style="width:20px;height:20px"></i><div class="label">Клиент звонит</div></div>
+                <div class="flow-arrow"><i data-lucide="arrow-right" style="width:18px;height:18px"></i></div>
+                <div class="flow-step"><i data-lucide="timer" class="icon" style="width:20px;height:20px"></i><div class="label">15 сек нет ответа</div></div>
+                <div class="flow-arrow"><i data-lucide="arrow-right" style="width:18px;height:18px"></i></div>
+                <div class="flow-step"><i data-lucide="bot" class="icon" style="width:20px;height:20px"></i><div class="label">AI отвечает</div></div>
+                <div class="flow-arrow"><i data-lucide="arrow-right" style="width:18px;height:18px"></i></div>
+                <div class="flow-step"><i data-lucide="message-circle" class="icon" style="width:20px;height:20px"></i><div class="label">Разговор</div></div>
+                <div class="flow-arrow"><i data-lucide="arrow-right" style="width:18px;height:18px"></i></div>
+                <div class="flow-step"><i data-lucide="calendar-check" class="icon" style="width:20px;height:20px"></i><div class="label">Запись</div></div>
+                <div class="flow-arrow"><i data-lucide="arrow-right" style="width:18px;height:18px"></i></div>
+                <div class="flow-step"><i data-lucide="send" class="icon" style="width:20px;height:20px"></i><div class="label">Сводка</div></div>
             </div>
-
             <p>AI отвечает на вопросы из настроек бизнеса, проверяет свободное время в календаре, записывает клиента и сразу отправляет владельцу сводку: кто звонил, что спрашивали, что записали.</p>
         </div>
     </section>
 
     <section class="section reveal">
         <div class="container">
-            <h2><i data-lucide="target" style="width: 24px; height: 24px;"></i> Какие задачи решает</h2>
-
-            <div style="margin: 20px 0;">
-                <div style="padding: 16px 0; border-bottom: 1px solid #e5e5e5;">
-                    <p style="margin: 0 0 4px; font-weight: 600;">Когда владелец не у телефона — клиенты всё равно получают ответ</p>
-                    <p style="margin: 0; font-size: 0.9em; color: #666;">Владелец на встрече, в полях, на приёме. AI отвечает вместо него. Ни один звонок не потерян.</p>
+            <h2><i data-lucide="target" style="width:24px;height:24px"></i> Какие задачи решает</h2>
+            <div style="margin:20px 0">
+                <div style="padding:16px 0;border-bottom:1px solid #e5e5e5">
+                    <p style="margin:0 0 4px;font-weight:600">Когда владелец не у телефона — клиенты всё равно получают ответ</p>
+                    <p style="margin:0;font-size:0.9em;color:#666">Владелец на встрече, в полях, на приёме. AI отвечает вместо него. Ни один звонок не потерян.</p>
                 </div>
-                <div style="padding: 16px 0; border-bottom: 1px solid #e5e5e5;">
-                    <p style="margin: 0 0 4px; font-weight: 600;">Клиент записывается сразу, не уходит к конкуренту</p>
-                    <p style="margin: 0; font-size: 0.9em; color: #666;">78% клиентов выбирают первого, кто ответил. AI отвечает за 15 секунд — клиент не успевает позвонить другому.</p>
+                <div style="padding:16px 0;border-bottom:1px solid #e5e5e5">
+                    <p style="margin:0 0 4px;font-weight:600">Клиент записывается сразу, не уходит к конкуренту</p>
+                    <p style="margin:0;font-size:0.9em;color:#666">78% клиентов выбирают первого, кто ответил. AI отвечает за 15 секунд — клиент не успевает позвонить другому.</p>
                 </div>
-                <div style="padding: 16px 0; border-bottom: 1px solid #e5e5e5;">
-                    <p style="margin: 0 0 4px; font-weight: 600;">Владелец видит все звонки, даже пропущенные</p>
-                    <p style="margin: 0; font-size: 0.9em; color: #666;">После каждого звонка — сводка в мессенджер: кто, зачем, что решили. Владелец всегда в курсе.</p>
+                <div style="padding:16px 0;border-bottom:1px solid #e5e5e5">
+                    <p style="margin:0 0 4px;font-weight:600">Владелец видит все звонки, даже пропущенные</p>
+                    <p style="margin:0;font-size:0.9em;color:#666">После каждого звонка — сводка в мессенджер: кто, зачем, что решили. Владелец всегда в курсе.</p>
                 </div>
-                <div style="padding: 16px 0;">
-                    <p style="margin: 0 0 4px; font-weight: 600;">Срочные звонки не теряются</p>
-                    <p style="margin: 0; font-size: 0.9em; color: #666;">AI определяет срочность и отправляет отдельное уведомление. Авария, острая боль, ДТП — владелец узнаёт сразу.</p>
+                <div style="padding:16px 0">
+                    <p style="margin:0 0 4px;font-weight:600">Срочные звонки не теряются</p>
+                    <p style="margin:0;font-size:0.9em;color:#666">AI определяет срочность и отправляет отдельное уведомление. Авария, острая боль, ДТП — владелец узнаёт сразу.</p>
                 </div>
             </div>
         </div>
@@ -183,59 +149,41 @@
 
     <section class="section reveal">
         <div class="container">
-            <h2><i data-lucide="bar-chart-3" style="width: 24px; height: 24px;"></i> Размер рынка</h2>
-
+            <h2><i data-lucide="bar-chart-3" style="width:24px;height:24px"></i> Размер рынка</h2>
             <div class="stats-row">
-                <div class="stat-item">
-                    <span class="number">6,7 млн</span>
-                    <span class="label">предприятий МСБ в РФ</span>
-                </div>
-                <div class="stat-item">
-                    <span class="number">~1 млн</span>
-                    <span class="label">целевых бизнесов</span>
-                </div>
-                <div class="stat-item">
-                    <span class="number">58 млрд ₽</span>
-                    <span class="label">рынок GenAI в РФ</span>
-                </div>
-                <div class="stat-item">
-                    <span class="number">15</span>
-                    <span class="label">профессий проработано</span>
-                </div>
+                <div class="stat-item"><span class="number">6,7 млн</span><span class="label">предприятий МСБ в РФ</span></div>
+                <div class="stat-item"><span class="number">~1 млн</span><span class="label">целевых бизнесов</span></div>
+                <div class="stat-item"><span class="number">58 млрд ₽</span><span class="label">рынок GenAI в РФ</span></div>
+                <div class="stat-item"><span class="number">15</span><span class="label">профессий проработано</span></div>
             </div>
-
             <p class="source">Минэкономразвития (<a href="https://www.economy.gov.ru/material/news/chislennost_malyh_isrednih_predpriyatiy_vrossii_obnovila_rekord_iprevysila_67_mln.html" target="_blank">источник</a>), SCG (<a href="SCG_Цифровизация_МСБ_2025.pdf" target="_blank">PDF</a>), Strategy Partners (<a href="Strategy_Partners_Корпоративный_ИИ_2026.pdf" target="_blank">PDF</a>), Just AI (<a href="https://m.seonews.ru/blogs/demis-group/chat-boty-i-virtualnye-assistenty-marketingovyy-proryv-2025-goda/" target="_blank">источник</a>)</p>
         </div>
     </section>
 
     <section class="section reveal">
         <div class="container">
-            <h2><i data-lucide="shield-check" style="width: 24px; height: 24px;"></i> Как мы обрабатываем риски</h2>
-
-            <div class="note">
-                <strong>Важно:</strong> Ниже — как мы решаем проблемы, которые возникают у любого голосового AI-продукта.
-            </div>
-
-            <div style="margin: 20px 0;">
-                <div style="padding: 16px 0; border-bottom: 1px solid #e5e5e5;">
-                    <p style="margin: 0 0 4px; font-weight: 600;">«Люди не хотят говорить с ботом»</p>
-                    <p style="margin: 0; font-size: 0.9em; color: #666;">Мы не делаем «идеальный голос». Вместо этого — естественное взаимодействие: AI использует фразы-заполнители («записываю», «понял», «секунду»), естественные паузы, фоновые шумы. Клиент чувствует, что говорит с помощником, а не с роботом. Если клиент просит человека — AI говорит: «Специалист перезвонит в течение 15 минут» и передаёт контакт владельцу.</p>
+            <h2><i data-lucide="shield-check" style="width:24px;height:24px"></i> Как мы обрабатываем риски</h2>
+            <div class="note"><strong>Важно:</strong> Ниже — как мы решаем проблемы, которые возникают у любого голосового AI-продукта.</div>
+            <div style="margin:20px 0">
+                <div style="padding:16px 0;border-bottom:1px solid #e5e5e5">
+                    <p style="margin:0 0 4px;font-weight:600">«Люди не хотят говорить с ботом»</p>
+                    <p style="margin:0;font-size:0.9em;color:#666">Мы не делаем «идеальный голос». Вместо этого — естественное взаимодействие: AI использует фразы-заполнители («записываю», «понял», «секунду»), естественные паузы, фоновые шумы. Если клиент просит человека — AI говорит: «Специалист перезвонит в течение 15 минут» и передаёт контакт владельцу.</p>
                 </div>
-                <div style="padding: 16px 0; border-bottom: 1px solid #e5e5e5;">
-                    <p style="margin: 0 0 4px; font-weight: 600;">«AI дал неправильный совет»</p>
-                    <p style="margin: 0; font-size: 0.9em; color: #666;">AI не даёт медицинских, юридических или финансовых рекомендаций. Он отвечает на вопросы из настроек бизнеса (цены, часы, услуги) и записывает на приём. Если вопрос выходит за рамки — AI говорит: «Это лучше обсудить со специалистом. Записать вас?»</p>
+                <div style="padding:16px 0;border-bottom:1px solid #e5e5e5">
+                    <p style="margin:0 0 4px;font-weight:600">«AI дал неправильный совет»</p>
+                    <p style="margin:0;font-size:0.9em;color:#666">AI не даёт медицинских, юридических или финансовых рекомендаций. Он отвечает на вопросы из настроек бизнеса (цены, часы, услуги) и записывает на приём. Если вопрос выходит за рамки — AI говорит: «Это лучше обсудить со специалистом. Записать вас?»</p>
                 </div>
-                <div style="padding: 16px 0; border-bottom: 1px solid #e5e5e5;">
-                    <p style="margin: 0 0 4px; font-weight: 600;">«AI не понял клиента»</p>
-                    <p style="margin: 0; font-size: 0.9em; color: #666;">Две попытки уточнить. Если не получилось — «Я передам ваш вопрос специалисту, он перезвонит». Запись разговора и контакт клиента сохраняются.</p>
+                <div style="padding:16px 0;border-bottom:1px solid #e5e5e5">
+                    <p style="margin:0 0 4px;font-weight:600">«AI не понял клиента»</p>
+                    <p style="margin:0;font-size:0.9em;color:#666">Две попытки уточнить. Если не получилось — «Я передам ваш вопрос специалисту, он перезвонит». Запись разговора и контакт клиента сохраняются.</p>
                 </div>
-                <div style="padding: 16px 0; border-bottom: 1px solid #e5e5e5;">
-                    <p style="margin: 0 0 4px; font-weight: 600;">«Данные утекут»</p>
-                    <p style="margin: 0; font-size: 0.9em; color: #666;">Соответствие 152-ФЗ. Записи разговоров шифруются. Данные хранятся на серверах в РФ. Доступ — только у владельца бизнеса.</p>
+                <div style="padding:16px 0;border-bottom:1px solid #e5e5e5">
+                    <p style="margin:0 0 4px;font-weight:600">«Данные утекут»</p>
+                    <p style="margin:0;font-size:0.9em;color:#666">Соответствие 152-ФЗ. Записи разговоров шифруются. Данные хранятся на серверах в РФ. Доступ — только у владельца бизнеса.</p>
                 </div>
-                <div style="padding: 16px 0;">
-                    <p style="margin: 0 0 4px; font-weight: 600;">«Акценты, шум, плохая связь»</p>
-                    <p style="margin: 0; font-size: 0.9em; color: #666;">Используем модели распознавания речи, обученные на российских данных. Если AI не разобрал — переспрашивает. Если трижды не понял — передаёт человеку.</p>
+                <div style="padding:16px 0">
+                    <p style="margin:0 0 4px;font-weight:600">«Акценты, шум, плохая связь»</p>
+                    <p style="margin:0;font-size:0.9em;color:#666">Используем модели распознавания речи, обученные на российских данных. Если AI не разобрал — переспрашивает. Если трижды не понял — передаёт человеку.</p>
                 </div>
             </div>
         </div>
@@ -245,22 +193,21 @@
         <div class="container">
             <a href="index.html">Продукт</a>
             <a href="scenarios.html">Сценарии</a>
-            <a href="integrations.html">Подключения</a>
+            <a href="integrations.html">Интеграции</a>
             <a href="economics.html">Экономика</a>
             <a href="focus.html">Фокусы</a>
+            <a href="competitors.html">Конкуренты</a>
             <a href="sources.html">Источники</a>
         </div>
     </footer>
 
     <script>
         lucide.createIcons();
-        const lenis = new Lenis({ duration: 0.8, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), smoothWheel: true });
-        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        const lenis = new Lenis({duration:0.8,easing:(t)=>Math.min(1,1.001-Math.pow(2,-10*t)),smoothWheel:true});
+        function raf(time){lenis.raf(time);requestAnimationFrame(raf);}
         requestAnimationFrame(raf);
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-        document.querySelectorAll('.reveal').forEach(el => { revealObserver.observe(el); });
+        const revealObserver = new IntersectionObserver((entries)=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+        document.querySelectorAll('.reveal').forEach(el=>{revealObserver.observe(el);});
     </script>
 </body>
 </html>
